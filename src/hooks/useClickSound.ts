@@ -1,14 +1,10 @@
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 
 export function useClickSound() {
-  const audioContextRef = useRef<AudioContext | null>(null);
 
   const playClick = useCallback(() => {
-    if (!audioContextRef.current) {
-      audioContextRef.current = new AudioContext();
-    }
-
-    const ctx = audioContextRef.current;
+    // Create a new AudioContext each time to ensure sounds can overlap
+    const ctx = new AudioContext();
     const now = ctx.currentTime;
 
     // Create noise buffer for a crisp click
@@ -41,6 +37,9 @@ export function useClickSound() {
 
     noiseSource.start(now);
     noiseSource.stop(now + 0.015);
+
+    // Clean up after sound finishes
+    noiseSource.onended = () => ctx.close();
   }, []);
 
   return { playClick };
