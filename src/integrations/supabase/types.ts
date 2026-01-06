@@ -160,6 +160,7 @@ export type Database = {
       }
       vaults: {
         Row: {
+          accent_color: string | null
           created_at: string
           created_by: string
           current_streak: number | null
@@ -171,6 +172,7 @@ export type Database = {
           streak_frequency: string | null
         }
         Insert: {
+          accent_color?: string | null
           created_at?: string
           created_by: string
           current_streak?: number | null
@@ -182,6 +184,7 @@ export type Database = {
           streak_frequency?: string | null
         }
         Update: {
+          accent_color?: string | null
           created_at?: string
           created_by?: string
           current_streak?: number | null

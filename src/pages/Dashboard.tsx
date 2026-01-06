@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { generateAmounts } from '@/lib/generateAmounts';
+import { VaultColorId } from '@/lib/vaultColors';
 
 interface VaultWithProgress {
   id: string;
@@ -17,6 +18,7 @@ interface VaultWithProgress {
   saved_amount: number;
   current_streak: number;
   streak_frequency: string;
+  accent_color: string;
 }
 
 export default function Dashboard() {
@@ -82,6 +84,7 @@ export default function Dashboard() {
         saved_amount: savedAmount,
         current_streak: vault.current_streak || 0,
         streak_frequency: vault.streak_frequency || 'weekly',
+        accent_color: vault.accent_color || 'emerald',
       });
     }
 
@@ -93,13 +96,13 @@ export default function Dashboard() {
     fetchVaults();
   }, [user]);
 
-  const handleCreateVault = async (name: string, goalAmount: number) => {
+  const handleCreateVault = async (name: string, goalAmount: number, accentColor: VaultColorId) => {
     if (!user) return;
 
     // Create vault
     const { data: vault, error: vaultError } = await supabase
       .from('vaults')
-      .insert({ name, goal_amount: goalAmount, created_by: user.id })
+      .insert({ name, goal_amount: goalAmount, created_by: user.id, accent_color: accentColor })
       .select()
       .single();
 
@@ -142,21 +145,20 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold">Cash Vault</h1>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
-              <Settings className="h-4 w-4" />
-            </Button>
-          </div>
+      <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="mx-auto max-w-4xl px-4 py-5 flex items-center justify-between">
+          <h1 className="text-2xl font-display font-bold tracking-tight">Cash Vault</h1>
+          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/settings')}>
+            <Settings className="h-5 w-5" />
+          </Button>
         </div>
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-8">
         {loading ? (
           <div className="text-center text-muted-foreground py-12">
-            Loading...
+            <div className="loading-spinner mx-auto mb-3" />
+            Loading your vaults...
           </div>
         ) : vaults.length === 0 ? (
           <>
@@ -168,7 +170,12 @@ export default function Dashboard() {
         ) : (
           <>
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-semibold">Your Vaults</h2>
+              <div>
+                <h2 className="text-2xl font-display font-semibold tracking-tight">Your Vaults</h2>
+                <p className="text-muted-foreground mt-1">
+                  {vaults.length} vault{vaults.length !== 1 ? 's' : ''} • ${vaults.reduce((sum, v) => sum + v.saved_amount, 0).toLocaleString()} saved
+                </p>
+              </div>
               <CreateVaultDialog onCreateVault={handleCreateVault} />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -181,6 +188,7 @@ export default function Dashboard() {
                   savedAmount={vault.saved_amount}
                   currentStreak={vault.current_streak}
                   streakFrequency={vault.streak_frequency}
+                  accentColor={vault.accent_color}
                 />
               ))}
             </div>

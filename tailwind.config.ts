@@ -57,6 +57,14 @@ export default {
           foreground: "hsl(var(--success-foreground))",
         },
         checked: "hsl(var(--checked))",
+        vault: {
+          emerald: "hsl(var(--vault-emerald))",
+          blue: "hsl(var(--vault-blue))",
+          violet: "hsl(var(--vault-violet))",
+          amber: "hsl(var(--vault-amber))",
+          rose: "hsl(var(--vault-rose))",
+          cyan: "hsl(var(--vault-cyan))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -68,10 +76,19 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      fontFamily: {
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        'soft': '0 2px 8px -2px hsl(var(--foreground) / 0.08)',
+        'elevated': '0 4px 16px -4px hsl(var(--foreground) / 0.12)',
+        'premium': '0 8px 32px -8px hsl(var(--foreground) / 0.16)',
       },
       keyframes: {
         "accordion-down": {
