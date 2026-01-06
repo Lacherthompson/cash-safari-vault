@@ -120,7 +120,7 @@
 }
 
 .amount-circle {
-  @apply relative flex items-center justify-center rounded-full w-16 h-16 md:w-20 md:h-20 border-2 border-border bg-card text-foreground font-medium cursor-pointer select-none;
+  @apply relative flex items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 border border-border bg-accent text-foreground font-medium cursor-pointer select-none;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -154,7 +154,7 @@
 }
 
 .amount-circle .checkmark-icon {
-  @apply absolute w-6 h-6 md:w-8 md:h-8 text-primary-foreground;
+  @apply absolute w-5 h-5 md:w-6 md:h-6 text-primary-foreground;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
