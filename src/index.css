@@ -136,7 +136,7 @@
 }
 
 .amount-circle {
-  @apply relative flex items-center justify-center rounded-full w-14 h-14 md:w-16 md:h-16 border border-border bg-accent text-foreground font-medium cursor-pointer select-none;
+  @apply relative flex items-center justify-center rounded-full w-12 h-12 md:w-14 md:h-14 border border-border bg-accent text-foreground font-medium cursor-pointer select-none overflow-hidden;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -160,16 +160,16 @@
 }
 
 .amount-circle .checked-content {
-  @apply absolute flex flex-col items-center justify-center;
+  @apply absolute inset-0 flex flex-col items-center justify-center gap-0;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .amount-circle .checkmark-icon {
-  @apply w-4 h-4 md:w-5 md:h-5 text-primary-foreground;
+  @apply w-3.5 h-3.5 md:w-4 md:h-4 text-primary-foreground flex-shrink-0;
 }
 
 .amount-circle .checked-amount {
-  @apply text-[10px] md:text-xs text-primary-foreground/70 mt-0.5 font-medium;
+  @apply text-[8px] md:text-[9px] text-primary-foreground/80 font-semibold leading-none;
 }
 
 .amount-circle.checked .checkmark-path {
