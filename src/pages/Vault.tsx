@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useClickSound } from '@/hooks/useClickSound';
 import { supabase } from '@/integrations/supabase/client';
 import { VaultGrid } from '@/components/VaultGrid';
 import { ProgressBar } from '@/components/ProgressBar';
@@ -30,6 +31,7 @@ export default function Vault() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { playClick } = useClickSound();
   
   const [vault, setVault] = useState<VaultData | null>(null);
   const [amounts, setAmounts] = useState<VaultAmount[]>([]);
@@ -98,6 +100,9 @@ export default function Vault() {
   }, [id, user, navigate, toast]);
 
   const handleToggle = async (amountId: string, currentState: boolean) => {
+    // Play click sound
+    playClick();
+    
     // Optimistic update
     setAmounts(prev =>
       prev.map(a =>
