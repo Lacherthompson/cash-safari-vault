@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { VaultGrid } from '@/components/VaultGrid';
 import { ProgressBar } from '@/components/ProgressBar';
+import { Celebration } from '@/components/Celebration';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, UserPlus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -36,6 +37,8 @@ export default function Vault() {
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviting, setInviting] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const hasCelebrated = useRef(false);
 
   useEffect(() => {
     if (!id || !user) return;
@@ -175,6 +178,21 @@ export default function Vault() {
     .filter(a => a.is_checked)
     .reduce((sum, a) => sum + a.amount, 0);
 
+  const isComplete = vault && savedAmount >= vault.goal_amount;
+
+  // Trigger celebration when reaching 100%
+  useEffect(() => {
+    if (isComplete && !hasCelebrated.current) {
+      hasCelebrated.current = true;
+      setShowCelebration(true);
+      toast({
+        title: '🎉 Congratulations!',
+        description: `You've completed your ${vault?.name} goal!`,
+      });
+      setTimeout(() => setShowCelebration(false), 3000);
+    }
+  }, [isComplete, vault?.name, toast]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -189,6 +207,7 @@ export default function Vault() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Celebration show={showCelebration} />
       <header className="border-b border-border sticky top-0 bg-background z-10">
         <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
