@@ -53,11 +53,14 @@ export function CreateVaultDialog({ onCreateVault }: CreateVaultDialogProps) {
           </div>
           <div>
             <Input
-              type="number"
+              type="text"
+              inputMode="numeric"
               placeholder="Savings goal ($)"
               value={goalAmount}
-              onChange={(e) => setGoalAmount(e.target.value)}
-              min={10}
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^0-9,]/g, '');
+                setGoalAmount(value);
+              }}
               required
             />
             <p className="mt-1 text-xs text-muted-foreground">
