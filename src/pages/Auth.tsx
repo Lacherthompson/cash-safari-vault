@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { HelpCircle, BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Auth() {
@@ -137,6 +138,23 @@ export default function Auth() {
           >
             {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
           </button>
+        </div>
+
+        <div className="flex items-center justify-center gap-4 pt-4 border-t border-border/40">
+          <Link 
+            to="/how-to-use" 
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <HelpCircle className="h-4 w-4" />
+            How it works
+          </Link>
+          <Link 
+            to="/savings-guide" 
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <BookOpen className="h-4 w-4" />
+            Savings Guide
+          </Link>
         </div>
       </div>
     </div>
