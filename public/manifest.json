@@ -1,6 +1,6 @@
 {
-  "name": "SaveTogether",
-  "short_name": "SaveTogether",
+  "name": "Cash Vault",
+  "short_name": "Cash Vault",
   "description": "Track your savings goals with a visual grid",
   "start_url": "/",
   "display": "standalone",

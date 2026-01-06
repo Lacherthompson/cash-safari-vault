@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { HelpCircle, BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import logo from '@/assets/logo.png';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -101,8 +100,10 @@ export default function Auth() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
-          <img src={logo} alt="SaveTogether" className="h-20 mx-auto mb-4" />
-          <p className="text-lg text-muted-foreground">
+          <h1 className="text-4xl font-display font-bold tracking-tight text-foreground">
+            Cash Vault
+          </h1>
+          <p className="mt-3 text-lg text-muted-foreground">
             {isLogin ? 'Welcome back' : 'Start your savings journey'}
           </p>
         </div>
