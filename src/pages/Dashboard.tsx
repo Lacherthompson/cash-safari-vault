@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { CreateVaultDialog } from '@/components/CreateVaultDialog';
 import { VaultCard } from '@/components/VaultCard';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { EmptyState } from '@/components/EmptyState';
 import { Button } from '@/components/ui/button';
-import { LogOut } from 'lucide-react';
+import { Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { generateAmounts } from '@/lib/generateAmounts';
 
@@ -14,13 +15,17 @@ interface VaultWithProgress {
   name: string;
   goal_amount: number;
   saved_amount: number;
+  current_streak: number;
+  streak_frequency: string;
 }
 
 export default function Dashboard() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [vaults, setVaults] = useState<VaultWithProgress[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const createDialogRef = useRef<{ open: () => void } | null>(null);
 
   const fetchVaults = async () => {
     if (!user) return;
@@ -75,6 +80,8 @@ export default function Dashboard() {
         name: vault.name,
         goal_amount: vault.goal_amount,
         saved_amount: savedAmount,
+        current_streak: vault.current_streak || 0,
+        streak_frequency: vault.streak_frequency || 'weekly',
       });
     }
 
@@ -129,49 +136,55 @@ export default function Dashboard() {
     fetchVaults();
   };
 
+  const handleOpenCreateDialog = () => {
+    createDialogRef.current?.open();
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border">
         <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold">Cash Vault</h1>
           <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <Button variant="ghost" size="icon" onClick={signOut}>
-              <LogOut className="h-4 w-4" />
+            <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
+              <Settings className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-semibold">Your Vaults</h2>
-          <CreateVaultDialog onCreateVault={handleCreateVault} />
-        </div>
-
         {loading ? (
           <div className="text-center text-muted-foreground py-12">
             Loading...
           </div>
         ) : vaults.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">No vaults yet</p>
-            <p className="text-sm text-muted-foreground">
-              Create your first vault to start saving!
-            </p>
-          </div>
+          <>
+            <EmptyState onCreateVault={handleOpenCreateDialog} />
+            <div className="hidden">
+              <CreateVaultDialog ref={createDialogRef as React.RefObject<{ open: () => void }>} onCreateVault={handleCreateVault} />
+            </div>
+          </>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {vaults.map((vault) => (
-              <VaultCard
-                key={vault.id}
-                id={vault.id}
-                name={vault.name}
-                goalAmount={vault.goal_amount}
-                savedAmount={vault.saved_amount}
-              />
-            ))}
-          </div>
+          <>
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-semibold">Your Vaults</h2>
+              <CreateVaultDialog onCreateVault={handleCreateVault} />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {vaults.map((vault) => (
+                <VaultCard
+                  key={vault.id}
+                  id={vault.id}
+                  name={vault.name}
+                  goalAmount={vault.goal_amount}
+                  savedAmount={vault.saved_amount}
+                  currentStreak={vault.current_streak}
+                  streakFrequency={vault.streak_frequency}
+                />
+              ))}
+            </div>
+          </>
         )}
       </main>
     </div>
