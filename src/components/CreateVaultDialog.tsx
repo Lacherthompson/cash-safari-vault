@@ -16,7 +16,8 @@ export function CreateVaultDialog({ onCreateVault }: CreateVaultDialogProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const amount = parseInt(goalAmount, 10);
+    const cleanedAmount = goalAmount.replace(/,/g, '');
+    const amount = parseInt(cleanedAmount, 10);
     if (!amount || amount < 10) return;
     
     setLoading(true);
