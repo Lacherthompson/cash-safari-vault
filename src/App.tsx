@@ -10,6 +10,8 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Vault from "./pages/Vault";
 import Settings from "./pages/Settings";
+import HowToUse from "./pages/HowToUse";
+import SavingsGuide from "./pages/SavingsGuide";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/vault/:id" element={<Vault />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/how-to-use" element={<HowToUse />} />
+                <Route path="/savings-guide" element={<SavingsGuide />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

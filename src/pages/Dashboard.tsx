@@ -6,7 +6,7 @@ import { CreateVaultDialog } from '@/components/CreateVaultDialog';
 import { VaultCard } from '@/components/VaultCard';
 import { EmptyState } from '@/components/EmptyState';
 import { Button } from '@/components/ui/button';
-import { Settings } from 'lucide-react';
+import { Settings, HelpCircle, BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { generateAmounts } from '@/lib/generateAmounts';
 import { VaultColorId } from '@/lib/vaultColors';
@@ -148,9 +148,17 @@ export default function Dashboard() {
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-4 py-5 flex items-center justify-between">
           <h1 className="text-2xl font-display font-bold tracking-tight">Cash Vault</h1>
-          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/settings')}>
-            <Settings className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/how-to-use')}>
+              <HelpCircle className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/savings-guide')}>
+              <BookOpen className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/settings')}>
+              <Settings className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </header>
 
