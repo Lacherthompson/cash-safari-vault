@@ -1,17 +1,9 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import Dashboard from './Dashboard';
+import LandingPage from './LandingPage';
 
 export default function Index() {
   const { user, loading } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/auth');
-    }
-  }, [user, loading, navigate]);
 
   if (loading) {
     return (
@@ -22,7 +14,7 @@ export default function Index() {
   }
 
   if (!user) {
-    return null;
+    return <LandingPage />;
   }
 
   return <Dashboard />;
