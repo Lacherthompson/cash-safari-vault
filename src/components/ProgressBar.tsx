@@ -1,10 +1,13 @@
 interface ProgressBarProps {
   current: number;
   goal: number;
+  checkedCount?: number;
+  totalCount?: number;
 }
 
-export function ProgressBar({ current, goal }: ProgressBarProps) {
+export function ProgressBar({ current, goal, checkedCount, totalCount }: ProgressBarProps) {
   const percentage = Math.min((current / goal) * 100, 100);
+  const showCount = checkedCount !== undefined && totalCount !== undefined;
   
   return (
     <div className="space-y-2">
@@ -22,8 +25,15 @@ export function ProgressBar({ current, goal }: ProgressBarProps) {
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <div className="text-center text-sm text-muted-foreground">
-        {percentage.toFixed(0)}% complete
+      <div className="flex justify-between text-sm text-muted-foreground">
+        {showCount ? (
+          <>
+            <span>{checkedCount}/{totalCount} checked</span>
+            <span>{percentage.toFixed(0)}%</span>
+          </>
+        ) : (
+          <span className="w-full text-center">{percentage.toFixed(0)}% complete</span>
+        )}
       </div>
     </div>
   );
