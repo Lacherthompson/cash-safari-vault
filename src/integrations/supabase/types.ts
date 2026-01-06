@@ -32,6 +32,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_settings: {
+        Row: {
+          created_at: string
+          id: string
+          sound_enabled: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          sound_enabled?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          sound_enabled?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       vault_amounts: {
         Row: {
           amount: number
@@ -138,23 +162,35 @@ export type Database = {
         Row: {
           created_at: string
           created_by: string
+          current_streak: number | null
           goal_amount: number
           id: string
+          last_activity_date: string | null
+          longest_streak: number | null
           name: string
+          streak_frequency: string | null
         }
         Insert: {
           created_at?: string
           created_by: string
+          current_streak?: number | null
           goal_amount: number
           id?: string
+          last_activity_date?: string | null
+          longest_streak?: number | null
           name?: string
+          streak_frequency?: string | null
         }
         Update: {
           created_at?: string
           created_by?: string
+          current_streak?: number | null
           goal_amount?: number
           id?: string
+          last_activity_date?: string | null
+          longest_streak?: number | null
           name?: string
+          streak_frequency?: string | null
         }
         Relationships: []
       }
