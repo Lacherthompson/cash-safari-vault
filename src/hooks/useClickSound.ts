@@ -32,7 +32,7 @@ export function useClickSound() {
 
     // Gain for volume
     const gainNode = ctx.createGain();
-    gainNode.gain.setValueAtTime(0.3, now);
+    gainNode.gain.setValueAtTime(0.6, now);
     gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.015);
 
     noiseSource.connect(highPass);
