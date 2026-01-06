@@ -90,59 +90,86 @@
   }
 }
 
-/* Satisfying check animation */
-@keyframes check-pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(0.92);
-  }
-  100% {
-    transform: scale(1);
-  }
+/* Soothing circle animations */
+@keyframes gentle-scale {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
 }
 
-@keyframes check-fill {
-  0% {
-    background-color: transparent;
-  }
-  100% {
-    background-color: hsl(var(--checked));
-  }
+@keyframes soft-pulse {
+  0% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4); }
+  70% { box-shadow: 0 0 0 10px hsl(var(--primary) / 0); }
+  100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0); }
 }
 
 @keyframes checkmark-draw {
-  0% {
-    stroke-dashoffset: 24;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
+  0% { stroke-dashoffset: 24; opacity: 0; }
+  50% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
 }
 
-.amount-tile {
-  @apply relative flex items-center justify-center rounded-lg border-2 border-border bg-card text-foreground font-medium transition-all duration-150 cursor-pointer select-none;
+@keyframes fade-scale-in {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-.amount-tile:hover:not(.checked) {
-  @apply border-primary/50 bg-accent;
+@keyframes fade-scale-out {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.5); }
 }
 
-.amount-tile:active:not(.checked) {
-  animation: check-pop 0.15s ease-out;
+.amount-circle {
+  @apply relative flex items-center justify-center rounded-full w-16 h-16 md:w-20 md:h-20 border-2 border-border bg-card text-foreground font-medium cursor-pointer select-none;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.amount-tile.checked {
-  @apply border-primary bg-accent text-accent-foreground;
-  animation: check-pop 0.2s ease-out;
+.amount-circle:hover:not(.checked):not(:disabled) {
+  @apply border-primary/40 bg-accent;
+  transform: scale(1.05);
 }
 
-.amount-tile.checked .checkmark {
-  animation: checkmark-draw 0.25s ease-out forwards;
+.amount-circle:active:not(.checked):not(:disabled) {
+  transform: scale(0.95);
 }
 
-.checkmark {
+.amount-circle.checked {
+  @apply border-primary bg-primary;
+  animation: gentle-scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), soft-pulse 0.6s ease-out;
+}
+
+.amount-circle .amount-text {
+  @apply absolute text-sm md:text-base;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.amount-circle .amount-text.fade-out {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.amount-circle .amount-text.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.amount-circle .checkmark-icon {
+  @apply absolute w-6 h-6 md:w-8 md:h-8 text-primary-foreground;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.amount-circle .checkmark-icon.fade-out {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.amount-circle .checkmark-icon.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.amount-circle.checked .checkmark-path {
   stroke-dasharray: 24;
   stroke-dashoffset: 24;
+  animation: checkmark-draw 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
 }
