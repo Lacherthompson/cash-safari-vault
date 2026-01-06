@@ -4,7 +4,6 @@ export function useClickSound() {
   const audioContextRef = useRef<AudioContext | null>(null);
 
   const playClick = useCallback(() => {
-    // Create audio context lazily (browser requires user interaction first)
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContext();
     }
@@ -12,23 +11,36 @@ export function useClickSound() {
     const ctx = audioContextRef.current;
     const now = ctx.currentTime;
 
-    // Create a short "pop" sound
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
+    // Create noise buffer for a crisp click
+    const bufferSize = ctx.sampleRate * 0.015; // 15ms
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
 
-    oscillator.connect(gainNode);
+    // Fill with noise that decays quickly
+    for (let i = 0; i < bufferSize; i++) {
+      const decay = 1 - (i / bufferSize);
+      data[i] = (Math.random() * 2 - 1) * decay * decay;
+    }
+
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = buffer;
+
+    // High-pass filter for crisp attack
+    const highPass = ctx.createBiquadFilter();
+    highPass.type = 'highpass';
+    highPass.frequency.value = 1000;
+
+    // Gain for volume
+    const gainNode = ctx.createGain();
+    gainNode.gain.setValueAtTime(0.3, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.015);
+
+    noiseSource.connect(highPass);
+    highPass.connect(gainNode);
     gainNode.connect(ctx.destination);
 
-    // Quick frequency sweep for a satisfying click
-    oscillator.frequency.setValueAtTime(600, now);
-    oscillator.frequency.exponentialRampToValueAtTime(200, now + 0.05);
-
-    // Quick volume envelope
-    gainNode.gain.setValueAtTime(0.15, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-
-    oscillator.start(now);
-    oscillator.stop(now + 0.08);
+    noiseSource.start(now);
+    noiseSource.stop(now + 0.015);
   }, []);
 
   return { playClick };
