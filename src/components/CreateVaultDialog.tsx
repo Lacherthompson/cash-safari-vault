@@ -2,10 +2,13 @@ import { useState, forwardRef, useImperativeHandle } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ColorPicker } from '@/components/ColorPicker';
 import { Plus } from 'lucide-react';
+import { VaultColorId } from '@/lib/vaultColors';
 
 interface CreateVaultDialogProps {
-  onCreateVault: (name: string, goalAmount: number) => Promise<void>;
+  onCreateVault: (name: string, goalAmount: number, accentColor: VaultColorId) => Promise<void>;
 }
 
 export interface CreateVaultDialogRef {
@@ -21,6 +24,7 @@ export const CreateVaultDialog = forwardRef<CreateVaultDialogRef, CreateVaultDia
     const [open, setOpen] = useState(false);
     const [name, setName] = useState('');
     const [goalAmount, setGoalAmount] = useState('');
+    const [accentColor, setAccentColor] = useState<VaultColorId>('emerald');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -57,10 +61,11 @@ export const CreateVaultDialog = forwardRef<CreateVaultDialogRef, CreateVaultDia
       
       setLoading(true);
       try {
-        await onCreateVault(vaultName, amount);
+        await onCreateVault(vaultName, amount, accentColor);
         setOpen(false);
         setName('');
         setGoalAmount('');
+        setAccentColor('emerald');
         setError(null);
       } catch {
         setError('Failed to create vault. Please try again.');
@@ -84,47 +89,67 @@ export const CreateVaultDialog = forwardRef<CreateVaultDialogRef, CreateVaultDia
     return (
       <Dialog open={open} onOpenChange={(isOpen) => {
         setOpen(isOpen);
-        if (!isOpen) setError(null);
+        if (!isOpen) {
+          setError(null);
+          setAccentColor('emerald');
+        }
       }}>
         <DialogTrigger asChild>
-          <Button className="gap-2">
+          <Button className="gap-2 shadow-soft">
             <Plus className="h-4 w-4" />
             New Vault
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Create a Vault</DialogTitle>
+            <DialogTitle className="font-display text-xl">Create a Vault</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="vault-name">Vault Name</Label>
               <Input
-                placeholder="Vault name (optional)"
+                id="vault-name"
+                placeholder="e.g. Emergency Fund"
                 value={name}
                 onChange={handleNameChange}
                 maxLength={MAX_NAME_LENGTH}
+                className="h-11"
               />
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {name.length}/{MAX_NAME_LENGTH} characters
               </p>
             </div>
-            <div>
-              <Input
-                type="text"
-                inputMode="numeric"
-                placeholder="Savings goal ($)"
-                value={goalAmount}
-                onChange={handleAmountChange}
-                required
-              />
-              <p className="mt-1 text-xs text-muted-foreground">
+            
+            <div className="space-y-2">
+              <Label htmlFor="goal-amount">Savings Goal</Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                <Input
+                  id="goal-amount"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="10,000"
+                  value={goalAmount}
+                  onChange={handleAmountChange}
+                  required
+                  className="h-11 pl-7"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
                 $10 – $1,000,000,000
               </p>
             </div>
+            
+            <div className="space-y-2">
+              <Label>Accent Color</Label>
+              <ColorPicker value={accentColor} onChange={setAccentColor} />
+            </div>
+            
             {error && (
               <p className="text-sm text-destructive">{error}</p>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
+            
+            <Button type="submit" className="w-full h-11 font-semibold" disabled={loading}>
               {loading ? 'Creating...' : 'Create Vault'}
             </Button>
           </form>

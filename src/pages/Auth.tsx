@@ -99,10 +99,10 @@ export default function Auth() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-4xl font-display font-bold tracking-tight text-foreground">
             Cash Vault
           </h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-3 text-lg text-muted-foreground">
             {isLogin ? 'Welcome back' : 'Start your savings journey'}
           </p>
         </div>
@@ -114,6 +114,7 @@ export default function Auth() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
+            className="h-12"
           />
           <Input
             type="password"
@@ -121,8 +122,9 @@ export default function Auth() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete={isLogin ? 'current-password' : 'new-password'}
+            className="h-12"
           />
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full h-12 font-semibold" disabled={loading}>
             {loading ? '...' : isLogin ? 'Sign In' : 'Create Account'}
           </Button>
         </form>

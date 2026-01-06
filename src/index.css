@@ -38,6 +38,14 @@
     --success-foreground: 120 20% 98%;
     --checked: 152 45% 28%;
     --checked-border: 152 50% 22%;
+    
+    /* Vault accent colors */
+    --vault-emerald: 152 55% 40%;
+    --vault-blue: 210 70% 50%;
+    --vault-violet: 270 60% 55%;
+    --vault-amber: 38 90% 50%;
+    --vault-rose: 350 70% 55%;
+    --vault-cyan: 185 70% 45%;
   }
 
   .dark {
@@ -74,6 +82,14 @@
     --success-foreground: 150 15% 7%;
     --checked: 152 50% 42%;
     --checked-border: 152 55% 35%;
+    
+    /* Vault accent colors */
+    --vault-emerald: 152 55% 45%;
+    --vault-blue: 210 70% 55%;
+    --vault-violet: 270 60% 60%;
+    --vault-amber: 38 85% 55%;
+    --vault-rose: 350 70% 60%;
+    --vault-cyan: 185 65% 50%;
   }
 }
 

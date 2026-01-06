@@ -19,18 +19,18 @@ export default function Settings() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border sticky top-0 bg-background z-10">
+      <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
-          <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
+          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-lg font-semibold">Settings</h1>
+          <h1 className="text-lg font-display font-semibold tracking-tight">Settings</h1>
           <div className="w-10" />
         </div>
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-4">
-        <Card className="p-4">
+        <Card className="p-4 shadow-soft">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {soundEnabled ? (
@@ -53,7 +53,7 @@ export default function Settings() {
           </div>
         </Card>
 
-        <Card className="p-4">
+        <Card className="p-4 shadow-soft">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Palette className="h-5 w-5 text-muted-foreground" />
@@ -68,7 +68,7 @@ export default function Settings() {
           </div>
         </Card>
 
-        <Card className="p-4">
+        <Card className="p-4 shadow-soft">
           <Button 
             variant="destructive" 
             className="w-full gap-2"

@@ -31,6 +31,7 @@ interface VaultData {
   current_streak: number;
   longest_streak: number;
   last_activity_date: string | null;
+  accent_color: string;
 }
 
 export default function Vault() {
@@ -79,6 +80,7 @@ export default function Vault() {
         streak_frequency: vaultData.streak_frequency || 'weekly',
         current_streak: vaultData.current_streak || 0,
         longest_streak: vaultData.longest_streak || 0,
+        accent_color: vaultData.accent_color || 'emerald',
       });
 
       // Get user's amounts for this vault
@@ -417,12 +419,12 @@ export default function Vault() {
   return (
     <div className="min-h-screen bg-background">
       <Celebration show={showCelebration} />
-      <header className="border-b border-border sticky top-0 bg-background z-10">
+      <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
-          <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
+          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-lg font-semibold">{vault.name}</h1>
+          <h1 className="text-lg font-display font-semibold tracking-tight">{vault.name}</h1>
           <div className="flex items-center gap-1">
             {isOwner && (
               <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
@@ -478,6 +480,7 @@ export default function Vault() {
           goal={vault.goal_amount} 
           checkedCount={amounts.filter(a => a.is_checked).length}
           totalCount={amounts.length}
+          accentColor={vault.accent_color}
         />
         <VaultGrid amounts={sortedAmounts} onToggle={handleToggle} loadingId={loadingId} />
       </main>
