@@ -155,37 +155,35 @@
 }
 
 .amount-circle .amount-text {
-  @apply absolute text-sm md:text-base;
+  @apply absolute text-xs md:text-sm font-medium;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.amount-circle .amount-text.fade-out {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.amount-circle .amount-text.fade-in {
-  opacity: 1;
-  transform: scale(1);
+.amount-circle .checked-content {
+  @apply absolute flex flex-col items-center justify-center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .amount-circle .checkmark-icon {
-  @apply absolute w-5 h-5 md:w-6 md:h-6 text-primary-foreground;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  @apply w-4 h-4 md:w-5 md:h-5 text-primary-foreground;
 }
 
-.amount-circle .checkmark-icon.fade-out {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.amount-circle .checkmark-icon.fade-in {
-  opacity: 1;
-  transform: scale(1);
+.amount-circle .checked-amount {
+  @apply text-[10px] md:text-xs text-primary-foreground/70 mt-0.5 font-medium;
 }
 
 .amount-circle.checked .checkmark-path {
   stroke-dasharray: 24;
   stroke-dashoffset: 24;
   animation: checkmark-draw 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  @apply w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full;
+  animation: spin 0.6s linear infinite;
 }

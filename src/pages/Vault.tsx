@@ -38,6 +38,7 @@ export default function Vault() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviting, setInviting] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
   const hasCelebrated = useRef(false);
 
   useEffect(() => {
@@ -113,6 +114,9 @@ export default function Vault() {
       .eq('id', amountId);
 
     if (error) {
+      // Show loading on the tile during revert
+      setLoadingId(amountId);
+      
       // Revert on error
       setAmounts(prev =>
         prev.map(a =>
@@ -121,9 +125,11 @@ export default function Vault() {
       );
       toast({
         title: 'Error',
-        description: 'Failed to update.',
+        description: 'Failed to update. Please try again.',
         variant: 'destructive',
       });
+      
+      setTimeout(() => setLoadingId(null), 300);
     }
   };
 
@@ -249,7 +255,7 @@ export default function Vault() {
 
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-6">
         <ProgressBar current={savedAmount} goal={vault.goal_amount} />
-        <VaultGrid amounts={amounts} onToggle={handleToggle} />
+        <VaultGrid amounts={amounts} onToggle={handleToggle} loadingId={loadingId} />
       </main>
     </div>
   );
