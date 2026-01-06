@@ -54,7 +54,7 @@ export default function HowToUse() {
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-2xl font-display font-bold tracking-tight">How to Use Cash Vault</h1>
+          <h1 className="text-2xl font-display font-bold tracking-tight">How to Use SaveTogether</h1>
         </div>
       </header>
 
@@ -63,7 +63,7 @@ export default function HowToUse() {
         <section>
           <h2 className="text-2xl font-display font-semibold tracking-tight mb-2">Getting Started</h2>
           <p className="text-muted-foreground mb-6">
-            Cash Vault makes saving fun with a simple check-off system. Here's how it works.
+            SaveTogether makes saving fun with a simple check-off system. Here's how it works.
           </p>
           
           <div className="grid gap-4 sm:grid-cols-2">
