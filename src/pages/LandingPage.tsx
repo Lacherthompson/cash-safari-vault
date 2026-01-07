@@ -59,7 +59,7 @@ export default function LandingPage() {
       {/* Header */}
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-8" />
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-16" />
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" onClick={() => navigate('/how-to-use')}>
               How it works
