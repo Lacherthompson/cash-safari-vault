@@ -7,7 +7,6 @@ import { ThemeProvider } from "next-themes";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
 import { SettingsProvider } from "@/hooks/useSettings";
-import { usePageTracking } from "@/hooks/usePageTracking";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Vault from "./pages/Vault";
@@ -17,11 +16,6 @@ import SavingsGuide from "./pages/SavingsGuide";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-
-const PageTracker = () => {
-  usePageTracking();
-  return null;
-};
 
 const App = () => (
   <HelmetProvider>
@@ -33,7 +27,6 @@ const App = () => (
               <Toaster />
               <Sonner />
               <BrowserRouter>
-                <PageTracker />
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
