@@ -2,6 +2,59 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, TrendingUp, Clock, Layers, Shield, Landmark, CircleDollarSign, ExternalLink } from 'lucide-react';
+import SEO from '@/components/SEO';
+
+const savingsGuideJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Save Money — Best Savings Strategies That Work",
+  "description": "Complete guide to high-yield savings accounts, CDs, Treasury bills, and other savings options to grow your money safely.",
+  "author": {
+    "@type": "Organization",
+    "name": "Cash Vault"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Cash Vault"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://cashvault.lovable.app/savings-guide"
+  },
+  "datePublished": "2025-01-07",
+  "dateModified": "2025-01-07"
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a high-yield savings account (HYSA)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A high-yield savings account is an online savings account that offers significantly higher interest rates than traditional banks, typically 4-5% APY. They are FDIC insured up to $250,000 and provide easy access to your money."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a CD ladder strategy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A CD ladder divides your savings across multiple CDs with different maturity dates. As each CD matures, you reinvest it into a new long-term CD. This strategy provides regular access to funds while earning higher long-term rates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are Treasury Bills (T-Bills) a good savings option?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Treasury Bills are short-term government securities backed by the U.S. Treasury, considered one of the safest investments available. They offer 4.5-5.5% APY and are state tax exempt, making them ideal for conservative investors seeking safety."
+      }
+    }
+  ]
+};
 
 export default function SavingsGuide() {
   const navigate = useNavigate();
@@ -70,7 +123,15 @@ export default function SavingsGuide() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEO
+        title="Savings Guide — How to Save Money Smartly"
+        description="Compare high-yield savings accounts, CDs, Treasury bills, and other savings options. Learn the best strategies to grow your money safely in 2025."
+        path="/savings-guide"
+        type="article"
+        jsonLd={{ ...savingsGuideJsonLd, ...faqJsonLd }}
+      />
+      <div className="min-h-screen bg-background">
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-4 py-5 flex items-center gap-4">
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
@@ -252,5 +313,6 @@ export default function SavingsGuide() {
         </div>
       </main>
     </div>
+    </>
   );
 }
