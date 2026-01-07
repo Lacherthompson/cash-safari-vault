@@ -40,6 +40,7 @@ const App = () => (
                   <Route path="/vault/:id" element={<Vault />} />
                   <Route path="/how-to-use" element={<HowToUse />} />
                   <Route path="/savings-guide" element={<SavingsGuide />} />
+                  <Route path="/settings" element={<Settings />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter>
