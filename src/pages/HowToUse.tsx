@@ -63,7 +63,7 @@ export default function HowToUse() {
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-20" />
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-24 cursor-pointer" onClick={() => navigate('/')} />
           <div className="w-10" />
         </div>
       </header>
