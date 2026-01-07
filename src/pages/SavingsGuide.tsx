@@ -76,20 +76,26 @@ export default function SavingsGuide() {
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-2xl font-display font-bold tracking-tight">Savings Guide</h1>
+          <span className="text-2xl font-display font-bold tracking-tight">Savings Guide</span>
         </div>
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-8 space-y-8">
         {/* Intro Section */}
         <section>
+          <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-4">
+            How to Save Money — Best Savings Strategies That Work
+          </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Where you keep your savings matters. Here's a breakdown of the best options to grow your money safely.
+            Want to know where to keep your savings to grow your money faster? Here's a complete breakdown of the best savings options — from high-yield savings accounts to CDs and Treasury bills. These proven savings tips help you reach your financial goals safely.
           </p>
         </section>
 
         {/* Savings Options */}
         <section className="space-y-6">
+          <h2 className="text-2xl font-display font-semibold tracking-tight">
+            Best Ways to Save Money in 2025
+          </h2>
           {savingsOptions.map((option, index) => (
             <Card key={index} className="border-border/60 bg-card/50 overflow-hidden">
               <CardHeader className="pb-3">
@@ -99,7 +105,7 @@ export default function SavingsGuide() {
                       <option.icon className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-xl font-display">{option.title}</CardTitle>
+                      <h3 className="text-xl font-display font-semibold">{option.title}</h3>
                       <p className="text-sm font-medium text-vault-emerald mt-0.5">{option.apy}</p>
                     </div>
                   </div>
@@ -172,7 +178,9 @@ export default function SavingsGuide() {
 
         {/* Quick Comparison */}
         <section>
-          <h2 className="text-2xl font-display font-semibold tracking-tight mb-4">Quick Comparison</h2>
+          <h2 className="text-2xl font-display font-semibold tracking-tight mb-4">
+            Compare Savings Options — Which Is Right for You?
+          </h2>
           <Card className="border-border/60 bg-card/50 overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-x-auto">
