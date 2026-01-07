@@ -202,6 +202,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_current_user_email: { Args: never; Returns: string }
       is_vault_member: {
         Args: { _user_id: string; _vault_id: string }
         Returns: boolean
