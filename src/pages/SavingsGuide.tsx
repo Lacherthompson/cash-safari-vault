@@ -138,7 +138,7 @@ export default function SavingsGuide() {
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-10" />
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-25" />
           <div className="w-10" />
         </div>
       </header>
