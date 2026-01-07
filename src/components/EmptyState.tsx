@@ -11,7 +11,7 @@ export function EmptyState({ onCreateVault }: EmptyStateProps) {
         <Vault className="w-12 h-12 text-primary" />
       </div>
       
-      <h2 className="text-3xl font-display font-bold tracking-tight mb-3">Welcome to Cash Vault!</h2>
+      <h2 className="text-3xl font-display font-bold tracking-tight mb-3">Welcome to SaveTogether!</h2>
       <p className="text-muted-foreground mb-10 max-w-md mx-auto text-lg">
         Start your savings journey by creating your first vault. 
         Set a goal and check off amounts as you save.

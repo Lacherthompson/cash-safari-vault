@@ -9,7 +9,7 @@ interface SEOProps {
   jsonLd?: object;
 }
 
-const BASE_URL = 'https://cashvault.lovable.app';
+const BASE_URL = 'https://savetogether.lovable.app';
 const DEFAULT_IMAGE = 'https://lovable.dev/opengraph-image-p98pqg.png';
 
 export default function SEO({ 
@@ -20,7 +20,7 @@ export default function SEO({
   image = DEFAULT_IMAGE,
   jsonLd 
 }: SEOProps) {
-  const fullTitle = title === 'Cash Vault' ? title : `${title} | Cash Vault`;
+  const fullTitle = title === 'SaveTogether' ? title : `${title} | SaveTogether`;
   const canonicalUrl = `${BASE_URL}${path}`;
 
   return (

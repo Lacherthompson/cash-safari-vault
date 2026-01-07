@@ -101,7 +101,7 @@ export default function Auth() {
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-display font-bold tracking-tight text-foreground">
-            Cash Vault
+            SaveTogether
           </h1>
           <p className="mt-3 text-lg text-muted-foreground">
             {isLogin ? 'Welcome back' : 'Start your savings journey'}

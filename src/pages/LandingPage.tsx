@@ -50,7 +50,7 @@ export default function LandingPage() {
   return (
     <>
       <SEO
-        title="Cash Vault — Track Your Savings Goals"
+        title="SaveTogether — Track Your Savings Goals"
         description="Turn saving into a game you'll win. Set goals, check off amounts as you save, and watch your progress grow. Free to use, no bank connection required."
         path="/"
       />
@@ -58,7 +58,7 @@ export default function LandingPage() {
       {/* Header */}
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-display font-bold tracking-tight">Cash Vault</h1>
+          <h1 className="text-xl font-display font-bold tracking-tight">SaveTogether</h1>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" onClick={() => navigate('/how-to-use')}>
               How it works
@@ -86,7 +86,7 @@ export default function LandingPage() {
         </h2>
         
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-          Cash Vault makes saving money fun with a simple check-off system. 
+          SaveTogether makes saving money fun with a simple check-off system. 
           Set a goal, check off amounts as you save, and watch your progress grow.
         </p>
 
@@ -184,7 +184,7 @@ export default function LandingPage() {
                   <HelpCircle className="h-8 w-8 text-primary" />
                 </div>
                 <div>
-                  <h4 className="font-display font-semibold text-lg mb-1">How to Use Cash Vault</h4>
+                  <h4 className="font-display font-semibold text-lg mb-1">How to Use SaveTogether</h4>
                   <p className="text-muted-foreground text-sm">Learn the app and how to invite collaborators</p>
                 </div>
                 <ArrowRight className="h-5 w-5 text-muted-foreground ml-auto" />
@@ -227,7 +227,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-border/40 bg-muted/20">
         <div className="mx-auto max-w-5xl px-4 py-8 text-center text-sm text-muted-foreground">
-          <p>Cash Vault — Save smarter, together.</p>
+          <p>SaveTogether — Save smarter, together.</p>
         </div>
       </footer>
     </div>
