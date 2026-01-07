@@ -425,7 +425,7 @@ export default function Vault() {
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-10" />
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-25" />
           <div className="flex items-center gap-1">
             {isOwner && (
               <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
