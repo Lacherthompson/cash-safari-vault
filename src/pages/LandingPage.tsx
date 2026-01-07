@@ -13,6 +13,7 @@ import {
   BookOpen
 } from 'lucide-react';
 import SEO from '@/components/SEO';
+import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export default function LandingPage() {
       {/* Header */}
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-display font-bold tracking-tight">SaveTogether</h1>
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-8" />
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" onClick={() => navigate('/how-to-use')}>
               How it works
