@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { generateAmounts } from '@/lib/generateAmounts';
+import { trackAmountChecked, trackAmountUnchecked, trackGoalCompleted } from '@/lib/analytics';
 import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 interface VaultAmount {
@@ -158,6 +159,16 @@ export default function Vault() {
       
       setTimeout(() => setLoadingId(null), 300);
       return;
+    }
+
+    // Track the check/uncheck event
+    const toggledAmount = amounts.find(a => a.id === amountId);
+    if (toggledAmount && id) {
+      if (!currentState) {
+        trackAmountChecked(toggledAmount.amount, id);
+      } else {
+        trackAmountUnchecked(toggledAmount.amount, id);
+      }
     }
 
     // Update streak if checking (not unchecking)
@@ -394,16 +405,20 @@ export default function Vault() {
 
   // Trigger celebration when reaching 100%
   useEffect(() => {
-    if (isComplete && !hasCelebrated.current) {
+    if (isComplete && !hasCelebrated.current && vault) {
       hasCelebrated.current = true;
       setShowCelebration(true);
+      
+      // Track goal completion in Google Analytics
+      trackGoalCompleted(vault.goal_amount, vault.name);
+      
       toast({
         title: '🎉 Congratulations!',
-        description: `You've completed your ${vault?.name} goal!`,
+        description: `You've completed your ${vault.name} goal!`,
       });
       setTimeout(() => setShowCelebration(false), 3000);
     }
-  }, [isComplete, vault?.name, toast]);
+  }, [isComplete, vault, toast]);
 
   if (loading) {
     return (

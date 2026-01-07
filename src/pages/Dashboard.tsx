@@ -10,6 +10,7 @@ import { Settings, HelpCircle, BookOpen, LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { generateAmounts } from '@/lib/generateAmounts';
 import { VaultColorId } from '@/lib/vaultColors';
+import { trackVaultCreated } from '@/lib/analytics';
 import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 interface VaultWithProgress {
@@ -136,6 +137,9 @@ export default function Dashboard() {
     }));
 
     await supabase.from('vault_amounts').insert(amountRecords);
+
+    // Track vault creation in Google Analytics
+    trackVaultCreated(goalAmount, name);
 
     toast({
       title: 'Vault created!',
