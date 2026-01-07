@@ -58,14 +58,20 @@ export default function LandingPage() {
       <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/60 bg-background sticky top-0 z-10">
-        <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-[106px] cursor-pointer" onClick={() => navigate('/')} />
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={() => navigate('/how-to-use')}>
+        <div className="mx-auto max-w-5xl px-4 py-3 sm:py-4 flex items-center justify-between">
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-16 sm:h-[106px] cursor-pointer" onClick={() => navigate('/')} />
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Button variant="ghost" size="sm" className="hidden sm:inline-flex" onClick={() => navigate('/how-to-use')}>
               How it works
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => navigate('/savings-guide')}>
+            <Button variant="ghost" size="sm" className="hidden sm:inline-flex" onClick={() => navigate('/savings-guide')}>
               Savings Guide
+            </Button>
+            <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => navigate('/how-to-use')}>
+              <HelpCircle className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => navigate('/savings-guide')}>
+              <BookOpen className="h-5 w-5" />
             </Button>
             <Button size="sm" onClick={() => navigate('/auth')}>
               Sign In
