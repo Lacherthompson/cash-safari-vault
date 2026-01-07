@@ -11,15 +11,15 @@ const savingsGuideJsonLd = {
   "description": "Complete guide to high-yield savings accounts, CDs, Treasury bills, and other savings options to grow your money safely.",
   "author": {
     "@type": "Organization",
-    "name": "Cash Vault"
+    "name": "SaveTogether"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Cash Vault"
+    "name": "SaveTogether"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://cashvault.lovable.app/savings-guide"
+    "@id": "https://savetogether.lovable.app/savings-guide"
   },
   "datePublished": "2025-01-07",
   "dateModified": "2025-01-07"

@@ -152,7 +152,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-4 py-5 flex items-center justify-between">
-          <h1 className="text-2xl font-display font-bold tracking-tight">Cash Vault</h1>
+          <h1 className="text-2xl font-display font-bold tracking-tight">SaveTogether</h1>
           <div className="flex items-center gap-1">
             <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/how-to-use')}>
               <HelpCircle className="h-5 w-5" />

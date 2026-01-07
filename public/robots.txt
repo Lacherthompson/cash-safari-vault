@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://cashvault.lovable.app/sitemap.xml
+Sitemap: https://savetogether.lovable.app/sitemap.xml

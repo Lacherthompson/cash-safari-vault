@@ -51,8 +51,8 @@ export default function HowToUse() {
   return (
     <>
       <SEO
-        title="How to Save Money with Cash Vault"
-        description="Learn how to use Cash Vault to track your savings, build streaks, and invite collaborators to save together. Simple tips that actually work."
+        title="How to Save Money with SaveTogether"
+        description="Learn how to use SaveTogether to track your savings, build streaks, and invite collaborators to save together. Simple tips that actually work."
         path="/how-to-use"
         type="article"
       />
@@ -70,10 +70,10 @@ export default function HowToUse() {
         {/* Getting Started Section */}
         <section>
           <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-4">
-            How to Save Money with Cash Vault — Tips That Work
+            How to Save Money with SaveTogether — Tips That Work
           </h1>
           <p className="text-lg text-muted-foreground mb-6">
-            Looking for a simple way to save money and stay motivated? Cash Vault helps you track your savings with a fun, visual check-off system. Here's how to get started and reach your savings goals faster.
+            Looking for a simple way to save money and stay motivated? SaveTogether helps you track your savings with a fun, visual check-off system. Here's how to get started and reach your savings goals faster.
           </p>
           <h2 className="text-2xl font-display font-semibold tracking-tight mb-4">Getting Started</h2>
           
