@@ -94,7 +94,7 @@ export default function LandingPage() {
                   <img 
                     src={savetogetherLogo} 
                     alt="SaveTogether" 
-                    className="h-12 w-auto object-contain mb-4" 
+                    className="w-40 max-w-full h-auto object-contain self-center mb-6" 
                   />
                   <Button 
                     variant="ghost" 
