@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, TrendingUp, Clock, Layers, Shield, Landmark, CircleDollarSign, ExternalLink } from 'lucide-react';
 import SEO from '@/components/SEO';
+import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 const savingsGuideJsonLd = {
   "@context": "https://schema.org",
@@ -133,11 +134,12 @@ export default function SavingsGuide() {
       />
       <div className="min-h-screen bg-background">
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="mx-auto max-w-4xl px-4 py-5 flex items-center gap-4">
+        <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <span className="text-2xl font-display font-bold tracking-tight">Savings Guide</span>
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-10" />
+          <div className="w-10" />
         </div>
       </header>
 
