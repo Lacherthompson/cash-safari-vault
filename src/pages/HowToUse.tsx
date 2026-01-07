@@ -54,17 +54,20 @@ export default function HowToUse() {
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-2xl font-display font-bold tracking-tight">How to Use Cash Vault</h1>
+          <span className="text-2xl font-display font-bold tracking-tight">How to Use</span>
         </div>
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-8 space-y-12">
         {/* Getting Started Section */}
         <section>
-          <h2 className="text-2xl font-display font-semibold tracking-tight mb-2">Getting Started</h2>
-          <p className="text-muted-foreground mb-6">
-            Cash Vault makes saving fun with a simple check-off system. Here's how it works.
+          <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-4">
+            How to Save Money with Cash Vault — Tips That Work
+          </h1>
+          <p className="text-lg text-muted-foreground mb-6">
+            Looking for a simple way to save money and stay motivated? Cash Vault helps you track your savings with a fun, visual check-off system. Here's how to get started and reach your savings goals faster.
           </p>
+          <h2 className="text-2xl font-display font-semibold tracking-tight mb-4">Getting Started</h2>
           
           <div className="grid gap-4 sm:grid-cols-2">
             {steps.map((step, index) => (
@@ -91,10 +94,10 @@ export default function HowToUse() {
         <section>
           <div className="flex items-center gap-3 mb-2">
             <Users className="h-6 w-6 text-primary" />
-            <h2 className="text-2xl font-display font-semibold tracking-tight">Save with Others</h2>
+            <h2 className="text-2xl font-display font-semibold tracking-tight">Save with a Goal — Together</h2>
           </div>
           <p className="text-muted-foreground mb-6">
-            Invite friends or family to save together toward a shared goal. Perfect for trips, gifts, or household savings.
+            Want to save with friends or family? Invite collaborators to work toward a shared savings goal. This is perfect for group trips, shared gifts, or household savings where everyone contributes.
           </p>
 
           <div className="space-y-4">
@@ -116,7 +119,7 @@ export default function HowToUse() {
 
         {/* Tips Section */}
         <section>
-          <h2 className="text-2xl font-display font-semibold tracking-tight mb-2">Pro Tips</h2>
+          <h2 className="text-2xl font-display font-semibold tracking-tight mb-2">Smart Savings Tips That Work</h2>
           <Card className="border-border/60 bg-card/50">
             <CardContent className="p-5 space-y-3">
               <div className="flex items-start gap-3">
