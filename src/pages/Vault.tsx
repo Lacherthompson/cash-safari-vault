@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { generateAmounts } from '@/lib/generateAmounts';
+import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 interface VaultAmount {
   id: string;
@@ -420,11 +421,11 @@ export default function Vault() {
     <div className="min-h-screen bg-background">
       <Celebration show={showCelebration} />
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
+        <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-lg font-display font-semibold tracking-tight">{vault.name}</h1>
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-10" />
           <div className="flex items-center gap-1">
             {isOwner && (
               <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>

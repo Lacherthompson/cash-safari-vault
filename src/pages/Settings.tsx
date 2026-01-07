@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Volume2, VolumeX, LogOut, Palette } from 'lucide-react';
+import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -20,11 +21,11 @@ export default function Settings() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
+        <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-lg font-display font-semibold tracking-tight">Settings</h1>
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-10" />
           <div className="w-10" />
         </div>
       </header>
