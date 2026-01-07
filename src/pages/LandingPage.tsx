@@ -91,7 +91,11 @@ export default function LandingPage() {
               </SheetTrigger>
               <SheetContent side="right" className="w-72">
                 <div className="flex flex-col gap-2 mt-8">
-                  <img src={savetogetherLogo} alt="SaveTogether" className="h-12 mb-4" />
+                  <img 
+                    src={savetogetherLogo} 
+                    alt="SaveTogether" 
+                    className="h-12 w-auto object-contain mb-4" 
+                  />
                   <Button 
                     variant="ghost" 
                     className="justify-start gap-3 h-12" 
