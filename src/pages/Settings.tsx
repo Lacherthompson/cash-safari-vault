@@ -25,7 +25,7 @@ export default function Settings() {
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-25" />
+          <img src={savetogetherLogo} alt="SaveTogether" className="h-16" />
           <div className="w-10" />
         </div>
       </header>
