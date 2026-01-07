@@ -12,6 +12,7 @@ import {
   HelpCircle,
   BookOpen
 } from 'lucide-react';
+import SEO from '@/components/SEO';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -47,7 +48,13 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEO
+        title="Cash Vault — Track Your Savings Goals"
+        description="Turn saving into a game you'll win. Set goals, check off amounts as you save, and watch your progress grow. Free to use, no bank connection required."
+        path="/"
+      />
+      <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
@@ -224,5 +231,6 @@ export default function LandingPage() {
         </div>
       </footer>
     </div>
+    </>
   );
 }
