@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Check, Mail, ArrowRight, Sparkles, Calculator } from 'lucide-react';
 import { toast } from 'sonner';
+import { AuthenticatedNav } from '@/components/AuthenticatedNav';
+import { useAuth } from '@/hooks/useAuth';
+import cashVaultLogo from '@/assets/cash-vault-logo.png';
 
 const days = [
   { day: 1, title: "Pick your vault", description: "Choose where your savings will live" },
@@ -16,6 +20,7 @@ const days = [
 ];
 
 export default function Draft() {
+  const { user } = useAuth();
   const [goalAmount, setGoalAmount] = useState<string>('');
   const [monthlyAmount, setMonthlyAmount] = useState<string>('');
   const [showResult, setShowResult] = useState(false);
@@ -72,6 +77,22 @@ export default function Draft() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      {user ? (
+        <AuthenticatedNav />
+      ) : (
+        <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
+            <Link to="/" className="flex items-center gap-2">
+              <img src={cashVaultLogo} alt="Cash Vault" className="h-8 w-auto" />
+            </Link>
+            <Link to="/auth">
+              <Button variant="outline" size="sm">Sign In</Button>
+            </Link>
+          </div>
+        </header>
+      )}
+
       {/* Calculator Section */}
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-xl px-4">
