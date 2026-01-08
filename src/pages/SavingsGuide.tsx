@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, TrendingUp, Clock, Layers, Shield, Landmark, CircleDollarSign, ExternalLink } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
+import { TrendingUp, Clock, Layers, Shield, Landmark, CircleDollarSign } from 'lucide-react';
 import SEO from '@/components/SEO';
-import savetogetherLogo from '@/assets/savetogether-logo.png';
+import { AuthenticatedNav } from '@/components/AuthenticatedNav';
+import { useAuth } from '@/hooks/useAuth';
 
 const savingsGuideJsonLd = {
   "@context": "https://schema.org",
@@ -59,6 +60,7 @@ const faqJsonLd = {
 
 export default function SavingsGuide() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const savingsOptions = [
     {
@@ -133,15 +135,7 @@ export default function SavingsGuide() {
         jsonLd={{ ...savingsGuideJsonLd, ...faqJsonLd }}
       />
       <div className="min-h-screen bg-background">
-      <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
-          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-[106px] cursor-pointer" onClick={() => navigate('/')} />
-          <div className="w-10" />
-        </div>
-      </header>
+      {user && <AuthenticatedNav />}
 
       <main className="mx-auto max-w-4xl px-4 py-8 space-y-8">
         {/* Intro Section */}
