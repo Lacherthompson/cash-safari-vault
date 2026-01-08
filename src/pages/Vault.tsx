@@ -60,28 +60,35 @@ export default function Vault() {
     if (!id || !user) return;
 
     const fetchVault = async () => {
-      // First, check if user has a pending invitation for this vault
+      // First, check if the current user has an invitation for this vault.
+      // NOTE: We intentionally do NOT filter by invited_email here — RLS already restricts
+      // visibility to invitations addressed to the current signed-in user.
       const { data: invitation } = await supabase
         .from('vault_invitations')
         .select('id, status')
         .eq('vault_id', id)
-        .eq('invited_email', user.email)
-        .eq('status', 'pending')
+        .in('status', ['pending', 'accepted'])
         .maybeSingle();
 
-      // If there's a pending invitation, accept it and add user as member
+      // If invited, ensure they're a member (so they can pass vault RLS policies)
       if (invitation) {
-        // Add user as vault member
-        await supabase.from('vault_members').insert({
+        const { error: memberErr } = await supabase.from('vault_members').insert({
           vault_id: id,
           user_id: user.id,
         });
 
-        // Update invitation status to accepted
-        await supabase
-          .from('vault_invitations')
-          .update({ status: 'accepted' })
-          .eq('id', invitation.id);
+        // Ignore "already exists"-style issues; we just need them to be a member.
+        if (memberErr) {
+          console.warn('vault_members insert error (may be safe to ignore):', memberErr);
+        }
+
+        // Mark invitation accepted (if it was pending)
+        if (invitation.status === 'pending') {
+          await supabase
+            .from('vault_invitations')
+            .update({ status: 'accepted' })
+            .eq('id', invitation.id);
+        }
       }
 
       // Get vault info
