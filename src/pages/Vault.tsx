@@ -16,7 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { generateAmounts } from '@/lib/generateAmounts';
 import { trackAmountChecked, trackAmountUnchecked, trackGoalCompleted } from '@/lib/analytics';
-import savetogetherLogo from '@/assets/savetogether-logo.png';
+import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 
 interface VaultAmount {
   id: string;
@@ -435,18 +435,22 @@ export default function Vault() {
   return (
     <div className="min-h-screen bg-background">
       <Celebration show={showCelebration} />
-      <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
-          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
+      <AuthenticatedNav />
+      
+      {/* Vault-specific toolbar */}
+      <div className="border-b border-border/40 bg-background/60">
+        <div className="mx-auto max-w-4xl px-4 py-2 flex items-center justify-between">
+          <Button variant="ghost" size="sm" className="gap-2" onClick={() => navigate('/')}>
             <ArrowLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">Back to Vaults</span>
           </Button>
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-[106px] cursor-pointer" onClick={() => navigate('/')} />
           <div className="flex items-center gap-1">
             {isOwner && (
               <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="sm" className="gap-1.5">
                     <UserPlus className="h-4 w-4" />
+                    <span className="hidden sm:inline">Invite</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
@@ -483,7 +487,7 @@ export default function Vault() {
             />
           </div>
         </div>
-      </header>
+      </div>
 
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-6">
         <StreakBadge 

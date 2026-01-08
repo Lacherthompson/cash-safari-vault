@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { ArrowLeft, ExternalLink, DollarSign, ShoppingBag, ClipboardList, Briefcase, TrendingUp, Heart } from 'lucide-react';
+import { DollarSign, ShoppingBag, ClipboardList, Briefcase, TrendingUp, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import SEO from '@/components/SEO';
 import { useAuth } from '@/hooks/useAuth';
+import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 const earnMoreJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -227,30 +228,7 @@ const EarnMore = () => {
         path="/earn-more"
       />
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate(-1)}
-              className="gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back
-            </Button>
-            <nav className="hidden md:flex items-center gap-4">
-              <Button variant="ghost" size="sm" onClick={() => navigate('/savings-guide')}>
-                Savings Guide
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/how-to-use')}>
-                How It Works
-              </Button>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <AuthenticatedNav />
 
       <main className="container mx-auto px-4 py-8 max-w-5xl">
         {/* Hero Section */}

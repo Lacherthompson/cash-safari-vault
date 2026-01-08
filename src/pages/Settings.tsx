@@ -1,34 +1,16 @@
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
 import { useSettings } from '@/hooks/useSettings';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { Button } from '@/components/ui/button';
+import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
-import { ArrowLeft, Volume2, VolumeX, LogOut, Palette } from 'lucide-react';
-import savetogetherLogo from '@/assets/savetogether-logo.png';
+import { Volume2, VolumeX, Palette } from 'lucide-react';
 
 export default function Settings() {
-  const navigate = useNavigate();
-  const { signOut } = useAuth();
   const { soundEnabled, setSoundEnabled, loading } = useSettings();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
-  };
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
-          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-[106px] cursor-pointer" onClick={() => navigate('/')} />
-          <div className="w-10" />
-        </div>
-      </header>
+      <AuthenticatedNav />
 
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-4">
         <Card className="p-4 shadow-soft">
@@ -69,16 +51,6 @@ export default function Settings() {
           </div>
         </Card>
 
-        <Card className="p-4 shadow-soft">
-          <Button 
-            variant="destructive" 
-            className="w-full gap-2"
-            onClick={handleSignOut}
-          >
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </Button>
-        </Card>
       </main>
     </div>
   );
