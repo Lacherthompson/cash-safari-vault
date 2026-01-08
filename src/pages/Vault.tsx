@@ -237,7 +237,7 @@ export default function Vault() {
 
     setInviting(true);
 
-    // Check if already invited
+    // Check if already invited - if so, just resend the email
     const { data: existing } = await supabase
       .from('vault_invitations')
       .select('id')
@@ -245,32 +245,26 @@ export default function Vault() {
       .eq('invited_email', inviteEmail)
       .single();
 
-    if (existing) {
-      toast({
-        title: 'Already invited',
-        description: 'This person has already been invited.',
+    // Only insert if not already invited
+    if (!existing) {
+      const { error } = await supabase.from('vault_invitations').insert({
+        vault_id: vault.id,
+        invited_email: inviteEmail,
+        invited_by: user.id,
       });
-      setInviting(false);
-      return;
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to send invite.',
+          variant: 'destructive',
+        });
+        setInviting(false);
+        return;
+      }
     }
 
-    const { error } = await supabase.from('vault_invitations').insert({
-      vault_id: vault.id,
-      invited_email: inviteEmail,
-      invited_by: user.id,
-    });
-
-    if (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to send invite.',
-        variant: 'destructive',
-      });
-      setInviting(false);
-      return;
-    }
-
-    // Send invitation email via edge function
+    // Send invitation email via edge function (works for new or resend)
     try {
       const { error: emailError } = await supabase.functions.invoke('send-vault-invitation', {
         body: {
@@ -283,15 +277,14 @@ export default function Vault() {
 
       if (emailError) {
         console.error('Failed to send invitation email:', emailError);
-        // Still show success since the invitation was created in the database
         toast({
           title: 'Invited!',
           description: `Invitation created, but email delivery may have failed.`,
         });
       } else {
         toast({
-          title: 'Invitation Sent!',
-          description: `${inviteEmail} will receive an email to join your vault.`,
+          title: existing ? 'Invite Resent!' : 'Invitation Sent!',
+          description: `Check ${inviteEmail}'s inbox (and spam folder).`,
         });
       }
     } catch (emailErr) {
