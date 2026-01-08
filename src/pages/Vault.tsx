@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useSettings } from '@/hooks/useSettings';
 import { useClickSound } from '@/hooks/useClickSound';
@@ -41,6 +41,7 @@ export default function Vault() {
   const { user } = useAuth();
   const { soundEnabled } = useSettings();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const { playClick } = useClickSound();
   
@@ -60,13 +61,29 @@ export default function Vault() {
     if (!id || !user) return;
 
     const fetchVault = async () => {
+      const invitedParamRaw = searchParams.get('invited');
+      const invitedParam = invitedParamRaw?.trim().toLowerCase();
+      const currentEmail = user.email?.trim().toLowerCase();
+
+      // If the link is for a specific email but the user is signed in with a different one,
+      // explain why access fails.
+      if (invitedParam && currentEmail && invitedParam !== currentEmail) {
+        toast({
+          title: 'Wrong account',
+          description: `This invite was sent to ${invitedParamRaw}. You're signed in as ${user.email}. Please sign in with the invited email.`,
+          variant: 'destructive',
+        });
+        setLoading(false);
+        return;
+      }
+
       // First, check if the current user has an invitation for this vault.
-      // NOTE: We intentionally do NOT filter by invited_email here — RLS already restricts
-      // visibility to invitations addressed to the current signed-in user.
+      const invitedEmailToCheck = invitedParamRaw || user.email;
       const { data: invitation } = await supabase
         .from('vault_invitations')
         .select('id, status')
         .eq('vault_id', id)
+        .eq('invited_email', invitedEmailToCheck)
         .in('status', ['pending', 'accepted'])
         .maybeSingle();
 
@@ -77,7 +94,6 @@ export default function Vault() {
           user_id: user.id,
         });
 
-        // Ignore "already exists"-style issues; we just need them to be a member.
         if (memberErr) {
           console.warn('vault_members insert error (may be safe to ignore):', memberErr);
         }
