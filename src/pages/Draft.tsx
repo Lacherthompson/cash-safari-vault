@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Check, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Check, Mail, ArrowRight, Sparkles, Calculator } from 'lucide-react';
 import { toast } from 'sonner';
 
 const days = [
@@ -14,16 +16,168 @@ const days = [
 ];
 
 export default function Draft() {
+  const [goalAmount, setGoalAmount] = useState<string>('');
+  const [monthlyAmount, setMonthlyAmount] = useState<string>('');
+  const [showResult, setShowResult] = useState(false);
+
   const handleCheckout = () => {
     toast.info("Stripe checkout will be connected here", {
       description: "This is a preview — checkout coming soon!"
     });
   };
 
+  const calculateMonths = () => {
+    const goal = parseFloat(goalAmount);
+    const monthly = parseFloat(monthlyAmount);
+    if (goal > 0 && monthly > 0) {
+      return Math.ceil(goal / monthly);
+    }
+    return 0;
+  };
+
+  const handleCalculate = () => {
+    if (parseFloat(goalAmount) > 0 && parseFloat(monthlyAmount) > 0) {
+      setShowResult(true);
+    }
+  };
+
+  const months = calculateMonths();
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+
+  const formatTimeframe = () => {
+    if (years > 0 && remainingMonths > 0) {
+      return `${years} year${years > 1 ? 's' : ''} and ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+    } else if (years > 0) {
+      return `${years} year${years > 1 ? 's' : ''}`;
+    } else {
+      return `${months} month${months > 1 ? 's' : ''}`;
+    }
+  };
+
+  const scrollToVaultStarter = () => {
+    document.getElementById('vault-starter')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Calculator Section */}
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-xl px-4">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
+              <Calculator className="h-4 w-4" />
+              Find Your Starting Point
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+              How long until you hit your goal?
+            </h1>
+            <p className="text-muted-foreground">
+              Let's see where you stand. No judgment — just a simple plan.
+            </p>
+          </div>
+
+          <Card className="p-6 sm:p-8">
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  What are you saving for? How much do you need?
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                  <Input
+                    type="number"
+                    placeholder="1,000"
+                    value={goalAmount}
+                    onChange={(e) => {
+                      setGoalAmount(e.target.value);
+                      setShowResult(false);
+                    }}
+                    className="pl-7"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  How much can you realistically save each month?
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                  <Input
+                    type="number"
+                    placeholder="100"
+                    value={monthlyAmount}
+                    onChange={(e) => {
+                      setMonthlyAmount(e.target.value);
+                      setShowResult(false);
+                    }}
+                    className="pl-7"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Be honest. Small is okay.</p>
+              </div>
+
+              <Button 
+                className="w-full" 
+                size="lg"
+                onClick={handleCalculate}
+                disabled={!goalAmount || !monthlyAmount}
+              >
+                Show Me My Plan
+              </Button>
+            </div>
+
+            {showResult && months > 0 && (
+              <div className="mt-8 pt-8 border-t">
+                <div className="text-center mb-6">
+                  <p className="text-sm text-muted-foreground mb-2">Here's your starting point:</p>
+                  <p className="text-3xl sm:text-4xl font-bold text-primary mb-2">
+                    {formatTimeframe()}
+                  </p>
+                  <p className="text-lg">
+                    to save <span className="font-semibold">${parseFloat(goalAmount).toLocaleString()}</span>
+                  </p>
+                </div>
+
+                <div className="bg-muted/50 rounded-lg p-4 mb-6">
+                  <p className="text-center text-muted-foreground">
+                    Not as scary as you thought, right?
+                  </p>
+                </div>
+
+                <div className="space-y-4 text-center">
+                  <p className="font-medium">
+                    This is the plan.
+                  </p>
+                  <p className="text-muted-foreground">
+                    Now comes the hard part: actually sticking to it.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Most people know how much to save. The challenge is making it happen — week after week.
+                  </p>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-dashed">
+                  <p className="text-center text-sm text-muted-foreground mb-4">
+                    This plan works best when paired with a vault and a routine.
+                  </p>
+                  <Button 
+                    className="w-full" 
+                    size="lg"
+                    onClick={scrollToVaultStarter}
+                  >
+                    Get Guided Support with Vault Starter <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+          </Card>
+        </div>
+      </section>
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section id="vault-starter" className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10" />
         <div className="relative mx-auto max-w-4xl px-4 py-16 sm:py-24 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
@@ -31,9 +185,9 @@ export default function Draft() {
             14-Day Email Challenge
           </div>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
             Vault Starter
-          </h1>
+          </h2>
           
           <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto mb-4">
             A short, guided reset that helps you start saving — and actually stick to it.
@@ -98,7 +252,7 @@ export default function Draft() {
           </p>
           
           <div className="space-y-4">
-            {days.map((item, index) => (
+            {days.map((item) => (
               <div 
                 key={item.day}
                 className="flex items-start gap-4 p-4 rounded-lg bg-card border hover:border-primary/50 transition-colors"
@@ -155,7 +309,6 @@ export default function Draft() {
           <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
             Get Vault Starter — $10 <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
-          
         </div>
       </section>
 
