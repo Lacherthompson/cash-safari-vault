@@ -16,6 +16,7 @@ import HowToUse from "./pages/HowToUse";
 import SavingsGuide from "./pages/SavingsGuide";
 import EarnMore from "./pages/EarnMore";
 import NotFound from "./pages/NotFound";
+import Draft from "./pages/Draft";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
                   <Route path="/savings-guide" element={<SavingsGuide />} />
                   <Route path="/earn-more" element={<EarnMore />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="/draft" element={<Draft />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter>
