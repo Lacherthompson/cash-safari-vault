@@ -1,10 +1,11 @@
-import { ArrowLeft, ExternalLink, DollarSign, ShoppingBag, ClipboardList, Briefcase, TrendingUp } from 'lucide-react';
+import { useEffect } from 'react';
+import { ArrowLeft, ExternalLink, DollarSign, ShoppingBag, ClipboardList, Briefcase, TrendingUp, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import SEO from '@/components/SEO';
-
+import { useAuth } from '@/hooks/useAuth';
 const earnMoreJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -44,14 +45,6 @@ const cashBackApps: IncomeOption[] = [
     potentialEarnings: '$100-$500/year',
     difficulty: 'Easy',
     timeCommitment: '5-10 min/week',
-    affiliateSlot: true,
-  },
-  {
-    name: 'Honey',
-    description: 'Automatically finds and applies coupon codes at checkout. Also offers cash back through Honey Gold rewards.',
-    potentialEarnings: '$30-$200/year',
-    difficulty: 'Easy',
-    timeCommitment: 'Minimal',
     affiliateSlot: true,
   },
 ];
@@ -204,6 +197,27 @@ const SectionHeader = ({
 
 const EarnMore = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  // Redirect to auth if not logged in
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
+
+  // Show nothing while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -366,6 +380,57 @@ const EarnMore = () => {
           </Card>
         </section>
 
+        {/* Work-Life Balance Section */}
+        <section className="mb-12">
+          <Card className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-purple-500/20">
+                  <Heart className="h-6 w-6 text-purple-500" />
+                </div>
+                A Note on Balance
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-lg leading-relaxed">
+                While we believe in the power of building wealth and reaching your financial goals, 
+                we also believe that <strong>your well-being comes first</strong>.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                This page is not about hustle culture or grinding yourself into the ground. It's about 
+                knowing your options and making informed choices that fit <em>your</em> life. Some weeks 
+                you might have energy to explore a side project. Other weeks, rest is the best investment 
+                you can make.
+              </p>
+              <div className="bg-background/50 rounded-lg p-4 space-y-3">
+                <h4 className="font-semibold">Remember:</h4>
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-500">•</span>
+                    <span><strong>Rest is productive.</strong> You cannot pour from an empty cup.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-500">•</span>
+                    <span><strong>There are no limits when you plan.</strong> But plans should include time for joy, relationships, and self-care.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-500">•</span>
+                    <span><strong>Financial freedom is a means, not an end.</strong> The goal is a life well-lived, not just a bank account well-filled.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-500">•</span>
+                    <span><strong>Start small, stay sustainable.</strong> Consistency beats intensity every time.</span>
+                  </li>
+                </ul>
+              </div>
+              <p className="text-muted-foreground italic">
+                Take what serves you from this guide, and leave what doesn't. Your path to financial 
+                wellness should make you feel empowered, not exhausted.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
         {/* CTA Section */}
         <section className="text-center py-8">
           <h2 className="text-2xl font-bold mb-4">Ready to Boost Your Savings?</h2>
@@ -373,8 +438,8 @@ const EarnMore = () => {
             Combine your side income with smart saving habits. Start tracking your savings goals today!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={() => navigate('/auth')}>
-              Get Started Free
+            <Button size="lg" onClick={() => navigate('/')}>
+              Go to Dashboard
             </Button>
             <Button size="lg" variant="outline" onClick={() => navigate('/savings-guide')}>
               View Savings Guide
