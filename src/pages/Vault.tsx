@@ -479,12 +479,12 @@ export default function Vault() {
                 <DialogTrigger asChild>
                   <Button variant="ghost" size="sm" className="gap-1.5">
                     <UserPlus className="h-4 w-4" />
-                    <span className="hidden sm:inline">Invite</span>
+                    <span className="hidden sm:inline">Save Together</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Invite to Vault</DialogTitle>
+                    <DialogTitle>Invite a Savings Partner</DialogTitle>
                   </DialogHeader>
                   <form onSubmit={handleInvite} className="space-y-4">
                     <Input
@@ -495,7 +495,7 @@ export default function Vault() {
                       required
                     />
                     <p className="text-xs text-muted-foreground">
-                      They'll get their own grid to complete
+                      They'll join this vault and track progress alongside you
                     </p>
                     <Button type="submit" className="w-full" disabled={inviting}>
                       {inviting ? 'Sending...' : 'Send Invite'}
