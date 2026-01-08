@@ -19,6 +19,16 @@ export default function Draft() {
   const [goalAmount, setGoalAmount] = useState<string>('');
   const [monthlyAmount, setMonthlyAmount] = useState<string>('');
   const [showResult, setShowResult] = useState(false);
+  const [encouragementIndex, setEncouragementIndex] = useState(0);
+
+  const encouragements = [
+    "Not as scary as you thought, right?",
+    "See? Totally doable.",
+    "You've got this.",
+    "Simpler than it seemed, huh?",
+    "That's a real plan right there.",
+    "Look at you, already ahead of most people."
+  ];
 
   const handleCheckout = () => {
     toast.info("Stripe checkout will be connected here", {
@@ -37,6 +47,7 @@ export default function Draft() {
 
   const handleCalculate = () => {
     if (parseFloat(goalAmount) > 0 && parseFloat(monthlyAmount) > 0) {
+      setEncouragementIndex(Math.floor(Math.random() * encouragements.length));
       setShowResult(true);
     }
   };
@@ -142,7 +153,7 @@ export default function Draft() {
 
                 <div className="bg-muted/50 rounded-lg p-4 mb-6">
                   <p className="text-center text-muted-foreground">
-                    Not as scary as you thought, right?
+                    {encouragements[encouragementIndex]}
                   </p>
                 </div>
 
