@@ -46,7 +46,7 @@ const handler = async (req: Request): Promise<Response> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Cash Vault <noreply@savewith.cash>",
+        from: "SaveTogether <noreply@connect.savetogether.co>",
         to: [invitedEmail],
         subject: `You've been invited to join a savings vault!`,
         html: `
