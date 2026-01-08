@@ -37,7 +37,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Create the invitation link
-    const inviteLink = `https://savewith.cash/auth?redirect=/vault/${vaultId}`;
+    const inviteLink = `https://savetogether.co/auth?redirect=/vault/${vaultId}`;
 
     const emailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
