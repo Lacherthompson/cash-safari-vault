@@ -47,6 +47,14 @@ const cashBackApps: IncomeOption[] = [
     timeCommitment: '5-10 min/week',
     affiliateSlot: true,
   },
+  {
+    name: 'Fetch Rewards',
+    description: 'Scan any receipt to earn points on thousands of products. No clipping coupons—just scan and earn towards gift cards.',
+    potentialEarnings: '$50-$200/year',
+    difficulty: 'Easy',
+    timeCommitment: '2-5 min/week',
+    affiliateSlot: true,
+  },
 ];
 
 const surveySites: IncomeOption[] = [
@@ -301,7 +309,7 @@ const EarnMore = () => {
             title="Survey & Reward Sites"
             description="Share your opinions and get paid. Great for earning extra cash during downtime."
           />
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-3 gap-4">
             {surveySites.map((option) => (
               <IncomeCard key={option.name} option={option} />
             ))}
