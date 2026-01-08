@@ -163,14 +163,6 @@ const IncomeCard = ({ option }: { option: IncomeOption }) => (
         <span className="text-muted-foreground">Time Commitment:</span>
         <span className="font-medium">{option.timeCommitment}</span>
       </div>
-      {option.affiliateSlot && (
-        <div className="pt-2 border-t">
-          <Button variant="outline" size="sm" className="w-full gap-2" disabled>
-            <ExternalLink className="h-4 w-4" />
-            Learn More (Coming Soon)
-          </Button>
-        </div>
-      )}
     </CardContent>
   </Card>
 );
@@ -309,7 +301,7 @@ const EarnMore = () => {
             title="Survey & Reward Sites"
             description="Share your opinions and get paid. Great for earning extra cash during downtime."
           />
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {surveySites.map((option) => (
               <IncomeCard key={option.name} option={option} />
             ))}
