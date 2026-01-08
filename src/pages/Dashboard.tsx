@@ -169,7 +169,7 @@ export default function Dashboard() {
             </Button>
             <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/earn-more')}>
               <DollarSign className="h-4 w-4" />
-              <span className="hidden sm:inline">Earn</span>
+              <span className="hidden sm:inline">Earn More</span>
             </Button>
             <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/settings')}>
               <Settings className="h-4 w-4" />
