@@ -156,9 +156,6 @@ export default function Draft() {
             Get Vault Starter — $10 <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
           
-          <p className="mt-6 text-sm text-muted-foreground">
-            Questions? Reply to any email and I'll help personally.
-          </p>
         </div>
       </section>
 
