@@ -266,15 +266,44 @@ export default function Vault() {
         description: 'Failed to send invite.',
         variant: 'destructive',
       });
-    } else {
-      toast({
-        title: 'Invited!',
-        description: `${inviteEmail} will see this vault when they sign up.`,
-      });
-      setInviteOpen(false);
-      setInviteEmail('');
+      setInviting(false);
+      return;
     }
 
+    // Send invitation email via edge function
+    try {
+      const { error: emailError } = await supabase.functions.invoke('send-vault-invitation', {
+        body: {
+          invitedEmail: inviteEmail,
+          vaultId: vault.id,
+          vaultName: vault.name,
+          inviterEmail: user.email,
+        },
+      });
+
+      if (emailError) {
+        console.error('Failed to send invitation email:', emailError);
+        // Still show success since the invitation was created in the database
+        toast({
+          title: 'Invited!',
+          description: `Invitation created, but email delivery may have failed.`,
+        });
+      } else {
+        toast({
+          title: 'Invitation Sent!',
+          description: `${inviteEmail} will receive an email to join your vault.`,
+        });
+      }
+    } catch (emailErr) {
+      console.error('Email function error:', emailErr);
+      toast({
+        title: 'Invited!',
+        description: `Invitation created, but email delivery may have failed.`,
+      });
+    }
+
+    setInviteOpen(false);
+    setInviteEmail('');
     setInviting(false);
   };
 
