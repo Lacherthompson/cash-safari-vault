@@ -158,23 +158,28 @@ export default function Dashboard() {
       <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
           <img src={savetogetherLogo} alt="SaveTogether" className="h-[106px] cursor-pointer" onClick={() => navigate('/')} />
-          <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/how-to-use')}>
-              <HelpCircle className="h-5 w-5" />
+          <nav className="flex items-center gap-1 sm:gap-2">
+            <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/how-to-use')}>
+              <HelpCircle className="h-4 w-4" />
+              <span className="hidden sm:inline">Help</span>
             </Button>
-            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/savings-guide')}>
-              <BookOpen className="h-5 w-5" />
+            <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/savings-guide')}>
+              <BookOpen className="h-4 w-4" />
+              <span className="hidden sm:inline">Guide</span>
             </Button>
-            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/earn-more')}>
-              <DollarSign className="h-5 w-5" />
+            <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/earn-more')}>
+              <DollarSign className="h-4 w-4" />
+              <span className="hidden sm:inline">Earn</span>
             </Button>
-            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/settings')}>
-              <Settings className="h-5 w-5" />
+            <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/settings')}>
+              <Settings className="h-4 w-4" />
+              <span className="hidden sm:inline">Settings</span>
             </Button>
-            <Button variant="ghost" size="icon" className="rounded-full text-destructive hover:text-destructive" onClick={handleSignOut}>
-              <LogOut className="h-5 w-5" />
+            <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3 text-destructive hover:text-destructive" onClick={handleSignOut}>
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
-          </div>
+          </nav>
         </div>
       </header>
 
