@@ -13,7 +13,8 @@ import {
   ArrowRight,
   HelpCircle,
   BookOpen,
-  Menu
+  Menu,
+  DollarSign
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import savetogetherLogo from '@/assets/savetogether-logo.png';
@@ -73,6 +74,9 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" onClick={() => navigate('/savings-guide')}>
               Savings Guide
             </Button>
+            <Button variant="ghost" size="sm" onClick={() => navigate('/earn-more')}>
+              Earn More
+            </Button>
             <Button size="sm" onClick={() => navigate('/auth')}>
               Sign In
             </Button>
@@ -111,6 +115,14 @@ export default function LandingPage() {
                   >
                     <BookOpen className="h-5 w-5" />
                     Savings Guide
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start gap-3 h-12" 
+                    onClick={() => { navigate('/earn-more'); setMobileMenuOpen(false); }}
+                  >
+                    <DollarSign className="h-5 w-5" />
+                    Earn More
                   </Button>
                   <div className="border-t border-border my-4" />
                   <Button 
@@ -256,6 +268,22 @@ export default function LandingPage() {
                 <div>
                   <h4 className="font-display font-semibold text-lg mb-1">Savings Guide</h4>
                   <p className="text-muted-foreground text-sm">Compare HYSAs, CDs, and other savings options</p>
+                </div>
+                <ArrowRight className="h-5 w-5 text-muted-foreground ml-auto" />
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="border-border/60 bg-card/80 cursor-pointer hover:border-primary/40 transition-colors sm:col-span-2"
+              onClick={() => navigate('/earn-more')}
+            >
+              <CardContent className="p-6 flex items-center gap-4">
+                <div className="p-4 rounded-xl bg-amber-500/10">
+                  <DollarSign className="h-8 w-8 text-amber-500" />
+                </div>
+                <div>
+                  <h4 className="font-display font-semibold text-lg mb-1">Side Income Ideas</h4>
+                  <p className="text-muted-foreground text-sm">Discover ways to earn extra money and boost your savings</p>
                 </div>
                 <ArrowRight className="h-5 w-5 text-muted-foreground ml-auto" />
               </CardContent>

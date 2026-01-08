@@ -14,6 +14,7 @@ import Vault from "./pages/Vault";
 import Settings from "./pages/Settings";
 import HowToUse from "./pages/HowToUse";
 import SavingsGuide from "./pages/SavingsGuide";
+import EarnMore from "./pages/EarnMore";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
                   <Route path="/vault/:id" element={<Vault />} />
                   <Route path="/how-to-use" element={<HowToUse />} />
                   <Route path="/savings-guide" element={<SavingsGuide />} />
+                  <Route path="/earn-more" element={<EarnMore />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
