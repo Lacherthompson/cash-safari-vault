@@ -60,17 +60,41 @@ export default function Vault() {
     if (!id || !user) return;
 
     const fetchVault = async () => {
+      // First, check if user has a pending invitation for this vault
+      const { data: invitation } = await supabase
+        .from('vault_invitations')
+        .select('id, status')
+        .eq('vault_id', id)
+        .eq('invited_email', user.email)
+        .eq('status', 'pending')
+        .maybeSingle();
+
+      // If there's a pending invitation, accept it and add user as member
+      if (invitation) {
+        // Add user as vault member
+        await supabase.from('vault_members').insert({
+          vault_id: id,
+          user_id: user.id,
+        });
+
+        // Update invitation status to accepted
+        await supabase
+          .from('vault_invitations')
+          .update({ status: 'accepted' })
+          .eq('id', invitation.id);
+      }
+
       // Get vault info
       const { data: vaultData, error: vaultError } = await supabase
         .from('vaults')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (vaultError || !vaultData) {
         toast({
           title: 'Error',
-          description: 'Vault not found.',
+          description: 'Vault not found or you don\'t have access.',
           variant: 'destructive',
         });
         navigate('/');
