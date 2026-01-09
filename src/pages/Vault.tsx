@@ -143,16 +143,18 @@ export default function Vault() {
         accent_color: vaultData.accent_color || 'emerald',
       });
 
-      // Get user's amounts for this vault
-      const { data: amountsData } = await supabase
+      // Get ALL amounts for this vault (combined progress across all members)
+      const { data: allAmountsData } = await supabase
         .from('vault_amounts')
-        .select('id, amount, is_checked')
+        .select('id, amount, is_checked, user_id')
         .eq('vault_id', id)
-        .eq('user_id', user.id)
         .order('created_at');
 
+      // Check if current user has amounts in this vault
+      const userAmounts = allAmountsData?.filter(a => a.user_id === user.id) || [];
+
       // If no amounts exist for this user (joined shared vault), generate them
-      if (!amountsData || amountsData.length === 0) {
+      if (userAmounts.length === 0) {
         const newAmounts = generateAmounts(vaultData.goal_amount);
         const amountRecords = newAmounts.map(amount => ({
           vault_id: id,
@@ -163,13 +165,16 @@ export default function Vault() {
         const { data: inserted } = await supabase
           .from('vault_amounts')
           .insert(amountRecords)
-          .select('id, amount, is_checked');
+          .select('id, amount, is_checked, user_id');
 
-        setAmounts(inserted || []);
-        setOriginalOrder(inserted?.map(a => a.id) || []);
+        // Combine with existing amounts from other members
+        const combinedAmounts = [...(allAmountsData || []), ...(inserted || [])];
+        setAmounts(combinedAmounts.map(a => ({ id: a.id, amount: a.amount, is_checked: a.is_checked })));
+        setOriginalOrder(combinedAmounts.map(a => a.id));
       } else {
-        setAmounts(amountsData);
-        setOriginalOrder(amountsData.map(a => a.id));
+        // Use all amounts from all members for combined progress
+        setAmounts(allAmountsData?.map(a => ({ id: a.id, amount: a.amount, is_checked: a.is_checked })) || []);
+        setOriginalOrder(allAmountsData?.map(a => a.id) || []);
       }
 
       // Fetch vault members if owner
@@ -529,13 +534,22 @@ export default function Vault() {
 
   const handleResetProgress = async () => {
     if (!vault || !user) return;
+
+    // Only vault owner can reset progress for everyone
+    if (vault.created_by !== user.id) {
+      toast({
+        title: 'Permission denied',
+        description: 'Only the vault owner can reset progress.',
+        variant: 'destructive',
+      });
+      return;
+    }
     
-    // Reset all amounts
+    // Reset ALL amounts for this vault (all members)
     const { error } = await supabase
       .from('vault_amounts')
       .update({ is_checked: false, checked_at: null })
-      .eq('vault_id', vault.id)
-      .eq('user_id', user.id);
+      .eq('vault_id', vault.id);
 
     if (error) {
       toast({
@@ -556,7 +570,7 @@ export default function Vault() {
       
       toast({
         title: 'Progress reset',
-        description: 'All amounts have been unchecked.',
+        description: 'All amounts have been unchecked for everyone.',
       });
     }
   };

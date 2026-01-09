@@ -68,12 +68,11 @@ export default function Dashboard() {
       
       if (!vault) continue;
 
-      // Get user's checked amounts for this vault
+      // Get ALL members' checked amounts for this vault (combined progress)
       const { data: amounts } = await supabase
         .from('vault_amounts')
         .select('amount, is_checked')
-        .eq('vault_id', vaultId)
-        .eq('user_id', user.id);
+        .eq('vault_id', vaultId);
 
       const savedAmount = amounts
         ?.filter(a => a.is_checked)
