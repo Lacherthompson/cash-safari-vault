@@ -224,6 +224,46 @@ export default function Vault() {
     };
 
     fetchVault();
+
+    // Subscribe to realtime changes for vault_amounts
+    const channel = supabase
+      .channel(`vault-amounts-${id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'vault_amounts',
+          filter: `vault_id=eq.${id}`,
+        },
+        (payload) => {
+          if (payload.eventType === 'UPDATE') {
+            const updated = payload.new as { id: string; amount: number; is_checked: boolean };
+            setAmounts(prev => 
+              prev.map(a => 
+                a.id === updated.id 
+                  ? { ...a, is_checked: updated.is_checked }
+                  : a
+              )
+            );
+          } else if (payload.eventType === 'INSERT') {
+            const inserted = payload.new as { id: string; amount: number; is_checked: boolean };
+            setAmounts(prev => {
+              // Avoid duplicates
+              if (prev.some(a => a.id === inserted.id)) return prev;
+              return [...prev, { id: inserted.id, amount: inserted.amount, is_checked: inserted.is_checked }];
+            });
+          } else if (payload.eventType === 'DELETE') {
+            const deleted = payload.old as { id: string };
+            setAmounts(prev => prev.filter(a => a.id !== deleted.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [id, user, navigate, toast]);
 
   const handleToggle = async (amountId: string, currentState: boolean) => {
