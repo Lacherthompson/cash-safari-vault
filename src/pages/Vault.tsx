@@ -290,7 +290,7 @@ export default function Vault() {
       .select('id')
       .eq('vault_id', vault.id)
       .eq('invited_email', inviteEmail)
-      .single();
+      .maybeSingle();
 
     // Only insert if not already invited
     if (!existing) {
