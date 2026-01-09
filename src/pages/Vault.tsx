@@ -10,9 +10,10 @@ import { Celebration } from '@/components/Celebration';
 import { StreakBadge } from '@/components/StreakBadge';
 import { VaultMenu, SortOption } from '@/components/VaultMenu';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, UserPlus } from 'lucide-react';
+import { ArrowLeft, UserPlus, Users, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { generateAmounts } from '@/lib/generateAmounts';
 import { trackAmountChecked, trackAmountUnchecked, trackGoalCompleted } from '@/lib/analytics';
@@ -36,6 +37,12 @@ interface VaultData {
   accent_color: string;
 }
 
+interface VaultMember {
+  id: string;
+  user_id: string;
+  email: string;
+}
+
 export default function Vault() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
@@ -55,6 +62,10 @@ export default function Vault() {
   const [showCelebration, setShowCelebration] = useState(false);
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [sortOption, setSortOption] = useState<SortOption>('default');
+  const [members, setMembers] = useState<VaultMember[]>([]);
+  const [membersOpen, setMembersOpen] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState<VaultMember | null>(null);
+  const [removingMember, setRemovingMember] = useState(false);
   const hasCelebrated = useRef(false);
 
   useEffect(() => {
@@ -159,6 +170,49 @@ export default function Vault() {
       } else {
         setAmounts(amountsData);
         setOriginalOrder(amountsData.map(a => a.id));
+      }
+
+      // Fetch vault members if owner
+      if (vaultData.created_by === user.id) {
+        const { data: membersData } = await supabase
+          .from('vault_members')
+          .select('id, user_id')
+          .eq('vault_id', id);
+
+        if (membersData && membersData.length > 0) {
+          // Get emails for each member using vault_invitations or current user
+          const membersList: VaultMember[] = [];
+          
+          for (const member of membersData) {
+            if (member.user_id === user.id) {
+              membersList.push({
+                id: member.id,
+                user_id: member.user_id,
+                email: user.email || 'You',
+              });
+            } else {
+              // Try to find email from invitations
+              const { data: invitation } = await supabase
+                .from('vault_invitations')
+                .select('invited_email')
+                .eq('vault_id', id)
+                .eq('status', 'accepted')
+                .limit(100);
+              
+              // Find matching invitation by checking if any member might match
+              // Since we don't have direct user->email mapping, use invitations
+              const matchedInvite = invitation?.find(inv => inv.invited_email);
+              
+              membersList.push({
+                id: member.id,
+                user_id: member.user_id,
+                email: matchedInvite?.invited_email || 'Member',
+              });
+            }
+          }
+          
+          setMembers(membersList);
+        }
       }
 
       setLoading(false);
@@ -352,6 +406,53 @@ export default function Vault() {
     }
   };
 
+  const handleRemoveMember = async () => {
+    if (!memberToRemove || !vault || !user) return;
+    
+    setRemovingMember(true);
+    
+    try {
+      // Remove from vault_members
+      const { error: memberError } = await supabase
+        .from('vault_members')
+        .delete()
+        .eq('id', memberToRemove.id);
+
+      if (memberError) {
+        toast({
+          title: 'Error',
+          description: 'Failed to remove member.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      // Delete their amounts for this vault
+      await supabase
+        .from('vault_amounts')
+        .delete()
+        .eq('vault_id', vault.id)
+        .eq('user_id', memberToRemove.user_id);
+
+      // Update invitation status if exists
+      await supabase
+        .from('vault_invitations')
+        .delete()
+        .eq('vault_id', vault.id)
+        .eq('invited_email', memberToRemove.email);
+
+      setMembers(prev => prev.filter(m => m.id !== memberToRemove.id));
+      
+      toast({
+        title: 'Member removed',
+        description: `${memberToRemove.email} has been removed from the vault.`,
+      });
+    } finally {
+      setRemovingMember(false);
+      setMemberToRemove(null);
+    }
+  };
+
   const handleEditVault = async (name: string, frequency: string) => {
     if (!vault) return;
     
@@ -519,6 +620,44 @@ export default function Vault() {
             <span className="hidden sm:inline">Back to Vaults</span>
           </Button>
           <div className="flex items-center gap-1">
+            {isOwner && members.length > 1 && (
+              <Dialog open={membersOpen} onOpenChange={setMembersOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-1.5">
+                    <Users className="h-4 w-4" />
+                    <span className="hidden sm:inline">{members.length} Members</span>
+                    <span className="sm:hidden">{members.length}</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Vault Members</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-2">
+                    {members.map((member) => (
+                      <div 
+                        key={member.id} 
+                        className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
+                      >
+                        <span className="text-sm truncate flex-1">
+                          {member.user_id === user?.id ? `${member.email} (You)` : member.email}
+                        </span>
+                        {member.user_id !== user?.id && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive shrink-0"
+                            onClick={() => setMemberToRemove(member)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
             {isOwner && (
               <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
                 <DialogTrigger asChild>
@@ -560,6 +699,28 @@ export default function Vault() {
               isOwner={isOwner}
             />
           </div>
+
+          {/* Remove member confirmation */}
+          <AlertDialog open={!!memberToRemove} onOpenChange={(open) => !open && setMemberToRemove(null)}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Remove member?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will remove {memberToRemove?.email} from the vault and delete their saved progress.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={removingMember}>Cancel</AlertDialogCancel>
+                <AlertDialogAction 
+                  onClick={handleRemoveMember}
+                  disabled={removingMember}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  {removingMember ? 'Removing...' : 'Remove'}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
 

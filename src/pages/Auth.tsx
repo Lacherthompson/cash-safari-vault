@@ -8,10 +8,11 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, resetPassword, user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -27,6 +28,38 @@ export default function Auth() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (isForgotPassword) {
+      if (!email) {
+        toast({
+          title: 'Missing email',
+          description: 'Please enter your email address.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      
+      setLoading(true);
+      try {
+        const { error } = await resetPassword(email);
+        if (error) {
+          toast({
+            title: 'Error',
+            description: error.message,
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: 'Check your email',
+            description: 'We sent a password reset link to your email.',
+          });
+          setIsForgotPassword(false);
+        }
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
     
     if (!email || !password) {
       toast({
@@ -108,7 +141,11 @@ export default function Auth() {
             SaveTogether
           </h1>
           <p className="mt-3 text-lg text-muted-foreground">
-            {isLogin ? 'Welcome back' : 'Start your savings journey'}
+            {isForgotPassword 
+              ? 'Reset your password' 
+              : isLogin 
+                ? 'Welcome back' 
+                : 'Start your savings journey'}
           </p>
         </div>
 
@@ -121,27 +158,56 @@ export default function Auth() {
             autoComplete="email"
             className="h-12"
           />
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete={isLogin ? 'current-password' : 'new-password'}
-            className="h-12"
-          />
+          {!isForgotPassword && (
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete={isLogin ? 'current-password' : 'new-password'}
+              className="h-12"
+            />
+          )}
           <Button type="submit" className="w-full h-12 font-semibold" disabled={loading}>
-            {loading ? '...' : isLogin ? 'Sign In' : 'Create Account'}
+            {loading 
+              ? '...' 
+              : isForgotPassword 
+                ? 'Send Reset Link' 
+                : isLogin 
+                  ? 'Sign In' 
+                  : 'Create Account'}
           </Button>
         </form>
 
-        <div className="text-center">
-          <button
-            type="button"
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
-          </button>
+        <div className="text-center space-y-2">
+          {isForgotPassword ? (
+            <button
+              type="button"
+              onClick={() => setIsForgotPassword(false)}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Back to sign in
+            </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors block w-full"
+              >
+                {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
+              </button>
+              {isLogin && (
+                <button
+                  type="button"
+                  onClick={() => setIsForgotPassword(true)}
+                  className="text-sm text-primary hover:text-primary/80 transition-colors"
+                >
+                  Forgot password?
+                </button>
+              )}
+            </>
+          )}
         </div>
 
         <div className="flex items-center justify-center gap-4 pt-4 border-t border-border/40">
