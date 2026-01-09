@@ -78,7 +78,7 @@ export default function Vault() {
       }
 
       // First, check if the current user has an invitation for this vault.
-      const invitedEmailToCheck = invitedParamRaw || user.email;
+      const invitedEmailToCheck = (invitedParamRaw || user.email || '').trim().toLowerCase();
       const { data: invitation } = await supabase
         .from('vault_invitations')
         .select('id, status')
@@ -280,42 +280,50 @@ export default function Vault() {
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inviteEmail || !vault || !user) return;
+    if (!vault || !user) return;
+
+    const normalizedEmail = inviteEmail.trim().toLowerCase();
+    if (!normalizedEmail) return;
 
     setInviting(true);
 
-    // Check if already invited - if so, just resend the email
-    const { data: existing } = await supabase
-      .from('vault_invitations')
-      .select('id')
-      .eq('vault_id', vault.id)
-      .eq('invited_email', inviteEmail)
-      .maybeSingle();
-
-    // Only insert if not already invited
-    if (!existing) {
-      const { error } = await supabase.from('vault_invitations').insert({
-        vault_id: vault.id,
-        invited_email: inviteEmail,
-        invited_by: user.id,
-      });
-
-      if (error) {
-        toast({
-          title: 'Error',
-          description: 'Failed to send invite.',
-          variant: 'destructive',
-        });
-        setInviting(false);
-        return;
-      }
-    }
-
-    // Send invitation email via edge function (works for new or resend)
     try {
+      // Check if already invited (grab the most recent invite if there are duplicates)
+      const { data: existing, error: existingError } = await supabase
+        .from('vault_invitations')
+        .select('id')
+        .eq('vault_id', vault.id)
+        .eq('invited_email', normalizedEmail)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (existingError) {
+        console.warn('Error checking existing invitation (continuing anyway):', existingError);
+      }
+
+      // Only insert if not already invited
+      if (!existing) {
+        const { error } = await supabase.from('vault_invitations').insert({
+          vault_id: vault.id,
+          invited_email: normalizedEmail,
+          invited_by: user.id,
+        });
+
+        if (error) {
+          toast({
+            title: 'Error',
+            description: 'Failed to create invitation. Please try again.',
+            variant: 'destructive',
+          });
+          return;
+        }
+      }
+
+      // Send invitation email via backend function (works for new or resend)
       const { error: emailError } = await supabase.functions.invoke('send-vault-invitation', {
         body: {
-          invitedEmail: inviteEmail,
+          invitedEmail: normalizedEmail,
           vaultId: vault.id,
           vaultName: vault.name,
           inviterEmail: user.email,
@@ -325,26 +333,23 @@ export default function Vault() {
       if (emailError) {
         console.error('Failed to send invitation email:', emailError);
         toast({
-          title: 'Invited!',
-          description: `Invitation created, but email delivery may have failed.`,
+          title: 'Invitation created',
+          description: 'Email delivery failed. Please try again in a moment.',
+          variant: 'destructive',
         });
-      } else {
-        toast({
-          title: existing ? 'Invite Resent!' : 'Invitation Sent!',
-          description: `Check ${inviteEmail}'s inbox (and spam folder).`,
-        });
+        return;
       }
-    } catch (emailErr) {
-      console.error('Email function error:', emailErr);
-      toast({
-        title: 'Invited!',
-        description: `Invitation created, but email delivery may have failed.`,
-      });
-    }
 
-    setInviteOpen(false);
-    setInviteEmail('');
-    setInviting(false);
+      toast({
+        title: existing ? 'Invite Resent!' : 'Invitation Sent!',
+        description: `Check ${normalizedEmail}'s inbox (and spam folder).`,
+      });
+
+      setInviteOpen(false);
+      setInviteEmail('');
+    } finally {
+      setInviting(false);
+    }
   };
 
   const handleEditVault = async (name: string, frequency: string) => {
