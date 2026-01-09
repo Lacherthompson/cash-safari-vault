@@ -339,6 +339,15 @@ export default function Vault() {
     const normalizedEmail = inviteEmail.trim().toLowerCase();
     if (!normalizedEmail) return;
 
+    // Warn if vault already has 8+ members (creator + members)
+    const currentMemberCount = members.length > 0 ? members.length : 1;
+    if (currentMemberCount >= 8) {
+      toast({
+        title: 'Large group warning',
+        description: `This vault already has ${currentMemberCount} members. Consider creating separate vaults for smaller groups.`,
+      });
+    }
+
     setInviting(true);
 
     try {
