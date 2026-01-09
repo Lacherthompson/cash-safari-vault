@@ -60,7 +60,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      // Use 'global' scope to sign out from all sessions (fixes Safari ITP issues)
+      await supabase.auth.signOut({ scope: 'global' });
+    } catch (error) {
+      console.warn('Sign out error (clearing local state anyway):', error);
+    }
+    // Always clear local state regardless of server response (Safari workaround)
+    setUser(null);
+    setSession(null);
   };
 
   const resetPassword = async (email: string) => {
