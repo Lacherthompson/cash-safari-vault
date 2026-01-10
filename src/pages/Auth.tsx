@@ -11,93 +11,33 @@ export default function Auth() {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isRecoveryFromUrl, setIsRecoveryFromUrl] = useState(false);
-  const { signIn, signUp, resetPassword, updatePassword, user, isRecoveryMode, clearRecoveryMode } = useAuth();
+  const { signIn, signUp, resetPassword, user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
-
-  const inRecoveryFlow = isRecoveryMode || isRecoveryFromUrl;
 
   // Get redirect path from URL params (for vault invitations)
   const redirectPath = searchParams.get('redirect') || '/';
 
   useEffect(() => {
-    // Recovery links commonly store params in the URL hash (#access_token=...&type=recovery)
+    // If user lands on /auth with a recovery link, redirect to dedicated page
     const hash = window.location.hash?.replace(/^#/, '') ?? '';
     const hashParams = new URLSearchParams(hash);
     const type = hashParams.get('type');
 
     if (type === 'recovery') {
-      setIsRecoveryFromUrl(true);
+      navigate(`/reset-password${window.location.hash}`, { replace: true });
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    // Only redirect if user is logged in AND not in recovery flow
-    if (user && !inRecoveryFlow) {
+    if (user) {
       navigate(redirectPath);
     }
-  }, [user, inRecoveryFlow, navigate, redirectPath]);
+  }, [user, navigate, redirectPath]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Handle password update (recovery flow)
-    if (inRecoveryFlow) {
-      if (!password || !confirmPassword) {
-        toast({
-          title: 'Missing fields',
-          description: 'Please enter and confirm your new password.',
-          variant: 'destructive',
-        });
-        return;
-      }
-      
-      if (password !== confirmPassword) {
-        toast({
-          title: 'Passwords do not match',
-          description: 'Please make sure both passwords match.',
-          variant: 'destructive',
-        });
-        return;
-      }
-      
-      if (password.length < 6) {
-        toast({
-          title: 'Password too short',
-          description: 'Password must be at least 6 characters.',
-          variant: 'destructive',
-        });
-        return;
-      }
-      
-      setLoading(true);
-      try {
-        const { error } = await updatePassword(password);
-        if (error) {
-          toast({
-            title: 'Error',
-            description: error.message,
-            variant: 'destructive',
-          });
-        } else {
-          toast({
-            title: 'Password updated!',
-            description: 'Your password has been changed successfully.',
-          });
-          // Clear URL hash params so refresh doesn't re-trigger recovery UI
-          window.location.hash = '';
-          setIsRecoveryFromUrl(false);
-          navigate('/');
-        }
-      } finally {
-        setLoading(false);
-      }
-      return;
-    }
     
     if (isForgotPassword) {
       if (!email) {
@@ -211,88 +151,46 @@ export default function Auth() {
             SaveTogether
           </h1>
           <p className="mt-3 text-lg text-muted-foreground">
-            {inRecoveryFlow
-              ? 'Set your new password'
-              : isForgotPassword 
-                ? 'Reset your password' 
-                : isLogin 
-                  ? 'Welcome back' 
-                  : 'Start your savings journey'}
+            {isForgotPassword 
+              ? 'Reset your password' 
+              : isLogin 
+                ? 'Welcome back' 
+                : 'Start your savings journey'}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {inRecoveryFlow ? (
-            <>
-              <Input
-                type="password"
-                placeholder="New password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="new-password"
-                className="h-12"
-              />
-              <Input
-                type="password"
-                placeholder="Confirm new password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                autoComplete="new-password"
-                className="h-12"
-              />
-            </>
-          ) : (
-            <>
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                className="h-12"
-              />
-              {!isForgotPassword && (
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete={isLogin ? 'current-password' : 'new-password'}
-                  className="h-12"
-                />
-              )}
-            </>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+            className="h-12"
+          />
+          {!isForgotPassword && (
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete={isLogin ? 'current-password' : 'new-password'}
+              className="h-12"
+            />
           )}
           <Button type="submit" className="w-full h-12 font-semibold" disabled={loading}>
             {loading 
               ? '...' 
-              : inRecoveryFlow
-                ? 'Update Password'
-                : isForgotPassword 
-                  ? 'Send Reset Link' 
-                  : isLogin 
-                    ? 'Sign In' 
-                    : 'Create Account'}
+              : isForgotPassword 
+                ? 'Send Reset Link' 
+                : isLogin 
+                  ? 'Sign In' 
+                  : 'Create Account'}
           </Button>
         </form>
 
         <div className="text-center space-y-2">
-          {inRecoveryFlow ? (
-            <button
-              type="button"
-              onClick={() => {
-                clearRecoveryMode();
-                setIsRecoveryFromUrl(false);
-                window.location.hash = '';
-                setPassword('');
-                setConfirmPassword('');
-                navigate('/auth', { replace: true });
-              }}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Cancel and sign in
-            </button>
-          ) : isForgotPassword ? (
+          {isForgotPassword ? (
             <button
               type="button"
               onClick={() => setIsForgotPassword(false)}

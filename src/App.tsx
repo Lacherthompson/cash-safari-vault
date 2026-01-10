@@ -17,6 +17,7 @@ import SavingsGuide from "./pages/SavingsGuide";
 import EarnMore from "./pages/EarnMore";
 import NotFound from "./pages/NotFound";
 import Draft from "./pages/Draft";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/vault/:id" element={<Vault />} />
                   <Route path="/how-to-use" element={<HowToUse />} />
                   <Route path="/savings-guide" element={<SavingsGuide />} />
