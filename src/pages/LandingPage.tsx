@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Badge } from '@/components/ui/badge';
 import { 
   PiggyBank, 
   Target, 
@@ -14,7 +15,6 @@ import {
   HelpCircle,
   BookOpen,
   Menu,
-  Rocket,
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
@@ -75,9 +75,8 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" onClick={() => navigate('/savings-guide')}>
               Savings Guide
             </Button>
-            <Button variant="ghost" size="sm" className="gap-1.5" onClick={() => navigate('/vault-starter')}>
-              <Rocket className="h-4 w-4" />
-              Vault Starter
+            <Button variant="ghost" size="sm" onClick={() => navigate('/vault-starter')}>
+              Savings Challenge
             </Button>
             <Button size="sm" onClick={() => navigate('/auth')}>
               Sign In
@@ -123,8 +122,8 @@ export default function LandingPage() {
                     className="justify-start gap-3 h-12" 
                     onClick={() => { navigate('/vault-starter'); setMobileMenuOpen(false); }}
                   >
-                    <Rocket className="h-5 w-5" />
-                    Vault Starter
+                    <Target className="h-5 w-5" />
+                    Savings Challenge
                   </Button>
                   <div className="border-t border-border my-4" />
                   <Button 
@@ -281,11 +280,14 @@ export default function LandingPage() {
             >
               <CardContent className="p-6 flex items-center gap-4">
                 <div className="p-4 rounded-xl bg-vault-rose/10">
-                  <Rocket className="h-8 w-8 text-vault-rose" />
+                  <Target className="h-8 w-8 text-vault-rose" />
                 </div>
                 <div>
-                  <h4 className="font-display font-semibold text-lg mb-1">Vault Starter</h4>
-                  <p className="text-muted-foreground text-sm">14-day email challenge to build your savings habit</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-display font-semibold text-lg">Savings Challenge</h4>
+                    <Badge variant="secondary" className="text-xs">Free Calculator</Badge>
+                  </div>
+                  <p className="text-muted-foreground text-sm">Free calculator + optional 14-day challenge to build your habit</p>
                 </div>
                 <ArrowRight className="h-5 w-5 text-muted-foreground ml-auto" />
               </CardContent>
