@@ -80,10 +80,10 @@ export default function Auth() {
       return;
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       toast({
         title: 'Password too short',
-        description: 'Password must be at least 6 characters.',
+        description: 'Password must be at least 8 characters.',
         variant: 'destructive',
       });
       return;
