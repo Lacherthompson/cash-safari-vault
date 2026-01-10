@@ -3,6 +3,7 @@ import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordStrengthIndicator } from '@/components/PasswordStrengthIndicator';
 import { HelpCircle, BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -169,14 +170,17 @@ export default function Auth() {
             className="h-12"
           />
           {!isForgotPassword && (
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete={isLogin ? 'current-password' : 'new-password'}
-              className="h-12"
-            />
+            <div className="space-y-2">
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
+                className="h-12"
+              />
+              {!isLogin && <PasswordStrengthIndicator password={password} />}
+            </div>
           )}
           <Button type="submit" className="w-full h-12 font-semibold" disabled={loading}>
             {loading 
