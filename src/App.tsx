@@ -17,6 +17,7 @@ import SavingsGuide from "./pages/SavingsGuide";
 import EarnMore from "./pages/EarnMore";
 import NotFound from "./pages/NotFound";
 import VaultStarter from "./pages/VaultStarter";
+import VaultStarterSuccess from "./pages/VaultStarterSuccess";
 import ResetPassword from "./pages/ResetPassword";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -49,6 +50,7 @@ const App = () => (
                   <Route path="/earn-more" element={<EarnMore />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/vault-starter" element={<VaultStarter />} />
+                  <Route path="/vault-starter/success" element={<VaultStarterSuccess />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<TermsOfService />} />
                   <Route path="*" element={<NotFound />} />
