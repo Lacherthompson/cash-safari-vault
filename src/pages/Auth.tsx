@@ -13,26 +13,40 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isRecoveryFromUrl, setIsRecoveryFromUrl] = useState(false);
   const { signIn, signUp, resetPassword, updatePassword, user, isRecoveryMode, clearRecoveryMode } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
 
+  const inRecoveryFlow = isRecoveryMode || isRecoveryFromUrl;
+
   // Get redirect path from URL params (for vault invitations)
   const redirectPath = searchParams.get('redirect') || '/';
 
   useEffect(() => {
-    // Only redirect if user is logged in AND not in recovery mode
-    if (user && !isRecoveryMode) {
+    // Recovery links commonly store params in the URL hash (#access_token=...&type=recovery)
+    const hash = window.location.hash?.replace(/^#/, '') ?? '';
+    const hashParams = new URLSearchParams(hash);
+    const type = hashParams.get('type');
+
+    if (type === 'recovery') {
+      setIsRecoveryFromUrl(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Only redirect if user is logged in AND not in recovery flow
+    if (user && !inRecoveryFlow) {
       navigate(redirectPath);
     }
-  }, [user, isRecoveryMode, navigate, redirectPath]);
+  }, [user, inRecoveryFlow, navigate, redirectPath]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Handle password update (recovery mode)
-    if (isRecoveryMode) {
+    // Handle password update (recovery flow)
+    if (inRecoveryFlow) {
       if (!password || !confirmPassword) {
         toast({
           title: 'Missing fields',
@@ -74,6 +88,9 @@ export default function Auth() {
             title: 'Password updated!',
             description: 'Your password has been changed successfully.',
           });
+          // Clear URL hash params so refresh doesn't re-trigger recovery UI
+          window.location.hash = '';
+          setIsRecoveryFromUrl(false);
           navigate('/');
         }
       } finally {
@@ -194,7 +211,7 @@ export default function Auth() {
             SaveTogether
           </h1>
           <p className="mt-3 text-lg text-muted-foreground">
-            {isRecoveryMode
+            {inRecoveryFlow
               ? 'Set your new password'
               : isForgotPassword 
                 ? 'Reset your password' 
@@ -205,7 +222,7 @@ export default function Auth() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {isRecoveryMode ? (
+          {inRecoveryFlow ? (
             <>
               <Input
                 type="password"
@@ -249,7 +266,7 @@ export default function Auth() {
           <Button type="submit" className="w-full h-12 font-semibold" disabled={loading}>
             {loading 
               ? '...' 
-              : isRecoveryMode
+              : inRecoveryFlow
                 ? 'Update Password'
                 : isForgotPassword 
                   ? 'Send Reset Link' 
@@ -260,13 +277,16 @@ export default function Auth() {
         </form>
 
         <div className="text-center space-y-2">
-          {isRecoveryMode ? (
+          {inRecoveryFlow ? (
             <button
               type="button"
               onClick={() => {
                 clearRecoveryMode();
+                setIsRecoveryFromUrl(false);
+                window.location.hash = '';
                 setPassword('');
                 setConfirmPassword('');
+                navigate('/auth', { replace: true });
               }}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
