@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import cashVaultLogo from '@/assets/cash-vault-logo.png';
 
 const days = [
+  { day: 0, title: "Welcome to Vault Starter", description: "Let's do this together. Small steps, realistic actions, no shaming.", isWelcome: true },
   { day: 1, title: "The easiest win (promise)", description: "Create ONE vault with a goal that feels emotionally motivating" },
   { day: 2, title: "Make it feel real", description: "Add one personal detail to your vault" },
   { day: 3, title: "The $50 you're about to find", description: "Find one forgotten or unnecessary charge" },
@@ -373,13 +374,29 @@ export default function Draft() {
             {days.map((item) => (
               <div 
                 key={item.day}
-                className="flex items-start gap-4 p-4 rounded-lg bg-card border hover:border-primary/50 transition-colors"
+                className={`flex items-start gap-4 p-4 rounded-lg border transition-colors ${
+                  item.isWelcome 
+                    ? 'bg-primary/5 border-primary/30 hover:border-primary/50' 
+                    : item.isRest 
+                      ? 'bg-muted/50 border-muted hover:border-muted-foreground/30' 
+                      : 'bg-card hover:border-primary/50'
+                }`}
               >
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-sm font-bold text-primary">Day {item.day}</span>
+                <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
+                  item.isWelcome 
+                    ? 'bg-primary/20' 
+                    : item.isRest 
+                      ? 'bg-muted' 
+                      : 'bg-primary/10'
+                }`}>
+                  <span className={`text-sm font-bold ${
+                    item.isWelcome ? 'text-primary' : item.isRest ? 'text-muted-foreground' : 'text-primary'
+                  }`}>
+                    {item.day === 0 ? '👋' : `Day ${item.day}`}
+                  </span>
                 </div>
                 <div>
-                  <h3 className="font-semibold">{item.title}</h3>
+                  <h3 className={`font-semibold ${item.isRest ? 'text-muted-foreground' : ''}`}>{item.title}</h3>
                   <p className="text-sm text-muted-foreground">{item.description}</p>
                 </div>
               </div>
