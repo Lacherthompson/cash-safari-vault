@@ -6,6 +6,7 @@ import { CreateVaultDialog } from '@/components/CreateVaultDialog';
 import { VaultCard } from '@/components/VaultCard';
 import { EmptyState } from '@/components/EmptyState';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
+import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { generateAmounts } from '@/lib/generateAmounts';
@@ -148,7 +149,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <AuthenticatedNav />
 
       <main className="mx-auto max-w-4xl px-4 py-8">
@@ -192,6 +193,8 @@ export default function Dashboard() {
           </>
         )}
       </main>
+
+      <Footer className="mt-auto" />
     </div>
   );
 }

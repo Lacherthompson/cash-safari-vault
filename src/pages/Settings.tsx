@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Volume2, VolumeX, Palette, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Footer } from '@/components/Footer';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,7 +68,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <AuthenticatedNav />
 
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-4">
@@ -148,6 +149,8 @@ export default function Settings() {
           </div>
         </Card>
       </main>
+
+      <Footer className="mt-auto" />
     </div>
   );
 }

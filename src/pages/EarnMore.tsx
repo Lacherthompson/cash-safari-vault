@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import SEO from '@/components/SEO';
+import { Footer } from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 const earnMoreJsonLd = {
@@ -221,7 +222,7 @@ const EarnMore = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Side Income Ideas | Ways to Make Extra Money - SaveTogether"
         description="Discover proven ways to earn extra money on the side. From cash-back apps to freelancing platforms, find the best side income opportunities to boost your savings."
@@ -434,6 +435,8 @@ const EarnMore = () => {
           </p>
         </div>
       </main>
+
+      <Footer className="mt-auto" />
     </div>
   );
 };
