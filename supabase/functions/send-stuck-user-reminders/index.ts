@@ -9,6 +9,7 @@ const corsHeaders = {
 };
 
 const DAYS_BEFORE_REMINDER = 7;
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 
 interface StuckPurchaser {
   id: string;
@@ -19,6 +20,19 @@ interface StuckPurchaser {
 interface StuckFreeUser {
   id: string;
   email: string;
+}
+
+async function generateUnsubscribeToken(userId: string): Promise<string> {
+  const secret = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(userId + secret);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("").substring(0, 32);
+}
+
+function getUnsubscribeLink(userId: string, token: string): string {
+  return `${SUPABASE_URL}/functions/v1/unsubscribe-emails?user_id=${userId}&token=${token}`;
 }
 
 async function sendEmail(to: string, subject: string, html: string): Promise<void> {
@@ -71,10 +85,22 @@ const handler = async (req: Request): Promise<Response> => {
       throw purchasersError;
     }
 
-    // Filter to those who haven't created a vault
+    // Filter to those who haven't created a vault and haven't unsubscribed
     const purchasersToEmail: StuckPurchaser[] = [];
     for (const purchaser of stuckPurchasers || []) {
       if (purchaser.user_id) {
+        // Check if unsubscribed
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("email_unsubscribed")
+          .eq("id", purchaser.user_id)
+          .single();
+
+        if (profile?.email_unsubscribed) {
+          console.log(`Skipping purchaser ${purchaser.email} - unsubscribed`);
+          continue;
+        }
+
         const { count } = await supabase
           .from("vaults")
           .select("id", { count: "exact", head: true })
@@ -91,11 +117,12 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Found ${purchasersToEmail.length} stuck Vault Starter purchasers`);
 
-    // 2. Find free users (profiles) who haven't created a vault
+    // 2. Find free users (profiles) who haven't created a vault and haven't unsubscribed
     const { data: profiles, error: profilesError } = await supabase
       .from("profiles")
-      .select("id, created_at, stuck_reminder_sent_at")
+      .select("id, created_at, stuck_reminder_sent_at, email_unsubscribed")
       .is("stuck_reminder_sent_at", null)
+      .eq("email_unsubscribed", false)
       .lt("created_at", cutoffDate);
 
     if (profilesError) {
@@ -137,6 +164,10 @@ const handler = async (req: Request): Promise<Response> => {
     // Send emails to stuck purchasers
     for (const purchaser of purchasersToEmail) {
       try {
+        const userId = purchaser.user_id || purchaser.id;
+        const unsubscribeToken = await generateUnsubscribeToken(userId);
+        const unsubscribeLink = getUnsubscribeLink(userId, unsubscribeToken);
+
         await sendEmail(
           purchaser.email,
           "Your Savings Challenge is waiting for you! 🎯",
@@ -155,6 +186,10 @@ const handler = async (req: Request): Promise<Response> => {
               <p><a href="https://savetogether.app/dashboard" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Create Your Vault Now →</a></p>
               <p style="color: #666; font-size: 14px; margin-top: 24px;">Questions? Just reply to this email - we're here to help!</p>
               <p>Happy saving,<br>The SaveTogether Team</p>
+              <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
+              <p style="color: #999; font-size: 12px; text-align: center;">
+                Don't want to receive these emails? <a href="${unsubscribeLink}" style="color: #999;">Unsubscribe</a>
+              </p>
             </div>
           `
         );
@@ -174,6 +209,9 @@ const handler = async (req: Request): Promise<Response> => {
     // Send emails to stuck free users
     for (const user of freeUsersToEmail) {
       try {
+        const unsubscribeToken = await generateUnsubscribeToken(user.id);
+        const unsubscribeLink = getUnsubscribeLink(user.id, unsubscribeToken);
+
         await sendEmail(
           user.email,
           "Your first vault is just a click away! 💰",
@@ -192,6 +230,10 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="margin-top: 24px;"><strong>Want more guidance?</strong> Our <a href="https://savetogether.app/vault-starter" style="color: #10b981;">14-Day Vault Starter Challenge</a> includes daily emails to keep you motivated and on track!</p>
               <p style="color: #666; font-size: 14px; margin-top: 24px;">Questions? Just reply to this email!</p>
               <p>Happy saving,<br>The SaveTogether Team</p>
+              <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
+              <p style="color: #999; font-size: 12px; text-align: center;">
+                Don't want to receive these emails? <a href="${unsubscribeLink}" style="color: #999;">Unsubscribe</a>
+              </p>
             </div>
           `
         );

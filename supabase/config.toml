@@ -3,3 +3,6 @@ project_id = "bcmhhowvzopfbaudwkjl"
 [functions.send-stuck-user-reminders]
 verify_jwt = false
 schedule = "0 9 * * *"
+
+[functions.unsubscribe-emails]
+verify_jwt = false
