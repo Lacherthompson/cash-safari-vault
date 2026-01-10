@@ -10,7 +10,7 @@ interface SEOProps {
 }
 
 const BASE_URL = 'https://savetogether.lovable.app';
-const DEFAULT_IMAGE = 'https://lovable.dev/opengraph-image-p98pqg.png';
+const DEFAULT_IMAGE = `${BASE_URL}/og-image.png`;
 
 export default function SEO({ 
   title, 
