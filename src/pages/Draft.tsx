@@ -230,8 +230,8 @@ export default function Draft() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-              Start for $10 <ArrowRight className="ml-2 h-5 w-5" />
+                <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
+                  Start for $12 <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <p className="text-sm text-muted-foreground">One-time payment • Instant access</p>
           </div>
@@ -338,8 +338,8 @@ export default function Draft() {
             14 days from now, you'll have a savings habit that actually works for you.
           </p>
           
-          <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-            Get Vault Starter — $10 <ArrowRight className="ml-2 h-5 w-5" />
+            <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
+              Get Vault Starter — $12 <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </section>
