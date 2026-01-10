@@ -17,16 +17,19 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          email_unsubscribed: boolean
           id: string
           stuck_reminder_sent_at: string | null
         }
         Insert: {
           created_at?: string
+          email_unsubscribed?: boolean
           id: string
           stuck_reminder_sent_at?: string | null
         }
         Update: {
           created_at?: string
+          email_unsubscribed?: boolean
           id?: string
           stuck_reminder_sent_at?: string | null
         }
