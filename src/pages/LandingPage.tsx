@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { 
   PiggyBank, 
   Target, 
@@ -15,6 +16,7 @@ import {
   HelpCircle,
   BookOpen,
   Menu,
+  Calculator,
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
@@ -48,7 +50,7 @@ export default function LandingPage() {
   ];
 
   const benefits = [
-    'Free to use',
+    'Free savings calculator',
     'No bank connection required',
     'Works with any savings account',
     'Track multiple goals at once',
@@ -67,21 +69,32 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl px-4 py-3 sm:py-4 flex items-center justify-between">
           <img src={savetogetherLogo} alt="SaveTogether" className="h-16 sm:h-[106px] cursor-pointer" onClick={() => navigate('/')} />
           
-          {/* Desktop Navigation */}
-          <div className="hidden sm:flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={() => navigate('/how-to-use')}>
-              How it works
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => navigate('/savings-guide')}>
-              Savings Guide
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => navigate('/vault-starter')}>
-              Savings Challenge
-            </Button>
-            <Button size="sm" onClick={() => navigate('/auth')}>
-              Sign In
-            </Button>
-          </div>
+          <TooltipProvider>
+            <div className="hidden sm:flex items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={() => navigate('/how-to-use')}>
+                How it works
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/savings-guide')}>
+                Savings Guide
+              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/vault-starter')}>
+                    Savings Challenge
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="flex items-center gap-1.5">
+                    <Calculator className="h-3.5 w-3.5" />
+                    Includes a free savings calculator
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+              <Button size="sm" onClick={() => navigate('/auth')}>
+                Sign In
+              </Button>
+            </div>
+          </TooltipProvider>
 
           {/* Mobile Navigation */}
           <div className="flex sm:hidden items-center gap-2">
