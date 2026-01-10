@@ -39,13 +39,26 @@ serve(async (req) => {
     let userId: string | undefined;
     
     const authHeader = req.headers.get("Authorization");
-    if (authHeader) {
+    if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      if (data.user?.email) {
-        userEmail = data.user.email;
-        userId = data.user.id;
-        logStep("User authenticated", { userId, email: userEmail });
+      
+      // Use getClaims to validate the JWT and extract user info
+      const { data: claimsData, error: claimsError } = await supabaseClient.auth.getClaims(token);
+      
+      if (!claimsError && claimsData?.claims) {
+        const claims = claimsData.claims;
+        userEmail = claims.email as string;
+        userId = claims.sub as string;
+        logStep("User authenticated via claims", { userId, email: userEmail });
+      } else {
+        logStep("Failed to get claims, trying getUser", { error: claimsError?.message });
+        // Fallback to getUser
+        const { data } = await supabaseClient.auth.getUser(token);
+        if (data.user?.email) {
+          userEmail = data.user.email;
+          userId = data.user.id;
+          logStep("User authenticated via getUser", { userId, email: userEmail });
+        }
       }
     }
 
