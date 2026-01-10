@@ -16,7 +16,7 @@ import HowToUse from "./pages/HowToUse";
 import SavingsGuide from "./pages/SavingsGuide";
 import EarnMore from "./pages/EarnMore";
 import NotFound from "./pages/NotFound";
-import Draft from "./pages/Draft";
+import VaultStarter from "./pages/VaultStarter";
 import ResetPassword from "./pages/ResetPassword";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -48,7 +48,7 @@ const App = () => (
                   <Route path="/savings-guide" element={<SavingsGuide />} />
                   <Route path="/earn-more" element={<EarnMore />} />
                   <Route path="/settings" element={<Settings />} />
-                  <Route path="/draft" element={<Draft />} />
+                  <Route path="/vault-starter" element={<VaultStarter />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<TermsOfService />} />
                   <Route path="*" element={<NotFound />} />
