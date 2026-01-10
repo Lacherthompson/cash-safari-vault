@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Check, Mail, ArrowRight, Sparkles, Calculator } from 'lucide-react';
+import { Check, Mail, ArrowRight, Sparkles, Calculator, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 import { Footer } from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import cashVaultLogo from '@/assets/cash-vault-logo.png';
 
 const days = [
@@ -22,10 +23,14 @@ const days = [
 
 export default function Draft() {
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
   const [goalAmount, setGoalAmount] = useState<string>('');
   const [monthlyAmount, setMonthlyAmount] = useState<string>('');
   const [showResult, setShowResult] = useState(false);
   const [encouragementIndex, setEncouragementIndex] = useState(0);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [guestEmail, setGuestEmail] = useState('');
+  const [showEmailInput, setShowEmailInput] = useState(false);
 
   const encouragements = [
     "Not as scary as you thought, right?",
@@ -36,10 +41,54 @@ export default function Draft() {
     "Look at you, already ahead of most people."
   ];
 
-  const handleCheckout = () => {
-    toast.info("Stripe checkout will be connected here", {
-      description: "This is a preview — checkout coming soon!"
-    });
+  // Handle success/cancel from Stripe redirect
+  useEffect(() => {
+    if (searchParams.get('success') === 'true') {
+      toast.success("Payment successful!", {
+        description: "Check your email — your first Vault Starter message is on its way!"
+      });
+    } else if (searchParams.get('canceled') === 'true') {
+      toast.info("Checkout canceled", {
+        description: "No worries — you can try again whenever you're ready."
+      });
+    }
+  }, [searchParams]);
+
+  const handleCheckout = async () => {
+    // If user is not logged in and hasn't entered email, show email input
+    if (!user && !guestEmail && !showEmailInput) {
+      setShowEmailInput(true);
+      return;
+    }
+
+    // Validate guest email
+    if (!user && showEmailInput) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(guestEmail)) {
+        toast.error("Please enter a valid email address");
+        return;
+      }
+    }
+
+    setIsCheckingOut(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-vault-starter-checkout', {
+        body: { email: guestEmail || undefined }
+      });
+
+      if (error) throw error;
+      if (!data?.url) throw new Error("No checkout URL returned");
+
+      // Open Stripe checkout in new tab
+      window.open(data.url, '_blank');
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error("Checkout failed", {
+        description: error instanceof Error ? error.message : "Please try again"
+      });
+    } finally {
+      setIsCheckingOut(false);
+    }
   };
 
   const calculateMonths = () => {
@@ -230,9 +279,38 @@ export default function Draft() {
             No budgeting homework. No finance jargon. Just walk with me for 14 days and we'll get your savings moving.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
+          <div className="flex flex-col items-center gap-4">
+            {showEmailInput && !user && (
+              <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                  className="flex-1"
+                />
+              </div>
+            )}
+            <Button 
+              size="lg" 
+              className="text-lg px-8 py-6" 
+              onClick={handleCheckout}
+              disabled={isCheckingOut}
+            >
+              {isCheckingOut ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Processing...
+                </>
+              ) : showEmailInput && !user ? (
+                <>
+                  Continue to Checkout <ArrowRight className="ml-2 h-5 w-5" />
+                </>
+              ) : (
+                <>
                   Start for $12 <ArrowRight className="ml-2 h-5 w-5" />
+                </>
+              )}
             </Button>
             <p className="text-sm text-muted-foreground">One-time payment • Instant access</p>
           </div>
@@ -339,8 +417,37 @@ export default function Draft() {
             14 days from now, you'll have a savings habit that actually works for you.
           </p>
           
-            <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-              Get Vault Starter — $12 <ArrowRight className="ml-2 h-5 w-5" />
+          {showEmailInput && !user && (
+            <div className="flex flex-col items-center gap-2 mb-4 w-full max-w-md mx-auto">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                className="w-full"
+              />
+            </div>
+          )}
+          <Button 
+            size="lg" 
+            className="text-lg px-8 py-6" 
+            onClick={handleCheckout}
+            disabled={isCheckingOut}
+          >
+            {isCheckingOut ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Processing...
+              </>
+            ) : showEmailInput && !user ? (
+              <>
+                Continue to Checkout <ArrowRight className="ml-2 h-5 w-5" />
+              </>
+            ) : (
+              <>
+                Get Vault Starter — $12 <ArrowRight className="ml-2 h-5 w-5" />
+              </>
+            )}
           </Button>
         </div>
       </section>
