@@ -14,6 +14,7 @@ import {
   HelpCircle,
   BookOpen,
   Menu,
+  Rocket,
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
@@ -74,6 +75,10 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" onClick={() => navigate('/savings-guide')}>
               Savings Guide
             </Button>
+            <Button variant="ghost" size="sm" className="gap-1.5" onClick={() => navigate('/vault-starter')}>
+              <Rocket className="h-4 w-4" />
+              Vault Starter
+            </Button>
             <Button size="sm" onClick={() => navigate('/auth')}>
               Sign In
             </Button>
@@ -112,6 +117,14 @@ export default function LandingPage() {
                   >
                     <BookOpen className="h-5 w-5" />
                     Savings Guide
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start gap-3 h-12" 
+                    onClick={() => { navigate('/vault-starter'); setMobileMenuOpen(false); }}
+                  >
+                    <Rocket className="h-5 w-5" />
+                    Vault Starter
                   </Button>
                   <div className="border-t border-border my-4" />
                   <Button 
@@ -229,7 +242,7 @@ export default function LandingPage() {
       {/* Guides Section */}
       <section className="bg-muted/30 border-y border-border/40">
         <div className="mx-auto max-w-5xl px-4 py-16">
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-3 gap-6">
             <Card 
               className="border-border/60 bg-card/80 cursor-pointer hover:border-primary/40 transition-colors"
               onClick={() => navigate('/how-to-use')}
@@ -257,6 +270,22 @@ export default function LandingPage() {
                 <div>
                   <h4 className="font-display font-semibold text-lg mb-1">Savings Guide</h4>
                   <p className="text-muted-foreground text-sm">Compare HYSAs, CDs, and other savings options</p>
+                </div>
+                <ArrowRight className="h-5 w-5 text-muted-foreground ml-auto" />
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="border-border/60 bg-card/80 cursor-pointer hover:border-primary/40 transition-colors"
+              onClick={() => navigate('/vault-starter')}
+            >
+              <CardContent className="p-6 flex items-center gap-4">
+                <div className="p-4 rounded-xl bg-vault-rose/10">
+                  <Rocket className="h-8 w-8 text-vault-rose" />
+                </div>
+                <div>
+                  <h4 className="font-display font-semibold text-lg mb-1">Vault Starter</h4>
+                  <p className="text-muted-foreground text-sm">14-day email challenge to build your savings habit</p>
                 </div>
                 <ArrowRight className="h-5 w-5 text-muted-foreground ml-auto" />
               </CardContent>
