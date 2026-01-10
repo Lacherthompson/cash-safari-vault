@@ -18,6 +18,8 @@ import EarnMore from "./pages/EarnMore";
 import NotFound from "./pages/NotFound";
 import Draft from "./pages/Draft";
 import ResetPassword from "./pages/ResetPassword";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +49,8 @@ const App = () => (
                   <Route path="/earn-more" element={<EarnMore />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/draft" element={<Draft />} />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
+                  <Route path="/terms" element={<TermsOfService />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter>

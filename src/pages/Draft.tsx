@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Check, Mail, ArrowRight, Sparkles, Calculator } from 'lucide-react';
 import { toast } from 'sonner';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
+import { Footer } from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
 import cashVaultLogo from '@/assets/cash-vault-logo.png';
 
@@ -76,7 +77,7 @@ export default function Draft() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Navigation */}
       {user ? (
         <AuthenticatedNav />
@@ -344,12 +345,7 @@ export default function Draft() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 border-t">
-        <div className="mx-auto max-w-4xl px-4 text-center text-sm text-muted-foreground">
-          <p>© 2025 Cash Vault. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer className="mt-auto" />
     </div>
   );
 }

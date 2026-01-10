@@ -14,9 +14,9 @@ import {
   HelpCircle,
   BookOpen,
   Menu,
-  DollarSign
 } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { Footer } from '@/components/Footer';
 import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 export default function LandingPage() {
@@ -279,12 +279,7 @@ export default function LandingPage() {
         </Button>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border/40 bg-muted/20">
-        <div className="mx-auto max-w-5xl px-4 py-8 text-center text-sm text-muted-foreground">
-          <p>SaveTogether — Save smarter, together.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
     </>
   );

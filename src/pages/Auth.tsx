@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PasswordStrengthIndicator } from '@/components/PasswordStrengthIndicator';
+import { Footer } from '@/components/Footer';
 import { HelpCircle, BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -145,7 +146,8 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen flex-col bg-background p-4">
+      <div className="flex-1 flex items-center justify-center">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-display font-bold tracking-tight text-foreground">
@@ -241,6 +243,9 @@ export default function Auth() {
           </Link>
         </div>
       </div>
+      </div>
+
+      <Footer />
     </div>
   );
 }

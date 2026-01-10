@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { TrendingUp, Clock, Layers, Shield, Landmark, CircleDollarSign } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { Footer } from '@/components/Footer';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -134,7 +135,7 @@ export default function SavingsGuide() {
         type="article"
         jsonLd={{ ...savingsGuideJsonLd, ...faqJsonLd }}
       />
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background flex flex-col">
       {user && <AuthenticatedNav />}
 
       <main className="mx-auto max-w-4xl px-4 py-8 space-y-8">
@@ -308,6 +309,8 @@ export default function SavingsGuide() {
           </Button>
         </div>
       </main>
+
+      <Footer className="mt-auto" />
     </div>
     </>
   );
