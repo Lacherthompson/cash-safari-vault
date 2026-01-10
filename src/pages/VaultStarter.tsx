@@ -87,8 +87,8 @@ export default function Draft() {
       if (error) throw error;
       if (!data?.url) throw new Error("No checkout URL returned");
 
-      // Open Stripe checkout in new tab
-      window.open(data.url, '_blank');
+      // Redirect to Stripe checkout
+      window.location.href = data.url;
     } catch (error) {
       console.error('Checkout error:', error);
       toast.error("Checkout failed", {
