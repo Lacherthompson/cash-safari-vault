@@ -87,8 +87,10 @@ export default function Draft() {
       if (error) throw error;
       if (!data?.url) throw new Error("No checkout URL returned");
 
-      // Redirect to Stripe checkout
-      window.location.href = data.url;
+      // Stripe Checkout cannot load reliably inside embedded iframes.
+      // Try opening in a new tab first; fallback to same-tab navigation.
+      const opened = window.open(data.url, '_blank', 'noopener,noreferrer');
+      if (!opened) window.location.href = data.url;
     } catch (error) {
       console.error('Checkout error:', error);
       toast.error("Checkout failed", {
