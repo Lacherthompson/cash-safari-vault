@@ -36,6 +36,16 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
+    // Validate email format server-side
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const trimmedEmail = invitedEmail.trim().toLowerCase();
+    if (!emailRegex.test(trimmedEmail)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid email format" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     // Create the invitation link (includes the invited email so we can detect wrong-account sign-ins)
     const redirectTarget = `/vault/${vaultId}?invited=${encodeURIComponent(invitedEmail)}`;
     const inviteLink = `https://savetogether.co/auth?redirect=${encodeURIComponent(redirectTarget)}`;
