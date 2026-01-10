@@ -1,7 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { HelpCircle, BookOpen, DollarSign, Settings, LogOut, Target } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { HelpCircle, BookOpen, DollarSign, Settings, LogOut, Target, GraduationCap, ChevronDown } from 'lucide-react';
 import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 export const AuthenticatedNav = () => {
@@ -23,21 +29,35 @@ export const AuthenticatedNav = () => {
           onClick={() => navigate('/')} 
         />
         <nav className="flex items-center gap-1 sm:gap-2">
-          <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/how-to-use')}>
-            <HelpCircle className="h-4 w-4" />
-            <span className="hidden sm:inline">Help</span>
-          </Button>
-          <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/savings-guide')}>
-            <BookOpen className="h-4 w-4" />
-            <span className="hidden sm:inline">Savings Guide</span>
-          </Button>
-          <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/earn-more')}>
-            <DollarSign className="h-4 w-4" />
-            <span className="hidden sm:inline">Earn More</span>
-          </Button>
+          {/* Learn dropdown for secondary items */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3">
+                <GraduationCap className="h-4 w-4" />
+                <span className="hidden sm:inline">Learn</span>
+                <ChevronDown className="h-3 w-3" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-popover z-50">
+              <DropdownMenuItem onClick={() => navigate('/how-to-use')} className="gap-2 cursor-pointer">
+                <HelpCircle className="h-4 w-4" />
+                Help
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/savings-guide')} className="gap-2 cursor-pointer">
+                <BookOpen className="h-4 w-4" />
+                Guide
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/earn-more')} className="gap-2 cursor-pointer">
+                <DollarSign className="h-4 w-4" />
+                Earn More
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Primary actions always visible */}
           <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/vault-starter')}>
             <Target className="h-4 w-4" />
-            <span className="hidden sm:inline">Savings Challenge</span>
+            <span className="hidden sm:inline">Challenge</span>
           </Button>
           <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/settings')}>
             <Settings className="h-4 w-4" />
