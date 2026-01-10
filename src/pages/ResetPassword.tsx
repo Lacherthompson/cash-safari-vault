@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordStrengthIndicator } from '@/components/PasswordStrengthIndicator';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ResetPassword() {
@@ -106,14 +107,17 @@ export default function ResetPassword() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            type="password"
-            placeholder="New password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="new-password"
-            className="h-12"
-          />
+          <div className="space-y-2">
+            <Input
+              type="password"
+              placeholder="New password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
+              className="h-12"
+            />
+            <PasswordStrengthIndicator password={password} />
+          </div>
           <Input
             type="password"
             placeholder="Confirm new password"
