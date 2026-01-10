@@ -12,13 +12,20 @@ import { supabase } from '@/integrations/supabase/client';
 import cashVaultLogo from '@/assets/cash-vault-logo.png';
 
 const days = [
-  { day: 1, title: "Pick your vault", description: "Choose where your savings will live" },
-  { day: 2, title: "Choose one goal", description: "Emergency fund, vacation, pet fund — just one" },
-  { day: 3, title: "Find your easy first $50", description: "Money you won't even miss" },
-  { day: 5, title: "Set a realistic auto-transfer", description: "Small, automatic, painless" },
-  { day: 7, title: "Fix one leak", description: "Not all of them — just one" },
-  { day: 10, title: "Increase slightly", description: "Grow your savings without the pain" },
-  { day: 14, title: "Lock in your rhythm", description: "Your new savings habit is set" },
+  { day: 1, title: "The easiest win (promise)", description: "Create ONE vault with a goal that feels emotionally motivating" },
+  { day: 2, title: "Make it feel real", description: "Add one personal detail to your vault" },
+  { day: 3, title: "The $50 you're about to find", description: "Find one forgotten or unnecessary charge" },
+  { day: 4, title: "Let the win sink in", description: "Rest day — no action today", isRest: true },
+  { day: 5, title: "Pick your saving moment", description: "Decide when you'll manually add money to your vault" },
+  { day: 6, title: "You didn't fall behind", description: "Rest day — if you missed something earlier, you didn't fail", isRest: true },
+  { day: 7, title: "One week in", description: "Check your progress bar and adjust if needed" },
+  { day: 8, title: "Midpoint pause", description: "Rest day — tomorrow we'll do a quick check-in", isRest: true },
+  { day: 9, title: "Quick check-in", description: "Ask yourself: does this goal still feel doable?" },
+  { day: 10, title: "More breathing room (if you need it)", description: "Bookmark helpful resources if you need extra support" },
+  { day: 11, title: "You're still doing great", description: "Rest day — staying engaged is the win", isRest: true },
+  { day: 12, title: "Strengthen the habit", description: "Add any amount to your vault — even $1" },
+  { day: 13, title: "Almost there", description: "Rest day — tomorrow we wrap up", isRest: true },
+  { day: 14, title: "Don't stop now", description: "You built a system — not just a number" },
 ];
 
 export default function Draft() {
