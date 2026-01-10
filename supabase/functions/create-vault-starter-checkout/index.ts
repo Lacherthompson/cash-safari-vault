@@ -81,7 +81,7 @@ serve(async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `${origin}/vault-starter?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/vault-starter/success`,
       cancel_url: `${origin}/vault-starter?canceled=true`,
       metadata: {
         product: "vault_starter",
