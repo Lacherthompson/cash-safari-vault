@@ -155,6 +155,48 @@ export type Database = {
           },
         ]
       }
+      vault_starter_purchases: {
+        Row: {
+          amount_paid: number
+          currency: string
+          current_email_day: number
+          email: string
+          emails_started: boolean
+          id: string
+          purchased_at: string
+          status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          amount_paid?: number
+          currency?: string
+          current_email_day?: number
+          email: string
+          emails_started?: boolean
+          id?: string
+          purchased_at?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          amount_paid?: number
+          currency?: string
+          current_email_day?: number
+          email?: string
+          emails_started?: boolean
+          id?: string
+          purchased_at?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       vaults: {
         Row: {
           accent_color: string | null
