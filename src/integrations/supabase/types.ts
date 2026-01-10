@@ -18,14 +18,17 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          stuck_reminder_sent_at: string | null
         }
         Insert: {
           created_at?: string
           id: string
+          stuck_reminder_sent_at?: string | null
         }
         Update: {
           created_at?: string
           id?: string
+          stuck_reminder_sent_at?: string | null
         }
         Relationships: []
       }
@@ -167,6 +170,7 @@ export type Database = {
           status: string
           stripe_payment_intent_id: string | null
           stripe_session_id: string
+          stuck_reminder_sent_at: string | null
           user_id: string | null
         }
         Insert: {
@@ -180,6 +184,7 @@ export type Database = {
           status?: string
           stripe_payment_intent_id?: string | null
           stripe_session_id: string
+          stuck_reminder_sent_at?: string | null
           user_id?: string | null
         }
         Update: {
@@ -193,6 +198,7 @@ export type Database = {
           status?: string
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string
+          stuck_reminder_sent_at?: string | null
           user_id?: string | null
         }
         Relationships: []
