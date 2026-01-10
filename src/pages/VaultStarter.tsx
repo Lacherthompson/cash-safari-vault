@@ -371,7 +371,7 @@ export default function Draft() {
           </p>
           
           <div className="space-y-4">
-            {days.map((item) => (
+            {days.slice(0, 6).map((item) => (
               <div 
                 key={item.day}
                 className={`flex items-start gap-4 p-4 rounded-lg border transition-colors ${
@@ -401,6 +401,13 @@ export default function Draft() {
                 </div>
               </div>
             ))}
+            
+            <div className="flex items-center gap-4 p-4 rounded-lg border border-dashed border-muted-foreground/30">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
+                <span className="text-lg">...</span>
+              </div>
+              <p className="text-muted-foreground font-medium">Plus 9 more days of guidance, rest days & reflection</p>
+            </div>
           </div>
         </div>
       </section>
