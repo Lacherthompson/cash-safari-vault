@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { HelpCircle, BookOpen, DollarSign, Settings, LogOut, Rocket } from 'lucide-react';
+import { HelpCircle, BookOpen, DollarSign, Settings, LogOut, Target } from 'lucide-react';
 import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 export const AuthenticatedNav = () => {
@@ -36,8 +36,8 @@ export const AuthenticatedNav = () => {
             <span className="hidden sm:inline">Earn More</span>
           </Button>
           <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/vault-starter')}>
-            <Rocket className="h-4 w-4" />
-            <span className="hidden sm:inline">Vault Starter</span>
+            <Target className="h-4 w-4" />
+            <span className="hidden sm:inline">Savings Challenge</span>
           </Button>
           <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/settings')}>
             <Settings className="h-4 w-4" />
