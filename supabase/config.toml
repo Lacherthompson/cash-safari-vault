@@ -4,6 +4,10 @@ project_id = "bcmhhowvzopfbaudwkjl"
 verify_jwt = false
 schedule = "0 9 * * *"
 
+[functions.send-vault-starter-emails]
+verify_jwt = false
+schedule = "0 9 * * *"
+
 [functions.unsubscribe-emails]
 verify_jwt = false
 
