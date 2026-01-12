@@ -67,13 +67,13 @@ function getWelcomeEmailHtml(unsubscribeLink: string): string {
         <h3>📌 Before Tomorrow</h3>
         <p>Make sure you've created your first vault on SaveTogether. This is where you'll track your progress throughout the challenge.</p>
       </div>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Create Your Vault</a>
+      <a href="https://savetogether.app/dashboard" class="cta-button">Create Your Vault</a>
       <p>Get excited — Day 1 starts tomorrow!</p>
       <p>— The SaveTogether Team</p>
     </div>
     <div class="footer">
       <p>Questions? Just hit reply — we read every message.</p>
-      <p><a href="https://savetogether.co">Visit SaveTogether</a></p>
+      <p><a href="https://savetogether.app">Visit SaveTogether</a></p>
       <p class="unsubscribe">
         <a href="${unsubscribeLink}">Unsubscribe from these emails</a>
       </p>
