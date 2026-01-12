@@ -167,6 +167,7 @@ export type Database = {
           currency: string
           current_email_day: number
           email: string
+          email_unsubscribed: boolean
           emails_started: boolean
           id: string
           purchased_at: string
@@ -181,6 +182,7 @@ export type Database = {
           currency?: string
           current_email_day?: number
           email: string
+          email_unsubscribed?: boolean
           emails_started?: boolean
           id?: string
           purchased_at?: string
@@ -195,6 +197,7 @@ export type Database = {
           currency?: string
           current_email_day?: number
           email?: string
+          email_unsubscribed?: boolean
           emails_started?: boolean
           id?: string
           purchased_at?: string
