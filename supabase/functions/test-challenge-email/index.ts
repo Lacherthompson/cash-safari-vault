@@ -562,7 +562,8 @@ serve(async (req: Request) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "SaveTogether <hello@savetogether.co>",
+        from: "SaveTogether <hello@connect.savetogether.co>",
+        reply_to: "SaveTogether <reply@savetogether.co>",
         to: [email],
         subject: `[TEST] ${emailContent.subject}`,
         html: emailContent.getHtml(unsubscribeLink),
