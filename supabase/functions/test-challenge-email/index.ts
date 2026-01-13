@@ -120,13 +120,13 @@ const challengeEmails: ChallengeEmail[] = [
       <div class="week-summary">
         <h4>📅 Here's what to expect:</h4>
         <ul>
-          <li><strong>Week 1:</strong> Set up your vault, find hidden money, build your rhythm</li>
+          <li><strong>Week 1:</strong> Set up your vault, open a dedicated savings account, find hidden money, build your rhythm</li>
           <li><strong>Week 2:</strong> Check in, adjust, strengthen, and celebrate</li>
           <li><strong>REST days:</strong> Days 4, 6, 8, 11, and 13 — no action required</li>
         </ul>
       </div>
       
-      <p>You might see us mention something called "Today's action." That just means the one small step we're suggesting for the day. There's never more than one, and it's always optional.</p>
+      <p><strong>How it works:</strong> You'll save money into a dedicated savings account, then come back to SaveTogether to click off amounts in your vault to track your progress. The vault is your visual tracker — your savings account is where the actual money lives.</p>
       <p>Some days will take five minutes. Some days are rest days. All days are designed to help you feel more in control, not more overwhelmed.</p>
       <p><strong>💡 Quick tip:</strong> Star this email so you can find us in your inbox.</p>
       <p><strong>Tomorrow, we start with the easiest win.</strong></p>
@@ -139,7 +139,7 @@ const challengeEmails: ChallengeEmail[] = [
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
       ${getProgressBar(1)}
       <p>We used to think saving had to start with a big lifestyle change. Turns out, momentum matters more than amount.</p>
-      <p>Today is about creating a place for your savings to live.</p>
+      <p>Today is about creating a place to track your savings progress.</p>
       
       <div class="did-you-know">
         <h4>💡 Did you know?</h4>
@@ -157,47 +157,49 @@ const challengeEmails: ChallengeEmail[] = [
           <li>Trip fund</li>
           <li>Peace-of-mind buffer</li>
         </ul>
-        <p style="margin-top: 12px;">Set the total amount. You'll manually add savings as you go.</p>
+        <p style="margin-top: 12px;">Set the total amount. This creates your clickable amounts that you'll check off as you save.</p>
       </div>
       <a href="https://savetogether.co/" class="cta-button">Create Your Vault</a>
       
       <div class="micro-story">
-        💬 "I named mine 'Freedom Fund.' Every time I add to it, I feel like I'm buying back my own time." — SaveTogether user
+        💬 "I named mine 'Freedom Fund.' Every time I click off an amount, I feel like I'm buying back my own time." — SaveTogether user
       </div>
       
       <p>If you want, hit reply and tell us what you named it.</p>
-      <p>Tomorrow, we'll make this vault feel more real without adding stress.</p>
+      <p>Tomorrow, we'll set up where your actual savings will live.</p>
     `, unsubscribeLink)
   },
   {
     day: 2,
-    subject: "Day 2: Make it feel real",
+    subject: "Day 2: Create your savings home",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
       ${getProgressBar(2)}
-      <p>A goal only sticks if it feels personal.</p>
+      <p>Your vault is set up — now let's give your money a home that's separate from your everyday spending.</p>
       
       <div class="did-you-know">
         <h4>💡 Did you know?</h4>
-        <p>Shared goals have a <strong>76% higher success rate</strong> than solo ones. When someone else knows what you're working toward, accountability happens naturally.</p>
+        <p>People who keep their savings in a <strong>separate account</strong> from their checking are significantly less likely to dip into it. Out of sight, out of mind — but in a good way.</p>
       </div>
       
       <div class="action-box">
         <h3>📌 Today's action</h3>
-        <p>Add one personal detail to your vault:</p>
+        <p>Open a dedicated savings account — one that's NOT connected to an account you regularly use.</p>
+        <p style="margin-top: 12px;"><strong>Why separate?</strong></p>
         <ul>
-          <li>A description of why it matters</li>
-          <li>A start date</li>
-          <li>Or invite someone to save with you</li>
+          <li>Reduces temptation to "borrow" from yourself</li>
+          <li>Makes your progress feel more real</li>
+          <li>Creates a mental boundary around your goal</li>
         </ul>
+        <p style="margin-top: 12px;">Not sure what type of account to open? Check out our guide:</p>
       </div>
-      <a href="https://savetogether.co/" class="cta-button">Open Your Vault</a>
+      <a href="https://savetogether.co/savings-guide" class="cta-button">View Savings Guide</a>
       
       <div class="micro-story">
-        💬 "My partner and I have a shared 'Anniversary Trip' vault. Watching it grow together made saving feel like a team sport." — SaveTogether user
+        💬 "I opened a high-yield savings account at a different bank than my checking. Having to transfer money manually made me think twice before touching it." — SaveTogether user
       </div>
       
-      <p>Reply if you invited someone — we love seeing shared goals.</p>
-      <p>Tomorrow, we'll find money you already have.</p>
+      <p>Reply and let us know what type of account you chose!</p>
+      <p>Tomorrow, we'll find some hidden money to put in it.</p>
     `, unsubscribeLink)
   },
   {
@@ -222,9 +224,10 @@ const challengeEmails: ChallengeEmail[] = [
           <li>Free trials that converted to paid</li>
           <li>Apps with premium tiers</li>
         </ul>
-        <p style="margin-top: 8px;">Cancel it or downgrade it. Move that amount into your vault, even if it's small.</p>
+        <p style="margin-top: 12px;">Cancel it or downgrade it. <strong>Transfer that amount to your savings account</strong>, even if it's small.</p>
+        <p style="margin-top: 8px;">Then come back to SaveTogether and click off the matching amount in your vault to track your progress!</p>
       </div>
-      <a href="https://savetogether.co/" class="cta-button">Add to Your Vault</a>
+      <a href="https://savetogether.co/" class="cta-button">Track It In Your Vault</a>
       
       <div class="micro-story">
         💬 "I found $127 in forgotten subscriptions last month. An app I downloaded years ago was charging me $9.99/month." — SaveTogether user
@@ -244,7 +247,7 @@ const challengeEmails: ChallengeEmail[] = [
       <div class="mindset-moment">
         <h4>✨ Mindset Moment</h4>
         <p class="quote">"Saving isn't about being good with money. It's about deciding that future-you matters."</p>
-        <p>Yesterday you proved something important: your money can move with intention. That subscription you found? It was quietly draining your account. Now it's not.</p>
+        <p>Yesterday you proved something important: your money can move with intention. That subscription you found? It was quietly draining your account. Now that money is going to your savings instead.</p>
         <p class="reflection">💭 Take a moment: How did it feel to take that control back?</p>
       </div>
       
@@ -261,18 +264,18 @@ const challengeEmails: ChallengeEmail[] = [
       
       <div class="did-you-know">
         <h4>💡 Did you know?</h4>
-        <p><strong>Habit stacking</strong> — linking a new habit to an existing one — increases success rates by 65%. Instead of "I'll save more," try "After I get paid, I'll add to my vault."</p>
+        <p><strong>Habit stacking</strong> — linking a new habit to an existing one — increases success rates by 65%. Instead of "I'll save more," try "After I get paid, I'll transfer money to my savings account."</p>
       </div>
       
       <div class="action-box">
         <h3>📌 Today's action</h3>
-        <p>Decide when you'll manually add money to your vault.</p>
+        <p>Decide when you'll transfer money to your savings account and update your vault.</p>
         <p style="margin-top: 8px;"><strong>Example habit stacks:</strong></p>
         <ul>
-          <li>After payday → transfer to vault</li>
+          <li>After payday → transfer to savings account → click off amount in vault</li>
           <li>After Sunday coffee → check vault progress</li>
-          <li>After a no-spend day → add the amount you saved</li>
-          <li>After checking email → quick vault update</li>
+          <li>After a no-spend day → transfer the amount you saved</li>
+          <li>End of week → update vault with what you saved</li>
         </ul>
         <p style="margin-top: 8px;">Write it down somewhere visible.</p>
       </div>
@@ -291,7 +294,7 @@ const challengeEmails: ChallengeEmail[] = [
       <div class="mindset-moment">
         <h4>✨ Mindset Moment</h4>
         <p class="quote">"Progress isn't about perfection. It's about direction."</p>
-        <p>If you missed something earlier — maybe you didn't cancel that subscription yet, or your vault is still empty — that's okay. You're still here. You're still reading. That counts.</p>
+        <p>If you missed something earlier — maybe you haven't opened that savings account yet, or your vault is still empty — that's okay. You're still here. You're still reading. That counts.</p>
         <p>The goal isn't to be perfect. It's to be present.</p>
         <p class="reflection">💭 What's one small thing you could do tomorrow to feel more in control?</p>
       </div>
@@ -315,8 +318,8 @@ const challengeEmails: ChallengeEmail[] = [
       <div class="week-summary">
         <h4>🏆 Week 1 Wins — You've already:</h4>
         <ul>
-          <li>Created a real, named goal</li>
-          <li>Made it personal</li>
+          <li>Created a real, named goal in your vault</li>
+          <li>Opened a dedicated savings account</li>
           <li>Found hidden money in your subscriptions</li>
           <li>Established a saving rhythm</li>
           <li>Shown up for 7 days straight</li>
@@ -325,7 +328,7 @@ const challengeEmails: ChallengeEmail[] = [
       
       <div class="action-box">
         <h3>📌 Today's action</h3>
-        <p>Check your progress bar.</p>
+        <p>Check your vault progress bar.</p>
         <p style="margin-top: 8px;">Adjust the goal if needed — or keep it as is.</p>
         <p style="margin-top: 8px;">Either way, acknowledge how far you've come.</p>
       </div>
@@ -392,7 +395,7 @@ const challengeEmails: ChallengeEmail[] = [
       <div class="action-box">
         <h3>📌 Today's action</h3>
         <p>Bookmark one helpful page for when you're ready:</p>
-        <p style="margin-top: 8px;"><a href="https://savetogether.co/savings-guide" style="color: #059669;"><strong>Savings Guide</strong></a> — Practical strategies, sorted by situation</p>
+        <p style="margin-top: 8px;"><a href="https://savetogether.co/savings-guide" style="color: #059669;"><strong>Savings Guide</strong></a> — Learn about different savings account types to maximize your money</p>
         <p style="margin-top: 4px;"><a href="https://savetogether.co/earn-more" style="color: #059669;"><strong>Earn More</strong></a> — Side income ideas that actually work</p>
       </div>
       
@@ -409,7 +412,7 @@ const challengeEmails: ChallengeEmail[] = [
       
       <div class="mindset-moment">
         <h4>✨ Mindset Moment</h4>
-        <p class="quote">"Consistency beats intensity. The $5 you save every week matters more than the $500 you planned to save 'someday.'"</p>
+        <p class="quote">"Consistency beats intensity. The $5 you transfer to your savings account every week matters more than the $500 you planned to save 'someday.'"</p>
         <p>Staying engaged is the win. You've opened these emails. You've thought about your money differently. That's not nothing — that's the foundation of real change.</p>
         <p class="reflection">💭 What would reaching this goal change for you — not just financially, but emotionally?</p>
       </div>
@@ -432,13 +435,14 @@ const challengeEmails: ChallengeEmail[] = [
       
       <div class="action-box">
         <h3>📌 Today's action</h3>
-        <p>Add any amount to your vault — even $1.</p>
+        <p>Transfer any amount to your savings account — even $1.</p>
+        <p style="margin-top: 8px;">Then click off the matching amount in your vault.</p>
         <p style="margin-top: 8px;">The point isn't the amount. The point is proving to yourself that you can move money on purpose, whenever you choose.</p>
       </div>
-      <a href="https://savetogether.co/" class="cta-button">Add to Your Vault</a>
+      <a href="https://savetogether.co/" class="cta-button">Update Your Vault</a>
       
       <div class="micro-story">
-        💬 "I add $3 every time I make coffee at home instead of buying it out. It's not much, but seeing those $3s add up changed how I think about small decisions." — SaveTogether user
+        💬 "I transfer $3 to my savings every time I make coffee at home instead of buying it out. It's not much, but seeing those amounts get clicked off in my vault changed how I think about small decisions." — SaveTogether user
       </div>
       
       <p>Reply "done" if you want quiet accountability.</p>
@@ -455,7 +459,7 @@ const challengeEmails: ChallengeEmail[] = [
       <div class="mindset-moment">
         <h4>✨ Mindset Moment</h4>
         <p class="quote">"The goal was never perfection. The goal was practice. And you've been practicing."</p>
-        <p>Tomorrow we wrap up — but this isn't really an ending. You've built something that doesn't stop on day 14. The vault stays. The rhythm stays. The awareness stays.</p>
+        <p>Tomorrow we wrap up — but this isn't really an ending. You've built something that doesn't stop on day 14. The vault stays. The savings account stays. The rhythm stays. The awareness stays.</p>
         <p class="reflection">💭 What will you do differently going forward? What surprised you about this process?</p>
       </div>
       
@@ -474,6 +478,7 @@ const challengeEmails: ChallengeEmail[] = [
         <h4>🎓 What you learned in 14 days:</h4>
         <ul>
           <li>How to create goals that actually motivate you</li>
+          <li>The power of a dedicated savings account</li>
           <li>Where your money was quietly leaking</li>
           <li>The power of small, consistent action</li>
           <li>How to adjust without feeling like you failed</li>
@@ -484,13 +489,13 @@ const challengeEmails: ChallengeEmail[] = [
       <div class="action-box">
         <h3>📌 Today's action</h3>
         <p>Reply and tell us one thing you're proud of.</p>
-        <p style="margin-top: 8px;">Then check your next vault milestone.</p>
+        <p style="margin-top: 8px;">Then check your vault to see your progress!</p>
       </div>
       <a href="https://savetogether.co/" class="cta-button">View Your Progress</a>
       
       <p><strong>What's next?</strong></p>
       <ul>
-        <li>Keep your saving rhythm going</li>
+        <li>Keep your saving rhythm going — transfer to savings, click off in vault</li>
         <li>Set a new milestone when you hit this one</li>
         <li>Invite someone to save with you</li>
         <li>Come back to the Savings Guide or Earn More when you need ideas</li>
@@ -506,15 +511,16 @@ const challengeEmails: ChallengeEmail[] = [
   }
 ];
 
-async function generateUnsubscribeToken(identifier: string): Promise<string> {
+// Generate unsubscribe token
+async function generateUnsubscribeToken(userId: string): Promise<string> {
   const encoder = new TextEncoder();
-  const data = encoder.encode(identifier + UNSUBSCRIBE_SECRET);
+  const data = encoder.encode(userId + UNSUBSCRIBE_SECRET);
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32);
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-serve(async (req) => {
+serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -522,73 +528,69 @@ serve(async (req) => {
   try {
     const { email, user_id, day } = await req.json();
 
-    if (!email) {
-      return new Response(JSON.stringify({ error: "Email required" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    if (day === undefined || day < 0 || day > 14) {
-      return new Response(JSON.stringify({ error: "Day must be between 0 and 14" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (!email || day === undefined) {
+      return new Response(
+        JSON.stringify({ error: "Missing required fields: email and day" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     if (!RESEND_API_KEY) {
-      return new Response(JSON.stringify({ error: "RESEND_API_KEY not configured" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "RESEND_API_KEY not configured" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     const emailContent = challengeEmails.find(e => e.day === day);
     if (!emailContent) {
-      return new Response(JSON.stringify({ error: `Email for day ${day} not found` }), {
-        status: 404,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: `No email content found for day ${day}` }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
-    const identifier = user_id || email;
-    const token = await generateUnsubscribeToken(identifier);
-    const unsubscribeLink = `${SUPABASE_URL}/functions/v1/unsubscribe-emails?user_id=${identifier}&token=${token}`;
+    // Generate unsubscribe link
+    const testUserId = user_id || "test-user-id";
+    const token = await generateUnsubscribeToken(testUserId);
+    const unsubscribeLink = `${SUPABASE_URL}/functions/v1/unsubscribe-emails?user_id=${testUserId}&token=${token}&type=vault_starter`;
 
-    const response = await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "SaveTogether <hello@connect.savetogether.co>",
-        reply_to: "SaveTogether <reply@savetogether.co>",
+        from: "SaveTogether <hello@savetogether.co>",
         to: [email],
-        subject: `${emailContent.subject} (TEST)`,
+        subject: `[TEST] ${emailContent.subject}`,
         html: emailContent.getHtml(unsubscribeLink),
       }),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      return new Response(JSON.stringify({ error: errorText }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    const resendData = await res.json();
+
+    if (!res.ok) {
+      console.error("Resend API error:", resendData);
+      return new Response(
+        JSON.stringify({ error: "Failed to send email", details: resendData }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
-    const result = await response.json();
-    return new Response(JSON.stringify({ success: true, day, subject: emailContent.subject, result }), {
-      status: 200,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    console.log(`Test email sent successfully for day ${day} to ${email}`);
 
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return new Response(JSON.stringify({ error: errorMessage }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ success: true, day, email, messageId: resendData.id }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  } catch (error: unknown) {
+    console.error("Error in test-challenge-email:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    return new Response(
+      JSON.stringify({ error: errorMessage }),
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
   }
 });
