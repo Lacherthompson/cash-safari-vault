@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
-import savetogetherLogo from '@/assets/savetogether-logo.png';
+import { Logo } from '@/components/Logo';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ export default function LandingPage() {
       {/* Header */}
       <header className="border-b border-border/60 bg-background sticky top-0 z-10">
         <div className="mx-auto max-w-5xl px-4 py-3 sm:py-4 flex items-center justify-between">
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-16 sm:h-[106px] cursor-pointer" onClick={() => navigate('/')} />
+          <Logo size="lg" />
           
           <TooltipProvider>
             <div className="hidden sm:flex items-center gap-2">
@@ -109,11 +109,9 @@ export default function LandingPage() {
               </SheetTrigger>
               <SheetContent side="right" className="w-72">
                 <div className="flex flex-col gap-2 mt-8">
-                  <img 
-                    src={savetogetherLogo} 
-                    alt="SaveTogether" 
-                    className="w-40 max-w-full h-auto object-contain self-center mb-6" 
-                  />
+                  <div className="self-center mb-6">
+                    <Logo size="md" clickable={false} />
+                  </div>
                   <Button 
                     variant="ghost" 
                     className="justify-start gap-3 h-12" 

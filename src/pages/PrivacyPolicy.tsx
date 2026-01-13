@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
-import savetogetherLogo from '@/assets/savetogether-logo.png';
+import { Logo } from '@/components/Logo';
 
 export default function PrivacyPolicy() {
   const navigate = useNavigate();
@@ -21,12 +21,7 @@ export default function PrivacyPolicy() {
             <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate(-1)}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <img 
-              src={savetogetherLogo} 
-              alt="SaveTogether" 
-              className="h-16 sm:h-[80px] cursor-pointer" 
-              onClick={() => navigate('/')} 
-            />
+            <Logo size="md" />
             <div className="w-10" />
           </div>
         </header>

@@ -5,7 +5,7 @@ import { Check, Mail, Calendar, ArrowRight, Sparkles } from 'lucide-react';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 import { Footer } from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
-import cashVaultLogo from '@/assets/cash-vault-logo.png';
+import { Logo } from '@/components/Logo';
 
 export default function VaultStarterSuccess() {
   const { user } = useAuth();
@@ -18,9 +18,7 @@ export default function VaultStarterSuccess() {
       ) : (
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2">
-              <img src={cashVaultLogo} alt="Cash Vault" className="h-8 w-auto" />
-            </Link>
+            <Logo size="sm" />
             <Link to="/auth">
               <Button variant="outline" size="sm">Sign In</Button>
             </Link>
