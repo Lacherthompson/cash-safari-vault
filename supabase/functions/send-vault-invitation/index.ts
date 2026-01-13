@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
@@ -22,6 +23,31 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Verify authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Create authenticated Supabase client
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    // Verify user is authenticated
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !user) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     if (!RESEND_API_KEY) {
       throw new Error("RESEND_API_KEY is not configured");
     }
@@ -34,6 +60,37 @@ const handler = async (req: Request): Promise<Response> => {
         JSON.stringify({ error: "Missing required fields" }),
         { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
+    }
+
+    // Verify user owns or is a member of the vault
+    const { data: vault } = await supabaseClient
+      .from("vaults")
+      .select("created_by")
+      .eq("id", vaultId)
+      .single();
+
+    if (!vault) {
+      return new Response(
+        JSON.stringify({ error: "Vault not found" }),
+        { status: 404, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Check if user is creator or member
+    if (vault.created_by !== user.id) {
+      const { data: member } = await supabaseClient
+        .from("vault_members")
+        .select("id")
+        .eq("vault_id", vaultId)
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (!member) {
+        return new Response(
+          JSON.stringify({ error: "Forbidden - you must be a vault member to invite others" }),
+          { status: 403, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
     }
 
     // Validate email format server-side
