@@ -64,10 +64,9 @@ function getWelcomeEmailHtml(unsubscribeLink: string): string {
         <li>Create lasting financial habits</li>
       </ul>
       <div class="action-box">
-        <h3>📌 Before Tomorrow</h3>
-        <p>Make sure you've created your first vault on SaveTogether. This is where you'll track your progress throughout the challenge.</p>
+        <h3>📌 What's Next</h3>
+        <p>Tomorrow you'll receive Day 1 with your first action item. Get ready to start building your savings habit!</p>
       </div>
-      <a href="https://savetogether.co/" class="cta-button">Create Your Vault</a>
       <p>Get excited — Day 1 starts tomorrow!</p>
       <p>— The SaveTogether Team</p>
     </div>
