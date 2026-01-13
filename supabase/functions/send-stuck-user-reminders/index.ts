@@ -183,7 +183,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <li>Start checking off amounts as you save</li>
               </ol>
               <p>Your daily guidance emails are ready to help you build lasting savings habits. Don't let this opportunity slip away!</p>
-              <p><a href="https://savetogether.app/dashboard" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Create Your Vault Now →</a></p>
+              <p><a href="https://savetogether.co/" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Create Your Vault Now →</a></p>
               <p style="color: #666; font-size: 14px; margin-top: 24px;">Questions? Just reply to this email - we're here to help!</p>
               <p>Happy saving,<br>The SaveTogether Team</p>
               <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
@@ -226,8 +226,8 @@ const handler = async (req: Request): Promise<Response> => {
                 <li>Pick a fun color theme</li>
                 <li>Start checking off amounts as you save</li>
               </ol>
-              <p><a href="https://savetogether.app/dashboard" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Create Your First Vault →</a></p>
-              <p style="margin-top: 24px;"><strong>Want more guidance?</strong> Our <a href="https://savetogether.app/vault-starter" style="color: #10b981;">14-Day Vault Starter Challenge</a> includes daily emails to keep you motivated and on track!</p>
+              <p><a href="https://savetogether.co/" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Create Your First Vault →</a></p>
+              <p style="margin-top: 24px;"><strong>Want more guidance?</strong> Our <a href="https://savetogether.co/vault-starter" style="color: #10b981;">14-Day Vault Starter Challenge</a> includes daily emails to keep you motivated and on track!</p>
               <p style="color: #666; font-size: 14px; margin-top: 24px;">Questions? Just reply to this email!</p>
               <p>Happy saving,<br>The SaveTogether Team</p>
               <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />

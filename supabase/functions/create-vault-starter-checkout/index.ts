@@ -81,7 +81,7 @@ serve(async (req) => {
       logStep("Found existing Stripe customer", { customerId });
     }
 
-    const origin = req.headers.get("origin") || "https://savetogether.app";
+    const origin = req.headers.get("origin") || "https://savetogether.co";
 
     // Create checkout session for one-time payment
     const session = await stripe.checkout.sessions.create({
