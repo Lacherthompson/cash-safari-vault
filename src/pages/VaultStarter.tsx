@@ -144,7 +144,7 @@ export default function Draft() {
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2">
-              <img src={savetogetherLogo} alt="SaveTogether" className="h-16 sm:h-20 w-auto" />
+              <img src={savetogetherLogo} alt="SaveTogether" className="h-10 sm:h-12 w-auto" />
             </Link>
             <Link to="/auth">
               <Button variant="outline" size="sm">Sign In</Button>
@@ -153,17 +153,31 @@ export default function Draft() {
         </header>
       )}
 
+      {/* Hero Logo Section */}
+      <section className="py-12 sm:py-16 bg-gradient-to-b from-primary/5 to-transparent">
+        <div className="mx-auto max-w-4xl px-4 text-center">
+          <img 
+            src={savetogetherLogo} 
+            alt="SaveTogether" 
+            className="h-24 sm:h-32 md:h-40 w-auto mx-auto mb-6" 
+          />
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+            Save smarter, together. Your journey to financial freedom starts here.
+          </p>
+        </div>
+      </section>
+
       {/* Calculator Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-12 sm:py-16">
         <div className="mx-auto max-w-xl px-4">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
               <Calculator className="h-4 w-4" />
               Find Your Starting Point
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               How long until you hit your goal?
-            </h1>
+            </h2>
             <p className="text-muted-foreground">
               Let's see where you stand. No judgment — just a simple plan.
             </p>
