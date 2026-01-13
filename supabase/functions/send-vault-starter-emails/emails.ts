@@ -95,7 +95,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Create your first vault on SaveTogether and set a specific savings goal with a target amount. Whether it's $500 for an emergency fund or $2,000 for a vacation — make it real.</p>
       </div>
       <p>Pro tip: Goals with emotional meaning are 3x more likely to be achieved. Don't just save "money" — save for something that excites you.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Create Your Vault</a>
+      <a href="https://savetogether.co/" class="cta-button">Create Your Vault</a>
       <p>See you tomorrow for Day 2!</p>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
@@ -113,7 +113,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Check off your first amount in your vault — even if it's just $1. The goal is to get that first checkmark and feel the momentum.</p>
       </div>
       <p>Research shows that small wins create a dopamine response that makes you want to repeat the behavior. That's exactly what we're after.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Make Your First Save</a>
+      <a href="https://savetogether.co/" class="cta-button">Make Your First Save</a>
       <p>How did it feel? Hit reply and let me know!</p>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
@@ -131,7 +131,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Review your last bank statement and identify at least one subscription you can cancel or downgrade. Put that money toward your vault instead.</p>
       </div>
       <p>Common finds: Unused streaming services, gym memberships, apps on auto-renew, premium versions of things you use for free features only.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Add to Your Vault</a>
+      <a href="https://savetogether.co/" class="cta-button">Add to Your Vault</a>
       <p>Found something? Reply and tell me what you're cutting!</p>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
@@ -149,7 +149,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Before any non-essential purchase today, wait 24 hours. Write down what you wanted to buy and revisit it tomorrow. If you still want it, buy it. If not, save that money.</p>
       </div>
       <p>Studies show that 70% of impulse purchases are regretted. The pause gives your rational brain time to catch up with your emotional brain.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Track Your Progress</a>
+      <a href="https://savetogether.co/" class="cta-button">Track Your Progress</a>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
   },
@@ -166,7 +166,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Set up an automatic transfer to your savings account — even if it's just $5 per week. The key is making it automatic so you don't have to think about it.</p>
       </div>
       <p>People who automate their savings save 2-3x more than those who do it manually. Remove the decision and watch your vault grow.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Check Your Vault</a>
+      <a href="https://savetogether.co/" class="cta-button">Check Your Vault</a>
       <p>Automation set up? Reply and let me know!</p>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
@@ -184,7 +184,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Write down 3 things your future self will thank you for saving toward. Keep this somewhere you'll see it daily.</p>
       </div>
       <p>When you see savings as a choice rather than a sacrifice, the whole game changes. You're not depriving yourself — you're investing in yourself.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Visit Your Vault</a>
+      <a href="https://savetogether.co/" class="cta-button">Visit Your Vault</a>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
   },
@@ -201,7 +201,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Check your vault and celebrate your progress! How many amounts have you checked off? Reply and tell me your wins from this week.</p>
       </div>
       <p>Remember: Progress, not perfection. Even if you only saved a little, you're building the muscle that matters.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">See Your Progress</a>
+      <a href="https://savetogether.co/" class="cta-button">See Your Progress</a>
       <p>Week 2 is going to be even better!</p>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
@@ -219,7 +219,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Pick one spending category (eating out, entertainment, coffee) and set a weekly cash limit. When it's gone, it's gone. Leftover? Goes to your vault.</p>
       </div>
       <p>Physical cash creates "pain of paying" that cards don't. It makes you more mindful of every dollar.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Update Your Vault</a>
+      <a href="https://savetogether.co/" class="cta-button">Update Your Vault</a>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
   },
@@ -236,7 +236,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Invite a friend or family member to join your savings journey. Share your goal with them or invite them to SaveTogether to save alongside you.</p>
       </div>
       <p>Pro tip: You can create shared vaults on SaveTogether! Save together for a trip, a gift, or just to keep each other motivated.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Invite a Friend</a>
+      <a href="https://savetogether.co/" class="cta-button">Invite a Friend</a>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
   },
@@ -271,7 +271,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Commit to a no-spend day. No coffee runs, no online shopping, no "just this one thing." Essentials only. Track what you would have spent and add it to your vault.</p>
       </div>
       <p>This isn't about deprivation — it's about awareness. You'll be surprised what you notice about your spending habits.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Log Your Savings</a>
+      <a href="https://savetogether.co/" class="cta-button">Log Your Savings</a>
       <p>How did it go? Reply and tell me!</p>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
@@ -289,7 +289,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Look at your vault progress and give yourself credit. Then, plan a small, budget-friendly reward for completing the challenge. You've earned it!</p>
       </div>
       <p>Celebrating progress — not just end goals — keeps motivation high. What will your reward be?</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Check Your Progress</a>
+      <a href="https://savetogether.co/" class="cta-button">Check Your Progress</a>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
   },
@@ -306,7 +306,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <p>Review your vault and set your next goal. What will you save for after this? Having a goal waiting keeps the momentum going.</p>
       </div>
       <p>The habits you've built over the past 13 days are the foundation. Now it's about maintaining and growing.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Plan Your Next Goal</a>
+      <a href="https://savetogether.co/" class="cta-button">Plan Your Next Goal</a>
       <p>— The SaveTogether Team</p>
     `, unsubscribeLink)
   },
@@ -330,7 +330,7 @@ export const challengeEmails: ChallengeEmail[] = [
         <li>✅ Proved to yourself that you can do this</li>
       </ul>
       <p>This isn't the end — it's the beginning. Keep using SaveTogether, keep checking off those amounts, and keep building toward your dreams.</p>
-      <a href="https://savetogether.co/dashboard" class="cta-button">Visit Your Vault</a>
+      <a href="https://savetogether.co/" class="cta-button">Visit Your Vault</a>
       <p>We're so proud of you. 💚</p>
       <p>— The SaveTogether Team</p>
       <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">P.S. Want to keep the accountability going? Reply and tell us about your experience. We'd love to hear your story!</p>
