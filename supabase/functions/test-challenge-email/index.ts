@@ -21,6 +21,8 @@ const emailStyles = `
     .action-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 4px solid #10b981; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
     .action-box h3 { color: #059669; margin: 0 0 10px 0; font-size: 16px; font-weight: 600; }
     .action-box p { margin: 0; color: #065f46; }
+    .action-box ul { margin: 10px 0 0 0; padding-left: 20px; color: #065f46; }
+    .action-box li { margin: 4px 0; }
     .cta-button { display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; margin: 20px 0; }
     .footer { background-color: #f9fafb; padding: 25px; text-align: center; border-top: 1px solid #e5e7eb; }
     .footer p { margin: 8px 0; font-size: 14px; color: #6b7280; }
@@ -31,6 +33,14 @@ const emailStyles = `
     li { margin: 8px 0; color: #4a5568; }
   </style>
 `;
+
+async function generateUnsubscribeToken(identifier: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(identifier + UNSUBSCRIBE_SECRET);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32);
+}
 
 function getDay1EmailHtml(unsubscribeLink: string): string {
   return `
@@ -47,16 +57,24 @@ function getDay1EmailHtml(unsubscribeLink: string): string {
       <h1>SaveTogether</h1>
     </div>
     <div class="content">
-      <h2>Day 1: Define Your "Why" 🎯</h2>
-      <p>Every successful savings journey starts with a clear goal. Today, we're going to get specific about what you're saving for.</p>
+      <p>We used to think saving had to start with a big lifestyle change. Turns out, momentum matters more than amount.</p>
+      <p>Today is about creating a place for your savings to live.</p>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Create your first vault on SaveTogether and set a specific savings goal with a target amount. Whether it's $500 for an emergency fund or $2,000 for a vacation — make it real.</p>
+        <h3>📌 Today's action</h3>
+        <p>Open SaveTogether and create ONE vault.</p>
+        <p style="margin-top: 12px;">Pick a goal that feels emotionally motivating, not "responsible."</p>
+        <p style="margin-top: 8px;"><strong>Examples:</strong></p>
+        <ul>
+          <li>Emergency cushion</li>
+          <li>Pay off a card</li>
+          <li>Trip fund</li>
+          <li>Peace-of-mind buffer</li>
+        </ul>
+        <p style="margin-top: 12px;">Set the total amount. You'll manually add savings as you go.</p>
       </div>
-      <p>Pro tip: Goals with emotional meaning are 3x more likely to be achieved. Don't just save "money" — save for something that excites you.</p>
       <a href="https://savetogether.co/" class="cta-button">Create Your Vault</a>
-      <p>See you tomorrow for Day 2!</p>
-      <p>— The SaveTogether Team</p>
+      <p>If you want, hit reply and tell us what you named it.</p>
+      <p>Tomorrow, we'll make this vault feel more real without adding stress.</p>
     </div>
     <div class="footer">
       <p>Questions? Just hit reply — we read every message.</p>
@@ -69,14 +87,6 @@ function getDay1EmailHtml(unsubscribeLink: string): string {
 </body>
 </html>
 `;
-}
-
-async function generateUnsubscribeToken(identifier: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(identifier + UNSUBSCRIBE_SECRET);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32);
 }
 
 serve(async (req) => {
@@ -115,7 +125,7 @@ serve(async (req) => {
         from: "SaveTogether <hello@connect.savetogether.co>",
         reply_to: "SaveTogether <reply@connect.savetogether.co>",
         to: [email],
-        subject: "Day 1: Let's Set Your Savings Goal 🎯 (TEST)",
+        subject: "Day 1: The easiest win (promise) (TEST)",
         html: getDay1EmailHtml(unsubscribeLink),
       }),
     });

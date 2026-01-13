@@ -18,17 +18,11 @@ const emailStyles = `
     .content { padding: 30px 25px; }
     .content h2 { color: #10b981; font-size: 20px; margin-top: 0; }
     .content p { margin: 16px 0; color: #4a5568; }
-    .action-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 4px solid #10b981; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
-    .action-box h3 { color: #059669; margin: 0 0 10px 0; font-size: 16px; font-weight: 600; }
-    .action-box p { margin: 0; color: #065f46; }
-    .cta-button { display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; margin: 20px 0; }
     .footer { background-color: #f9fafb; padding: 25px; text-align: center; border-top: 1px solid #e5e7eb; }
     .footer p { margin: 8px 0; font-size: 14px; color: #6b7280; }
     .footer a { color: #10b981; text-decoration: none; }
     .unsubscribe { font-size: 12px; color: #9ca3af; margin-top: 15px; }
     .unsubscribe a { color: #9ca3af; text-decoration: underline; }
-    ul { padding-left: 20px; }
-    li { margin: 8px 0; color: #4a5568; }
   </style>
 `;
 
@@ -55,20 +49,13 @@ function getWelcomeEmailHtml(unsubscribeLink: string): string {
       <h1>SaveTogether</h1>
     </div>
     <div class="content">
-      <h2>Welcome to Your Savings Journey! 🎉</h2>
-      <p>Congratulations on taking the first step toward building a lasting savings habit!</p>
-      <p>Over the next 14 days, you'll receive daily emails with simple, actionable tasks designed to help you:</p>
-      <ul>
-        <li>Build momentum with small wins</li>
-        <li>Develop a savings mindset</li>
-        <li>Create lasting financial habits</li>
-      </ul>
-      <div class="action-box">
-        <h3>📌 What's Next</h3>
-        <p>Tomorrow you'll receive Day 1 with your first action item. Get ready to start building your savings habit!</p>
-      </div>
-      <p>Get excited — Day 1 starts tomorrow!</p>
-      <p>— The SaveTogether Team</p>
+      <h2>We're really glad you're here.</h2>
+      <p>Saving can feel intimidating, especially if money has mostly been about survival, stress, or "I'll deal with it later." Vault Starter exists because we believe saving shouldn't require perfection, spreadsheets, or guilt.</p>
+      <p>Over the next 14 days, we'll walk through this together. Small steps. Realistic actions. No shaming. No "just stop buying coffee" nonsense.</p>
+      <p>You might see us mention something called "Today's action." That just means the one small step we're suggesting for the day. There's never more than one, and it's always optional.</p>
+      <p>Some days will take five minutes. Some days are rest days. All days are designed to help you feel more in control, not more overwhelmed.</p>
+      <p><strong>Tomorrow, we start with the easiest win.</strong></p>
+      <p>— SaveTogether</p>
     </div>
     <div class="footer">
       <p>Questions? Just hit reply — we read every message.</p>
@@ -119,7 +106,7 @@ serve(async (req) => {
         from: "SaveTogether <hello@connect.savetogether.co>",
         reply_to: "SaveTogether <reply@connect.savetogether.co>",
         to: [email],
-        subject: "Welcome to the 14-Day Vault Starter Challenge! 🎉 (TEST)",
+        subject: "Welcome to Vault Starter. Let's do this together. (TEST)",
         html: getWelcomeEmailHtml(unsubscribeLink),
       }),
     });
