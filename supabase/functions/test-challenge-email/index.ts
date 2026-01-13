@@ -347,7 +347,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         from: "SaveTogether <hello@connect.savetogether.co>",
-        reply_to: "SaveTogether <reply@connect.savetogether.co>",
+        reply_to: "SaveTogether <reply@savetogether.co>",
         to: [email],
         subject: `${emailContent.subject} (TEST)`,
         html: emailContent.getHtml(unsubscribeLink),
