@@ -9,7 +9,7 @@ interface SEOProps {
   jsonLd?: object;
 }
 
-const BASE_URL = 'https://savetogether.lovable.app';
+const BASE_URL = 'https://savetogether.co';
 const DEFAULT_IMAGE = `${BASE_URL}/og-image.png`;
 
 export default function SEO({ 
