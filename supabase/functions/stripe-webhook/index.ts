@@ -55,20 +55,13 @@ function getWelcomeEmailHtml(unsubscribeLink: string): string {
       <h1>SaveTogether</h1>
     </div>
     <div class="content">
-      <h2>Welcome to Your Savings Journey! 🎉</h2>
-      <p>Congratulations on taking the first step toward building a lasting savings habit!</p>
-      <p>Over the next 14 days, you'll receive daily emails with simple, actionable tasks designed to help you:</p>
-      <ul>
-        <li>Build momentum with small wins</li>
-        <li>Develop a savings mindset</li>
-        <li>Create lasting financial habits</li>
-      </ul>
-      <div class="action-box">
-        <h3>📌 What's Next</h3>
-        <p>Tomorrow you'll receive Day 1 with your first action item. Get ready to start building your savings habit!</p>
-      </div>
-      <p>Get excited — Day 1 starts tomorrow!</p>
-      <p>— The SaveTogether Team</p>
+      <h2>We're really glad you're here.</h2>
+      <p>Saving can feel intimidating, especially if money has mostly been about survival, stress, or "I'll deal with it later." Vault Starter exists because we believe saving shouldn't require perfection, spreadsheets, or guilt.</p>
+      <p>Over the next 14 days, we'll walk through this together. Small steps. Realistic actions. No shaming. No "just stop buying coffee" nonsense.</p>
+      <p>You might see us mention something called "Today's action." That just means the one small step we're suggesting for the day. There's never more than one, and it's always optional.</p>
+      <p>Some days will take five minutes. Some days are rest days. All days are designed to help you feel more in control, not more overwhelmed.</p>
+      <p><strong>Tomorrow, we start with the easiest win.</strong></p>
+      <p>— SaveTogether</p>
     </div>
     <div class="footer">
       <p>Questions? Just hit reply — we read every message.</p>

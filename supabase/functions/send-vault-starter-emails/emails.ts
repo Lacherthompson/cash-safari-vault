@@ -20,6 +20,8 @@ const emailStyles = `
     .action-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left: 4px solid #10b981; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
     .action-box h3 { color: #059669; margin: 0 0 10px 0; font-size: 16px; font-weight: 600; }
     .action-box p { margin: 0; color: #065f46; }
+    .action-box ul { margin: 10px 0 0 0; padding-left: 20px; color: #065f46; }
+    .action-box li { margin: 4px 0; }
     .cta-button { display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; margin: 20px 0; }
     .footer { background-color: #f9fafb; padding: 25px; text-align: center; border-top: 1px solid #e5e7eb; }
     .footer p { margin: 8px 0; font-size: 14px; color: #6b7280; }
@@ -28,7 +30,6 @@ const emailStyles = `
     .unsubscribe a { color: #9ca3af; text-decoration: underline; }
     ul { padding-left: 20px; }
     li { margin: 8px 0; color: #4a5568; }
-    .emoji { font-size: 18px; }
   </style>
 `;
 
@@ -61,279 +62,252 @@ const getEmailWrapper = (content: string, unsubscribeLink: string): string => `
 `;
 
 export const challengeEmails: ChallengeEmail[] = [
-  // Day 0 - Welcome Email
+  // Day 0 - Welcome Email (sent immediately after purchase via stripe-webhook)
   {
     day: 0,
-    subject: "Welcome to the 14-Day Vault Starter Challenge! 🎉",
+    subject: "Welcome to Vault Starter. Let's do this together.",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Welcome to Your Savings Journey! 🎉</h2>
-      <p>Congratulations on taking the first step toward building a lasting savings habit!</p>
-      <p>Over the next 14 days, you'll receive daily emails with simple, actionable tasks designed to help you:</p>
-      <ul>
-        <li>Build momentum with small wins</li>
-        <li>Develop a savings mindset</li>
-        <li>Create lasting financial habits</li>
-      </ul>
-      <div class="action-box">
-        <h3>📌 What's Next</h3>
-        <p>Tomorrow you'll receive Day 1 with your first action item. Get ready to start building your savings habit!</p>
-      </div>
-      <p>Get excited — Day 1 starts tomorrow!</p>
-      <p>— The SaveTogether Team</p>
+      <h2>We're really glad you're here.</h2>
+      <p>Saving can feel intimidating, especially if money has mostly been about survival, stress, or "I'll deal with it later." Vault Starter exists because we believe saving shouldn't require perfection, spreadsheets, or guilt.</p>
+      <p>Over the next 14 days, we'll walk through this together. Small steps. Realistic actions. No shaming. No "just stop buying coffee" nonsense.</p>
+      <p>You might see us mention something called "Today's action." That just means the one small step we're suggesting for the day. There's never more than one, and it's always optional.</p>
+      <p>Some days will take five minutes. Some days are rest days. All days are designed to help you feel more in control, not more overwhelmed.</p>
+      <p><strong>Tomorrow, we start with the easiest win.</strong></p>
+      <p>— SaveTogether</p>
     `, unsubscribeLink)
   },
   
   // Day 1
   {
     day: 1,
-    subject: "Day 1: Let's Set Your Savings Goal 🎯",
+    subject: "Day 1: The easiest win (promise)",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 1: Define Your "Why" 🎯</h2>
-      <p>Every successful savings journey starts with a clear goal. Today, we're going to get specific about what you're saving for.</p>
+      <p>We used to think saving had to start with a big lifestyle change. Turns out, momentum matters more than amount.</p>
+      <p>Today is about creating a place for your savings to live.</p>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Create your first vault on SaveTogether and set a specific savings goal with a target amount. Whether it's $500 for an emergency fund or $2,000 for a vacation — make it real.</p>
+        <h3>📌 Today's action</h3>
+        <p>Open SaveTogether and create ONE vault.</p>
+        <p style="margin-top: 12px;">Pick a goal that feels emotionally motivating, not "responsible."</p>
+        <p style="margin-top: 8px;"><strong>Examples:</strong></p>
+        <ul>
+          <li>Emergency cushion</li>
+          <li>Pay off a card</li>
+          <li>Trip fund</li>
+          <li>Peace-of-mind buffer</li>
+        </ul>
+        <p style="margin-top: 12px;">Set the total amount. You'll manually add savings as you go.</p>
       </div>
-      <p>Pro tip: Goals with emotional meaning are 3x more likely to be achieved. Don't just save "money" — save for something that excites you.</p>
       <a href="https://savetogether.co/" class="cta-button">Create Your Vault</a>
-      <p>See you tomorrow for Day 2!</p>
-      <p>— The SaveTogether Team</p>
+      <p>If you want, hit reply and tell us what you named it.</p>
+      <p>Tomorrow, we'll make this vault feel more real without adding stress.</p>
     `, unsubscribeLink)
   },
   
   // Day 2
   {
     day: 2,
-    subject: "Day 2: The Small Wins Strategy 💪",
+    subject: "Day 2: Make it feel real",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 2: Start Small, Win Big 💪</h2>
-      <p>Here's a secret: the amount you save today matters less than the act of saving itself. We're building a habit, not just a balance.</p>
+      <p>A goal only sticks if it feels personal.</p>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Check off your first amount in your vault — even if it's just $1. The goal is to get that first checkmark and feel the momentum.</p>
+        <h3>📌 Today's action</h3>
+        <p>Add one personal detail to your vault:</p>
+        <ul>
+          <li>A description of why it matters</li>
+          <li>A start date</li>
+          <li>Or invite someone to save with you</li>
+        </ul>
       </div>
-      <p>Research shows that small wins create a dopamine response that makes you want to repeat the behavior. That's exactly what we're after.</p>
-      <a href="https://savetogether.co/" class="cta-button">Make Your First Save</a>
-      <p>How did it feel? Hit reply and let me know!</p>
-      <p>— The SaveTogether Team</p>
+      <a href="https://savetogether.co/" class="cta-button">Open Your Vault</a>
+      <p>Reply if you invited someone — we love seeing shared goals.</p>
+      <p>Tomorrow, we'll find money you already have.</p>
     `, unsubscribeLink)
   },
   
   // Day 3
   {
     day: 3,
-    subject: "Day 3: Find Your Hidden Money 🔍",
+    subject: "The $50 you're about to find",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 3: The Subscription Audit 🔍</h2>
-      <p>Today we're going treasure hunting in your bank statement. You'd be surprised how much "hidden money" is sitting in forgotten subscriptions.</p>
+      <p>Most people don't fail at saving. They just don't know where their money is quietly leaking.</p>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Review your last bank statement and identify at least one subscription you can cancel or downgrade. Put that money toward your vault instead.</p>
+        <h3>📌 Today's action</h3>
+        <p>Check your bank or card app for one forgotten or unnecessary charge.</p>
+        <p style="margin-top: 8px;">Cancel it or downgrade it.</p>
+        <p style="margin-top: 8px;">Move that amount into your vault, even if it's small.</p>
       </div>
-      <p>Common finds: Unused streaming services, gym memberships, apps on auto-renew, premium versions of things you use for free features only.</p>
       <a href="https://savetogether.co/" class="cta-button">Add to Your Vault</a>
-      <p>Found something? Reply and tell me what you're cutting!</p>
-      <p>— The SaveTogether Team</p>
+      <p>Reply and tell us what you found.</p>
+      <p><strong>Tomorrow is a rest day.</strong> That's intentional.</p>
     `, unsubscribeLink)
   },
   
-  // Day 4
+  // Day 4 (REST)
   {
     day: 4,
-    subject: "Day 4: The 24-Hour Rule ⏰",
+    subject: "Let the win sink in",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 4: Master the Pause ⏰</h2>
-      <p>Impulse purchases are the silent killer of savings goals. Today, we're adding a powerful tool to your toolkit: the 24-hour rule.</p>
-      <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Before any non-essential purchase today, wait 24 hours. Write down what you wanted to buy and revisit it tomorrow. If you still want it, buy it. If not, save that money.</p>
-      </div>
-      <p>Studies show that 70% of impulse purchases are regretted. The pause gives your rational brain time to catch up with your emotional brain.</p>
-      <a href="https://savetogether.co/" class="cta-button">Track Your Progress</a>
-      <p>— The SaveTogether Team</p>
+      <p><strong>No action today.</strong></p>
+      <p>Yesterday proved that money can move with intention.</p>
+      <p>Tomorrow, we'll talk about building a saving rhythm.</p>
+      <p>— SaveTogether</p>
     `, unsubscribeLink)
   },
   
   // Day 5
   {
     day: 5,
-    subject: "Day 5: Automate Your Success 🤖",
+    subject: "Day 5: Pick your saving moment",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 5: Set It and Forget It 🤖</h2>
-      <p>The best savings happen automatically. Today, we're going to make saving effortless.</p>
+      <p>What works isn't motivation — it's rhythm.</p>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Set up an automatic transfer to your savings account — even if it's just $5 per week. The key is making it automatic so you don't have to think about it.</p>
+        <h3>📌 Today's action</h3>
+        <p>Decide when you'll manually add money to your vault.</p>
+        <p style="margin-top: 8px;"><strong>Examples:</strong></p>
+        <ul>
+          <li>After payday</li>
+          <li>End of the week</li>
+          <li>After a no-spend day</li>
+        </ul>
+        <p style="margin-top: 8px;">Write it down somewhere visible.</p>
       </div>
-      <p>People who automate their savings save 2-3x more than those who do it manually. Remove the decision and watch your vault grow.</p>
-      <a href="https://savetogether.co/" class="cta-button">Check Your Vault</a>
-      <p>Automation set up? Reply and let me know!</p>
-      <p>— The SaveTogether Team</p>
+      <p>Reply if you want accountability.</p>
+      <p>Tomorrow is a recovery day.</p>
     `, unsubscribeLink)
   },
   
-  // Day 6
+  // Day 6 (REST)
   {
     day: 6,
-    subject: "Day 6: The Savings Mindset Shift 🧠",
+    subject: "You didn't fall behind",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 6: Reframe Your Thinking 🧠</h2>
-      <p>Here's a mindset shift that changes everything: You're not "giving up" spending — you're "choosing" your future.</p>
-      <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Write down 3 things your future self will thank you for saving toward. Keep this somewhere you'll see it daily.</p>
-      </div>
-      <p>When you see savings as a choice rather than a sacrifice, the whole game changes. You're not depriving yourself — you're investing in yourself.</p>
-      <a href="https://savetogether.co/" class="cta-button">Visit Your Vault</a>
-      <p>— The SaveTogether Team</p>
+      <p><strong>No action today.</strong></p>
+      <p>If you missed something earlier, you didn't fail.</p>
+      <p>Tomorrow, we'll check progress gently.</p>
+      <p>— SaveTogether</p>
     `, unsubscribeLink)
   },
   
   // Day 7
   {
     day: 7,
-    subject: "Day 7: Week 1 Complete! 🏆",
+    subject: "One week in",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Week 1 Complete! 🏆</h2>
-      <p>You've made it through your first week! This is huge. Most people give up on new habits by day 3 — but not you.</p>
+      <p>Most people have already:</p>
+      <ul>
+        <li>Created a real goal</li>
+        <li>Found extra money</li>
+        <li>Built awareness</li>
+      </ul>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Check your vault and celebrate your progress! How many amounts have you checked off? Reply and tell me your wins from this week.</p>
+        <h3>📌 Today's action</h3>
+        <p>Check your progress bar.</p>
+        <p style="margin-top: 8px;">Adjust the goal if needed — or keep it as is.</p>
       </div>
-      <p>Remember: Progress, not perfection. Even if you only saved a little, you're building the muscle that matters.</p>
-      <a href="https://savetogether.co/" class="cta-button">See Your Progress</a>
-      <p>Week 2 is going to be even better!</p>
-      <p>— The SaveTogether Team</p>
+      <a href="https://savetogether.co/" class="cta-button">Check Your Progress</a>
+      <p>Reply and tell us how week one felt.</p>
+      <p>Tomorrow, we slow down.</p>
     `, unsubscribeLink)
   },
   
-  // Day 8
+  // Day 8 (REST)
   {
     day: 8,
-    subject: "Day 8: The Envelope Method 📬",
+    subject: "Midpoint pause",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 8: Visual Budgeting 📬</h2>
-      <p>Sometimes the best strategies are the simplest. Today, we're talking about the envelope method — a classic that works.</p>
-      <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Pick one spending category (eating out, entertainment, coffee) and set a weekly cash limit. When it's gone, it's gone. Leftover? Goes to your vault.</p>
-      </div>
-      <p>Physical cash creates "pain of paying" that cards don't. It makes you more mindful of every dollar.</p>
-      <a href="https://savetogether.co/" class="cta-button">Update Your Vault</a>
-      <p>— The SaveTogether Team</p>
+      <p><strong>No action today.</strong></p>
+      <p>Tomorrow, we'll do a quick check-in.</p>
+      <p>— SaveTogether</p>
     `, unsubscribeLink)
   },
   
   // Day 9
   {
     day: 9,
-    subject: "Day 9: Find Your Savings Buddy 👯",
+    subject: "Day 9: Quick check-in",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 9: Accountability Partner 👯</h2>
-      <p>Saving is easier with support. People with accountability partners are 65% more likely to achieve their goals.</p>
+      <p>Halfway through is where honesty matters most.</p>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Invite a friend or family member to join your savings journey. Share your goal with them or invite them to SaveTogether to save alongside you.</p>
+        <h3>📌 Today's action</h3>
+        <p>Ask yourself: does this goal still feel doable?</p>
+        <p style="margin-top: 8px;">Adjust if needed — smaller is smarter.</p>
       </div>
-      <p>Pro tip: You can create shared vaults on SaveTogether! Save together for a trip, a gift, or just to keep each other motivated.</p>
-      <a href="https://savetogether.co/" class="cta-button">Invite a Friend</a>
-      <p>— The SaveTogether Team</p>
+      <a href="https://savetogether.co/" class="cta-button">Review Your Vault</a>
+      <p>Reply if you want to talk it through.</p>
+      <p>Tomorrow, we'll share resources if you need more breathing room.</p>
     `, unsubscribeLink)
   },
   
   // Day 10
   {
     day: 10,
-    subject: "Day 10: Level Up Your Money Game 📚",
+    subject: "More breathing room (if you need it)",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 10: Knowledge is Power 📚</h2>
-      <p>The more you learn about money, the better you get at growing it. Today's about expanding your financial toolkit.</p>
+      <p>Sometimes there truly isn't extra money — and that's real.</p>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Check out our Savings Guide for more tips and strategies. Then explore the Earn More section to discover ways to boost your income.</p>
+        <h3>📌 Today's action</h3>
+        <p>Bookmark one helpful page:</p>
+        <p style="margin-top: 8px;"><a href="https://savetogether.co/savings-guide" style="color: #059669;">Savings Guide</a></p>
+        <p style="margin-top: 4px;"><a href="https://savetogether.co/earn-more" style="color: #059669;">Earn More</a></p>
       </div>
-      <p>Small knowledge gains compound just like money does. Invest 10 minutes in learning today.</p>
-      <a href="https://savetogether.co/savings-guide" class="cta-button">Read the Savings Guide</a>
-      <p style="text-align: center; margin-top: 10px;"><a href="https://savetogether.co/earn-more" style="color: #10b981;">Explore Earn More →</a></p>
-      <p>— The SaveTogether Team</p>
+      <p>Don't do everything.</p>
+      <p>Tomorrow is a rest day.</p>
     `, unsubscribeLink)
   },
   
-  // Day 11
+  // Day 11 (REST)
   {
     day: 11,
-    subject: "Day 11: The No-Spend Challenge 🚫",
+    subject: "You're still doing great",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 11: No-Spend Day Challenge 🚫</h2>
-      <p>Ready for a mini challenge? Today, we're going zero on non-essential spending.</p>
-      <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Commit to a no-spend day. No coffee runs, no online shopping, no "just this one thing." Essentials only. Track what you would have spent and add it to your vault.</p>
-      </div>
-      <p>This isn't about deprivation — it's about awareness. You'll be surprised what you notice about your spending habits.</p>
-      <a href="https://savetogether.co/" class="cta-button">Log Your Savings</a>
-      <p>How did it go? Reply and tell me!</p>
-      <p>— The SaveTogether Team</p>
+      <p><strong>No action today.</strong></p>
+      <p>Staying engaged is the win.</p>
+      <p>Tomorrow, we strengthen the habit.</p>
+      <p>— SaveTogether</p>
     `, unsubscribeLink)
   },
   
   // Day 12
   {
     day: 12,
-    subject: "Day 12: Celebrate Small Wins 🎊",
+    subject: "Day 12: Strengthen the habit",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 12: You Deserve Celebration 🎊</h2>
-      <p>We're almost at the finish line, and it's time to acknowledge how far you've come.</p>
+      <p>You've practiced saving manually. That matters.</p>
       <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Look at your vault progress and give yourself credit. Then, plan a small, budget-friendly reward for completing the challenge. You've earned it!</p>
+        <h3>📌 Today's action</h3>
+        <p>Add any amount to your vault — even $1.</p>
       </div>
-      <p>Celebrating progress — not just end goals — keeps motivation high. What will your reward be?</p>
-      <a href="https://savetogether.co/" class="cta-button">Check Your Progress</a>
-      <p>— The SaveTogether Team</p>
+      <a href="https://savetogether.co/" class="cta-button">Add to Your Vault</a>
+      <p>Reply "done" if you want quiet accountability.</p>
+      <p>Tomorrow, we pause again.</p>
     `, unsubscribeLink)
   },
   
-  // Day 13
+  // Day 13 (REST)
   {
     day: 13,
-    subject: "Day 13: Building for the Long Term 🏗️",
+    subject: "Almost there",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Day 13: Your Next Chapter 🏗️</h2>
-      <p>Tomorrow is the last day of our challenge, but your savings journey is just beginning. Let's set you up for long-term success.</p>
-      <div class="action-box">
-        <h3>📌 Today's Action</h3>
-        <p>Review your vault and set your next goal. What will you save for after this? Having a goal waiting keeps the momentum going.</p>
-      </div>
-      <p>The habits you've built over the past 13 days are the foundation. Now it's about maintaining and growing.</p>
-      <a href="https://savetogether.co/" class="cta-button">Plan Your Next Goal</a>
-      <p>— The SaveTogether Team</p>
+      <p><strong>No action today.</strong></p>
+      <p>Tomorrow, we wrap this up.</p>
+      <p>— SaveTogether</p>
     `, unsubscribeLink)
   },
   
   // Day 14
   {
     day: 14,
-    subject: "Day 14: You Did It! 🎉🏆",
+    subject: "Don't stop now",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
-      <h2>Congratulations — You Made It! 🎉🏆</h2>
-      <p>14 days. You showed up, you took action, and you built something real.</p>
+      <p>You built a system — not just a number.</p>
       <div class="action-box">
-        <h3>📌 Final Action</h3>
-        <p>Check your vault one more time. Look at all those checkmarks. That's you — every single one represents a choice you made to invest in your future.</p>
+        <h3>📌 Today's action</h3>
+        <p>Reply and tell us one thing you're proud of.</p>
+        <p style="margin-top: 8px;">Then check your next vault milestone.</p>
       </div>
-      <p>Here's what you've accomplished:</p>
-      <ul>
-        <li>✅ Set a meaningful savings goal</li>
-        <li>✅ Built a daily savings habit</li>
-        <li>✅ Learned strategies that work</li>
-        <li>✅ Proved to yourself that you can do this</li>
-      </ul>
-      <p>This isn't the end — it's the beginning. Keep using SaveTogether, keep checking off those amounts, and keep building toward your dreams.</p>
-      <a href="https://savetogether.co/" class="cta-button">Visit Your Vault</a>
-      <p>We're so proud of you. 💚</p>
-      <p>— The SaveTogether Team</p>
-      <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">P.S. Want to keep the accountability going? Reply and tell us about your experience. We'd love to hear your story!</p>
+      <a href="https://savetogether.co/" class="cta-button">View Your Progress</a>
+      <p>We're really glad you did this with us.</p>
+      <p>— SaveTogether</p>
     `, unsubscribeLink)
   }
 ];
