@@ -9,7 +9,7 @@ import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 import { Footer } from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import cashVaultLogo from '@/assets/cash-vault-logo.png';
+import savetogetherLogo from '@/assets/savetogether-logo.png';
 
 const days = [
   { day: 0, title: "Welcome to Vault Starter", description: "Let's do this together. Small steps, realistic actions, no shaming.", isWelcome: true },
@@ -144,7 +144,7 @@ export default function Draft() {
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2">
-              <img src={cashVaultLogo} alt="Cash Vault" className="h-8 w-auto" />
+              <img src={savetogetherLogo} alt="SaveTogether" className="h-12 sm:h-14 w-auto" />
             </Link>
             <Link to="/auth">
               <Button variant="outline" size="sm">Sign In</Button>
