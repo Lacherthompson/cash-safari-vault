@@ -43,7 +43,8 @@ async function sendEmail(to: string, subject: string, html: string): Promise<voi
       Authorization: `Bearer ${RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: "SaveTogether <onboarding@resend.dev>",
+      from: "SaveTogether <hello@connect.savetogether.co>",
+      reply_to: "SaveTogether <reply@savetogether.co>",
       to: [to],
       subject,
       html,

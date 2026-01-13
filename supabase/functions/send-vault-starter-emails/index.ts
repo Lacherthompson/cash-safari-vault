@@ -52,7 +52,7 @@ async function sendEmail(to: string, subject: string, html: string): Promise<voi
     },
     body: JSON.stringify({
       from: "SaveTogether <hello@connect.savetogether.co>",
-      reply_to: "SaveTogether <reply@connect.savetogether.co>",
+      reply_to: "SaveTogether <reply@savetogether.co>",
       to: [to],
       subject,
       html,

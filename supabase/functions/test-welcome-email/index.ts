@@ -103,8 +103,8 @@ serve(async (req) => {
         "Authorization": `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "SaveTogether <hello@connect.savetogether.co>",
-        reply_to: "SaveTogether <reply@connect.savetogether.co>",
+      from: "SaveTogether <hello@connect.savetogether.co>",
+      reply_to: "SaveTogether <reply@savetogether.co>",
         to: [email],
         subject: "Welcome to Vault Starter. Let's do this together. (TEST)",
         html: getWelcomeEmailHtml(unsubscribeLink),

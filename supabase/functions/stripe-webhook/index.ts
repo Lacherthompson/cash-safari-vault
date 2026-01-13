@@ -102,7 +102,7 @@ async function sendWelcomeEmail(email: string, unsubscribeLink: string): Promise
     },
     body: JSON.stringify({
       from: "SaveTogether <hello@connect.savetogether.co>",
-      reply_to: "SaveTogether <reply@connect.savetogether.co>",
+      reply_to: "SaveTogether <reply@savetogether.co>",
       to: [email],
       subject: "Welcome to the 14-Day Vault Starter Challenge! 🎉",
       html: getWelcomeEmailHtml(unsubscribeLink),
