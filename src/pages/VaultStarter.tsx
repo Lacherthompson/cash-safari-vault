@@ -144,7 +144,7 @@ export default function Draft() {
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2">
-              <img src={savetogetherLogo} alt="SaveTogether" className="h-12 sm:h-14 w-auto" />
+              <img src={savetogetherLogo} alt="SaveTogether" className="h-16 sm:h-20 w-auto" />
             </Link>
             <Link to="/auth">
               <Button variant="outline" size="sm">Sign In</Button>
