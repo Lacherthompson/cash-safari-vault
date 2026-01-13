@@ -8,10 +8,10 @@ interface LogoProps {
 }
 
 const sizeClasses = {
-  sm: 'h-14 sm:h-16',
-  md: 'h-20 sm:h-[104px]',
-  lg: 'h-20 sm:h-[104px] md:h-[104px] lg:h-[138px]',
-  hero: 'h-32 sm:h-40 md:h-52',
+  sm: 'h-16 sm:h-[74px]',
+  md: 'h-[92px] sm:h-[120px]',
+  lg: 'h-[92px] sm:h-[120px] md:h-[120px] lg:h-[159px]',
+  hero: 'h-[147px] sm:h-[184px] md:h-60',
 };
 
 export const Logo = ({ size = 'md', clickable = true, className = '' }: LogoProps) => {
