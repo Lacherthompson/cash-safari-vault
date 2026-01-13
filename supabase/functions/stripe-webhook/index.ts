@@ -37,8 +37,39 @@ const emailStyles = `
     .unsubscribe a { color: #9ca3af; text-decoration: underline; }
     ul { padding-left: 20px; }
     li { margin: 8px 0; color: #4a5568; }
+    .progress-tracker { background: #f8fafc; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; text-align: center; }
+    .progress-tracker .day-label { font-size: 13px; color: #64748b; margin-bottom: 8px; font-weight: 500; }
+    .progress-tracker .progress-bar { font-family: monospace; font-size: 16px; letter-spacing: 2px; color: #10b981; }
+    .progress-tracker .progress-message { font-size: 13px; color: #059669; margin-top: 8px; font-weight: 500; }
+    .week-summary { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 12px; padding: 20px; margin: 20px 0; }
+    .week-summary h4 { color: #059669; margin: 0 0 12px 0; font-size: 15px; font-weight: 600; }
+    .week-summary ul { margin: 0; padding-left: 20px; }
+    .week-summary li { color: #047857; margin: 6px 0; font-size: 14px; }
   </style>
 `;
+
+// Helper to generate progress bar
+const getProgressBar = (day: number): string => {
+  const totalDays = 14;
+  const filled = day;
+  const empty = totalDays - day;
+  const bar = '█'.repeat(filled) + '░'.repeat(empty);
+  
+  let message = '';
+  if (day === 0) message = "Your journey begins!";
+  else if (day === 7) message = "🎉 Halfway there!";
+  else if (day === 14) message = "🏆 Challenge complete!";
+  else if (day < 7) message = `${7 - day} days to halfway`;
+  else message = `${14 - day} days to go`;
+  
+  return `
+    <div class="progress-tracker">
+      <div class="day-label">Day ${day} of 14</div>
+      <div class="progress-bar">[${bar}]</div>
+      <div class="progress-message">${message}</div>
+    </div>
+  `;
+};
 
 function getWelcomeEmailHtml(unsubscribeLink: string): string {
   return `
@@ -55,11 +86,23 @@ function getWelcomeEmailHtml(unsubscribeLink: string): string {
       <h1>SaveTogether</h1>
     </div>
     <div class="content">
+      ${getProgressBar(0)}
       <h2>We're really glad you're here.</h2>
       <p>Saving can feel intimidating, especially if money has mostly been about survival, stress, or "I'll deal with it later." Vault Starter exists because we believe saving shouldn't require perfection, spreadsheets, or guilt.</p>
       <p>Over the next 14 days, we'll walk through this together. Small steps. Realistic actions. No shaming. No "just stop buying coffee" nonsense.</p>
-      <p>You might see us mention something called "Today's action." That just means the one small step we're suggesting for the day. There's never more than one, and it's always optional.</p>
+      
+      <div class="week-summary">
+        <h4>📅 Here's what to expect:</h4>
+        <ul>
+          <li><strong>Week 1:</strong> Set up your vault, open a dedicated savings account, find hidden money, build your rhythm</li>
+          <li><strong>Week 2:</strong> Check in, adjust, strengthen, and celebrate</li>
+          <li><strong>REST days:</strong> Days 4, 6, 8, 11, and 13 — no action required</li>
+        </ul>
+      </div>
+      
+      <p><strong>How it works:</strong> You'll save money into a dedicated savings account, then come back to SaveTogether to click off amounts in your vault to track your progress. The vault is your visual tracker — your savings account is where the actual money lives.</p>
       <p>Some days will take five minutes. Some days are rest days. All days are designed to help you feel more in control, not more overwhelmed.</p>
+      <p><strong>💡 Quick tip:</strong> Star this email so you can find us in your inbox.</p>
       <p><strong>Tomorrow, we start with the easiest win.</strong></p>
       <p>— SaveTogether</p>
     </div>
@@ -104,7 +147,7 @@ async function sendWelcomeEmail(email: string, unsubscribeLink: string): Promise
       from: "SaveTogether <hello@connect.savetogether.co>",
       reply_to: "SaveTogether <reply@savetogether.co>",
       to: [email],
-      subject: "Welcome to the 14-Day Vault Starter Challenge! 🎉",
+      subject: "Welcome to Vault Starter. Let's do this together.",
       html: getWelcomeEmailHtml(unsubscribeLink),
     }),
   });
