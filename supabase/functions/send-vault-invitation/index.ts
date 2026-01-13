@@ -69,7 +69,7 @@ const handler = async (req: Request): Promise<Response> => {
           </head>
           <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
             <div style="text-align: center; margin-bottom: 30px;">
-              <h1 style="color: #10b981; margin: 0;">💰 Cash Vault</h1>
+              <h1 style="color: #10b981; margin: 0;">💰 SaveTogether</h1>
             </div>
             
             <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 30px; margin-bottom: 30px;">
@@ -95,7 +95,7 @@ const handler = async (req: Request): Promise<Response> => {
             <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
             
             <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-              This invitation was sent from Cash Vault. If you didn't expect this email, you can safely ignore it.
+              This invitation was sent from SaveTogether. If you didn't expect this email, you can safely ignore it.
             </p>
           </body>
           </html>
