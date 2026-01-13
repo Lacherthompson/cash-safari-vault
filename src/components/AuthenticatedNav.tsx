@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,7 +7,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { HelpCircle, BookOpen, DollarSign, Settings, LogOut, Target, GraduationCap, ChevronDown } from 'lucide-react';
-import savetogetherLogo from '@/assets/savetogether-logo.png';
+import { Logo } from '@/components/Logo';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthenticatedNav = () => {
   const navigate = useNavigate();
@@ -22,12 +22,7 @@ export const AuthenticatedNav = () => {
   return (
     <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
       <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
-        <img 
-          src={savetogetherLogo} 
-          alt="SaveTogether" 
-          className="h-16 sm:h-[106px] cursor-pointer" 
-          onClick={() => navigate('/')} 
-        />
+        <Logo size="lg" />
         <nav className="flex items-center gap-1 sm:gap-2">
           {/* Learn dropdown for secondary items */}
           <DropdownMenu>

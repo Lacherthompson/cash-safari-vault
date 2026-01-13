@@ -9,7 +9,7 @@ import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 import { Footer } from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import savetogetherLogo from '@/assets/savetogether-logo.png';
+import { Logo } from '@/components/Logo';
 
 const days = [
   { day: 0, title: "Welcome to Vault Starter", description: "Let's do this together. Small steps, realistic actions, no shaming.", isWelcome: true },
@@ -143,9 +143,7 @@ export default function Draft() {
       ) : (
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2">
-              <img src={savetogetherLogo} alt="SaveTogether" className="h-10 sm:h-12 w-auto" />
-            </Link>
+            <Logo size="sm" />
             <Link to="/auth">
               <Button variant="outline" size="sm">Sign In</Button>
             </Link>
@@ -155,13 +153,9 @@ export default function Draft() {
 
       {/* Hero Logo Section */}
       <section className="py-12 sm:py-16 bg-gradient-to-b from-primary/5 to-transparent">
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <img 
-            src={savetogetherLogo} 
-            alt="SaveTogether" 
-            className="h-24 sm:h-32 md:h-40 w-auto mx-auto mb-6" 
-          />
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+        <div className="mx-auto max-w-4xl px-4 text-center flex flex-col items-center">
+          <Logo size="hero" clickable={false} />
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mt-6">
             Save smarter, together. Your journey to financial freedom starts here.
           </p>
         </div>

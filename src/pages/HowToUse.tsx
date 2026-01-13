@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ArrowLeft, PiggyBank, Users, Target, CheckCircle2, Bell, TrendingUp } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
-import savetogetherLogo from '@/assets/savetogether-logo.png';
+import { Logo } from '@/components/Logo';
 
 export default function HowToUse() {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ export default function HowToUse() {
           <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <img src={savetogetherLogo} alt="SaveTogether" className="h-[106px] cursor-pointer" onClick={() => navigate('/')} />
+          <Logo size="lg" />
           <div className="w-10" />
         </div>
       </header>
