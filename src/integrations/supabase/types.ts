@@ -161,6 +161,38 @@ export type Database = {
           },
         ]
       }
+      vault_milestone_emails: {
+        Row: {
+          id: string
+          milestone: number
+          sent_at: string
+          user_id: string
+          vault_id: string
+        }
+        Insert: {
+          id?: string
+          milestone: number
+          sent_at?: string
+          user_id: string
+          vault_id: string
+        }
+        Update: {
+          id?: string
+          milestone?: number
+          sent_at?: string
+          user_id?: string
+          vault_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vault_milestone_emails_vault_id_fkey"
+            columns: ["vault_id"]
+            isOneToOne: false
+            referencedRelation: "vaults"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vault_starter_purchases: {
         Row: {
           amount_paid: number
