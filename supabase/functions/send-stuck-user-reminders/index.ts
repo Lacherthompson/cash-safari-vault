@@ -8,7 +8,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const DAYS_BEFORE_REMINDER = 7;
+// Timing: Purchasers get reminded faster (they paid, more urgent)
+const DAYS_BEFORE_REMINDER_FREE_USER = 3;
+const DAYS_BEFORE_REMINDER_PURCHASER = 2;
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 
 interface StuckPurchaser {
@@ -67,11 +69,15 @@ const handler = async (req: Request): Promise<Response> => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - DAYS_BEFORE_REMINDER);
-    const cutoffDate = sevenDaysAgo.toISOString();
+    // Calculate separate cutoff dates for each user type
+    const purchaserCutoff = new Date();
+    purchaserCutoff.setDate(purchaserCutoff.getDate() - DAYS_BEFORE_REMINDER_PURCHASER);
+    
+    const freeUserCutoff = new Date();
+    freeUserCutoff.setDate(freeUserCutoff.getDate() - DAYS_BEFORE_REMINDER_FREE_USER);
 
-    console.log(`Checking for stuck users since ${cutoffDate}`);
+    console.log(`Checking for stuck purchasers since ${purchaserCutoff.toISOString()} (${DAYS_BEFORE_REMINDER_PURCHASER} days)`);
+    console.log(`Checking for stuck free users since ${freeUserCutoff.toISOString()} (${DAYS_BEFORE_REMINDER_FREE_USER} days)`);
 
     // 1. Find Vault Starter purchasers who haven't created a vault
     const { data: stuckPurchasers, error: purchasersError } = await supabase
@@ -79,7 +85,7 @@ const handler = async (req: Request): Promise<Response> => {
       .select("id, email, user_id")
       .eq("status", "completed")
       .is("stuck_reminder_sent_at", null)
-      .lt("purchased_at", cutoffDate);
+      .lt("purchased_at", purchaserCutoff.toISOString());
 
     if (purchasersError) {
       console.error("Error fetching stuck purchasers:", purchasersError);
@@ -124,7 +130,7 @@ const handler = async (req: Request): Promise<Response> => {
       .select("id, created_at, stuck_reminder_sent_at, email_unsubscribed")
       .is("stuck_reminder_sent_at", null)
       .eq("email_unsubscribed", false)
-      .lt("created_at", cutoffDate);
+      .lt("created_at", freeUserCutoff.toISOString());
 
     if (profilesError) {
       console.error("Error fetching profiles:", profilesError);
