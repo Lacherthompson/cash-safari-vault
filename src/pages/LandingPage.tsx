@@ -21,6 +21,7 @@ import {
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
+import { SocialProofStats } from '@/components/SocialProofStats';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -168,7 +169,7 @@ export default function LandingPage() {
           Set a goal, check off amounts as you save, and watch your progress grow.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
           <Button size="lg" className="font-display text-lg h-14 px-8 gap-2" onClick={() => navigate('/auth')}>
             Start Saving Free
             <ArrowRight className="h-5 w-5" />
@@ -178,15 +179,8 @@ export default function LandingPage() {
           </Button>
         </div>
 
-        {/* Benefits */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-          {benefits.map((benefit, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-vault-emerald" />
-              {benefit}
-            </div>
-          ))}
-        </div>
+        {/* Social Proof */}
+        <SocialProofStats />
       </section>
 
       {/* Features Section */}
