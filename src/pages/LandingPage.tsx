@@ -128,8 +128,8 @@ export default function LandingPage() {
         </div>
         
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight mb-6">
-          Turn saving into a
-          <span className="text-primary"> game you'll win</span>
+          Build your savings,
+          <span className="text-primary"> one check at a time</span>
         </h2>
         
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
