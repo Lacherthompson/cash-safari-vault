@@ -58,7 +58,7 @@ const getProgressBar = (day: number): string => {
   let message = '';
   if (day === 0) message = "Your journey begins!";
   else if (day === 7) message = "🎉 Halfway there!";
-  else if (day === 14) message = "🏆 Challenge complete!";
+  else if (day === 14) message = "🏆 Journey complete!";
   else if (day < 7) message = `${7 - day} days to halfway`;
   else message = `${14 - day} days to go`;
   

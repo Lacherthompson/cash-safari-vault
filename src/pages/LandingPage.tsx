@@ -29,7 +29,7 @@ export default function LandingPage() {
     <>
       <SEO
         title="SaveTogether — Track Your Savings Goals"
-        description="Turn saving into a game you'll win. Set goals, check off amounts as you save, and watch your progress grow. Free to use, no bank connection required."
+        description="Build your savings, one check at a time. Set goals, check off amounts as you save, and watch your progress grow. Free to use, no bank connection required."
         path="/"
       />
       <div className="min-h-screen bg-background">

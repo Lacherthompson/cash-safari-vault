@@ -60,7 +60,7 @@ const getProgressBar = (day: number): string => {
   let message = '';
   if (day === 0) message = "Your journey begins!";
   else if (day === 7) message = "🎉 Halfway there!";
-  else if (day === 14) message = "🏆 Challenge complete!";
+  else if (day === 14) message = "🏆 Journey complete!";
   else if (day < 7) message = `${7 - day} days to halfway`;
   else message = `${14 - day} days to go`;
   
@@ -124,7 +124,7 @@ export const challengeEmails: ChallengeEmail[] = [
       <p><strong>How it works:</strong> You'll save money into a dedicated savings account, then come back to SaveTogether to click off amounts in your vault to track your progress. The vault is your visual tracker — your savings account is where the actual money lives.</p>
       <p>Some days will take five minutes. Some days are rest days. All days are designed to help you feel more in control, not more overwhelmed.</p>
       <p><strong>💡 Quick tip:</strong> Star this email so you can find us in your inbox.</p>
-      <p><strong>Tomorrow, we start with the easiest win.</strong></p>
+      <p><strong>Tomorrow, we take your first step.</strong></p>
       <p>— SaveTogether</p>
     `, unsubscribeLink)
   },
@@ -132,7 +132,7 @@ export const challengeEmails: ChallengeEmail[] = [
   // Day 1
   {
     day: 1,
-    subject: "Day 1: The easiest win (promise)",
+    subject: "Day 1: Your first step",
     getHtml: (unsubscribeLink: string) => getEmailWrapper(`
       ${getProgressBar(1)}
       <p>We used to think saving had to start with a big lifestyle change. Turns out, momentum matters more than amount.</p>
@@ -430,7 +430,7 @@ export const challengeEmails: ChallengeEmail[] = [
       <div class="mindset-moment">
         <h4>✨ Mindset Moment</h4>
         <p class="quote">"Consistency beats intensity. The $5 you transfer to your savings account every week matters more than the $500 you planned to save 'someday.'"</p>
-        <p>Staying engaged is the win. You've opened these emails. You've thought about your money differently. That's not nothing — that's the foundation of real change.</p>
+        <p>Staying engaged matters most. You've opened these emails. You've thought about your money differently. That's not nothing — that's the foundation of real change.</p>
         <p class="reflection">💭 What would reaching this goal change for you — not just financially, but emotionally?</p>
       </div>
       

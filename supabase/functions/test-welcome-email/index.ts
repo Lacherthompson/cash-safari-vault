@@ -54,7 +54,7 @@ function getWelcomeEmailHtml(unsubscribeLink: string): string {
       <p>Over the next 14 days, we'll walk through this together. Small steps. Realistic actions. No shaming. No "just stop buying coffee" nonsense.</p>
       <p>You might see us mention something called "Today's action." That just means the one small step we're suggesting for the day. There's never more than one, and it's always optional.</p>
       <p>Some days will take five minutes. Some days are rest days. All days are designed to help you feel more in control, not more overwhelmed.</p>
-      <p><strong>Tomorrow, we start with the easiest win.</strong></p>
+      <p><strong>Tomorrow, we take your first step.</strong></p>
       <p>— SaveTogether</p>
     </div>
     <div class="footer">

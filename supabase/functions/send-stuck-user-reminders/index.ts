@@ -177,12 +177,12 @@ const handler = async (req: Request): Promise<Response> => {
 
         await sendEmail(
           purchaser.email,
-          "Your Savings Challenge is waiting for you! 🎯",
+          "Your savings journey is waiting for you! 🎯",
           `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
               <h1 style="color: #10b981;">Ready to Start Your Savings Journey?</h1>
               <p>Hi there!</p>
-              <p>We noticed you purchased the <strong>14-Day Vault Starter Challenge</strong> but haven't created your first vault yet.</p>
+              <p>We noticed you purchased the <strong>14-Day Vault Starter</strong> but haven't created your first vault yet.</p>
               <p>No worries - getting started is easy! Just:</p>
               <ol>
                 <li>Log in to your SaveTogether account</li>

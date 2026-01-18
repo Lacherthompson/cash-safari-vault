@@ -52,7 +52,7 @@ export const AuthenticatedNav = () => {
           {/* Primary actions always visible */}
           <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/vault-starter')}>
             <Target className="h-4 w-4" />
-            <span className="hidden sm:inline">Challenge</span>
+            <span className="hidden sm:inline">Starter</span>
           </Button>
           <Button variant="ghost" size="sm" className="gap-1.5 px-2 sm:px-3" onClick={() => navigate('/settings')}>
             <Settings className="h-4 w-4" />

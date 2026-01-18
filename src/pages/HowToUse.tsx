@@ -28,7 +28,7 @@ export default function HowToUse() {
     {
       icon: Bell,
       title: 'Stay on Track',
-      description: 'Watch your progress bar grow as you get closer to your goal. Celebrate small wins along the way.',
+      description: 'Watch your progress bar grow as you get closer to your goal. Every check-off is a step forward.',
     },
   ];
 
