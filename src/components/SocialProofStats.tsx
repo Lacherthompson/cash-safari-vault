@@ -85,32 +85,30 @@ function StatItem({ icon: Icon, value, label, prefix = '' }: StatItemProps) {
 export function SocialProofStats() {
   const { data, isLoading } = useSocialProof();
 
-  // Don't show anything if loading or no data
-  if (isLoading || !data) return null;
-
-  // Only show stats if we have meaningful data
-  const hasUsers = data.userCount > 0;
-  const hasVaults = data.vaultCount > 0;
-  const hasSaved = data.totalSaved > 0;
-
-  if (!hasUsers && !hasVaults && !hasSaved) return null;
+  // Check if we have meaningful stats to show
+  const hasUsers = data && data.userCount > 0;
+  const hasVaults = data && data.vaultCount > 0;
+  const hasSaved = data && data.totalSaved > 0;
+  const hasAnyStats = hasUsers || hasVaults || hasSaved;
 
   return (
     <div className="space-y-8">
-      {/* Live Stats */}
-      <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
-        {hasUsers && (
-          <StatItem icon={Users} value={data.userCount} label="Savers" />
-        )}
-        {hasVaults && (
-          <StatItem icon={Target} value={data.vaultCount} label="Goals Created" />
-        )}
-        {hasSaved && (
-          <StatItem icon={PiggyBank} value={data.totalSaved} label="Saved Together" prefix="$" />
-        )}
-      </div>
+      {/* Live Stats - only show if we have data */}
+      {!isLoading && hasAnyStats && (
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+          {hasUsers && (
+            <StatItem icon={Users} value={data.userCount} label="Savers" />
+          )}
+          {hasVaults && (
+            <StatItem icon={Target} value={data.vaultCount} label="Goals Created" />
+          )}
+          {hasSaved && (
+            <StatItem icon={PiggyBank} value={data.totalSaved} label="Saved Together" prefix="$" />
+          )}
+        </div>
+      )}
 
-      {/* Trust Badges */}
+      {/* Trust Badges - always show */}
       <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-muted-foreground">
         <div className="flex items-center gap-1.5">
           <CreditCard className="h-3.5 w-3.5" />
