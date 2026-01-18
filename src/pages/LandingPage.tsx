@@ -124,7 +124,7 @@ export default function LandingPage() {
       <section className="mx-auto max-w-5xl px-4 py-16 sm:py-20 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
           <Sparkles className="h-4 w-4" />
-          A better way to save
+          No bank link needed
         </div>
         
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight mb-6">
