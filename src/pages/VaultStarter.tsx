@@ -13,17 +13,17 @@ import { Logo } from '@/components/Logo';
 
 const days = [
   { day: 0, title: "Welcome to Vault Starter", description: "Let's do this together. Small steps, realistic actions, no shaming.", isWelcome: true },
-  { day: 1, title: "The easiest win (promise)", description: "Create ONE vault with a goal that feels emotionally motivating" },
+  { day: 1, title: "Your first step", description: "Create ONE vault with a goal that feels emotionally motivating" },
   { day: 2, title: "Make it feel real", description: "Add one personal detail to your vault" },
   { day: 3, title: "The $50 you're about to find", description: "Find one forgotten or unnecessary charge" },
-  { day: 4, title: "Let the win sink in", description: "Rest day — no action today", isRest: true },
+  { day: 4, title: "Let it sink in", description: "Rest day — no action today", isRest: true },
   { day: 5, title: "Pick your saving moment", description: "Decide when you'll manually add money to your vault" },
   { day: 6, title: "You didn't fall behind", description: "Rest day — if you missed something earlier, you didn't fail", isRest: true },
   { day: 7, title: "One week in", description: "Check your progress bar and adjust if needed" },
   { day: 8, title: "Midpoint pause", description: "Rest day — tomorrow we'll do a quick check-in", isRest: true },
   { day: 9, title: "Quick check-in", description: "Ask yourself: does this goal still feel doable?" },
   { day: 10, title: "More breathing room (if you need it)", description: "Bookmark helpful resources if you need extra support" },
-  { day: 11, title: "You're still doing great", description: "Rest day — staying engaged is the win", isRest: true },
+  { day: 11, title: "You're still doing great", description: "Rest day — staying engaged matters most", isRest: true },
   { day: 12, title: "Strengthen the habit", description: "Add any amount to your vault — even $1" },
   { day: 13, title: "Almost there", description: "Rest day — tomorrow we wrap up", isRest: true },
   { day: 14, title: "Don't stop now", description: "You built a system — not just a number" },
@@ -282,7 +282,7 @@ export default function Draft() {
         <div className="relative mx-auto max-w-4xl px-4 py-16 sm:py-24 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
             <Mail className="h-4 w-4" />
-            14-Day Email Challenge
+            14-Day Email Journey
           </div>
           
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
