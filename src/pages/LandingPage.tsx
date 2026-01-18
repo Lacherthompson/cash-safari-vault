@@ -22,6 +22,7 @@ import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
 import { SocialProofStats } from '@/components/SocialProofStats';
+import { VaultDemo } from '@/components/VaultDemo';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -183,9 +184,44 @@ export default function LandingPage() {
         <SocialProofStats />
       </section>
 
-      {/* Features Section */}
+      {/* Visual Demo Section */}
       <section className="bg-muted/30 border-y border-border/40">
-        <div className="mx-auto max-w-5xl px-4 py-20">
+        <div className="mx-auto max-w-5xl px-4 py-16">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
+            {/* Demo */}
+            <div className="order-2 lg:order-1 flex justify-center">
+              <VaultDemo />
+            </div>
+            
+            {/* Description */}
+            <div className="order-1 lg:order-2 text-center lg:text-left">
+              <h3 className="text-3xl font-display font-bold tracking-tight mb-4">
+                See it in action
+              </h3>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-6">
+                Watch as amounts get checked off automatically. Each tap represents money you've saved—making 
+                progress feel real and rewarding.
+              </p>
+              <ul className="space-y-3 text-left inline-block">
+                {[
+                  'Check off any amount when you save it',
+                  'Watch your progress bar fill up',
+                  'Build streaks to stay motivated',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-muted-foreground">
+                    <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20">
+        <div className="mx-auto max-w-5xl px-4">
           <div className="text-center mb-12">
             <h3 className="text-3xl font-display font-bold tracking-tight mb-3">
               Everything you need to save smarter
