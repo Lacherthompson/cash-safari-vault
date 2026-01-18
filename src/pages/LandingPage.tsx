@@ -133,7 +133,7 @@ export default function LandingPage() {
         </h2>
         
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-          Set a goal, check off amounts as you save, and watch your progress grow. Free and simple.
+          Set a goal, check off each save, and watch your progress grow. Small steps lead to big wins.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
