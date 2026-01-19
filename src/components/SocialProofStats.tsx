@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Users, Target, PiggyBank, Shield, CreditCard, Lock } from 'lucide-react';
+import { Users, Target, PiggyBank, CreditCard, Lock } from 'lucide-react';
 import { useSocialProof } from '@/hooks/useSocialProof';
 
 function formatNumber(num: number, prefix = ''): string {
@@ -117,10 +117,6 @@ export function SocialProofStats() {
         <div className="flex items-center gap-1.5">
           <Lock className="h-3.5 w-3.5" />
           <span>Your data stays private</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <Shield className="h-3.5 w-3.5" />
-          <span>Works with any bank</span>
         </div>
       </div>
     </div>
