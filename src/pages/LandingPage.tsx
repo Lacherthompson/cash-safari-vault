@@ -17,12 +17,31 @@ import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
 import { SocialProofStats } from '@/components/SocialProofStats';
+import { useABTest, trackABConversion } from '@/hooks/useABTest';
 import { VaultDemo } from '@/components/VaultDemo';
+
+// A/B Test Configuration
+const HEADLINE_TEST = {
+  testName: 'homepage_headline_jan2026',
+  variants: {
+    A: 'The Savings Method That Actually Works',
+    B: 'Save Your First $1,000 — No Budgeting Required',
+  },
+};
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showStickyCTA, setShowStickyCTA] = useState(false);
+  
+  // A/B test for headline
+  const { variant, value: headline } = useABTest(HEADLINE_TEST);
+
+  // Track conversion when user clicks CTA
+  const handleCTAClick = () => {
+    trackABConversion(HEADLINE_TEST.testName, variant);
+    navigate('/auth');
+  };
 
   // Show sticky CTA after scrolling past hero section
   useEffect(() => {
@@ -139,8 +158,7 @@ export default function LandingPage() {
         </div>
         
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight mb-6">
-          The Savings Method
-          <span className="text-primary"> That Actually Works</span>
+          {headline}
         </h2>
         
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -148,7 +166,7 @@ export default function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <Button size="lg" className="font-display text-lg h-14 px-8 gap-2" onClick={() => navigate('/auth')}>
+          <Button size="lg" className="font-display text-lg h-14 px-8 gap-2" onClick={handleCTAClick}>
             Start Saving Free
             <ArrowRight className="h-5 w-5" />
           </Button>
@@ -196,7 +214,7 @@ export default function LandingPage() {
         <p className="text-muted-foreground text-lg mb-8">
           Create your first vault in under a minute. It's free.
         </p>
-        <Button size="lg" className="font-display text-lg h-14 px-10 gap-2" onClick={() => navigate('/auth')}>
+        <Button size="lg" className="font-display text-lg h-14 px-10 gap-2" onClick={handleCTAClick}>
           Get Started
           <ArrowRight className="h-5 w-5" />
         </Button>
@@ -212,7 +230,7 @@ export default function LandingPage() {
       >
         <Button 
           className="w-full font-display h-12 text-base gap-2" 
-          onClick={() => navigate('/auth')}
+          onClick={handleCTAClick}
         >
           Start Saving Free
           <ArrowRight className="h-4 w-4" />
