@@ -107,6 +107,31 @@ const handler = async (req: Request): Promise<Response> => {
     const redirectTarget = `/vault/${vaultId}?invited=${encodeURIComponent(invitedEmail)}`;
     const inviteLink = `https://savetogether.co/auth?redirect=${encodeURIComponent(redirectTarget)}`;
 
+    // Get the inviter's display name (use email prefix if no name available)
+    const inviterName = inviterEmail.split('@')[0];
+    const inviterDisplayName = inviterName.charAt(0).toUpperCase() + inviterName.slice(1);
+
+    // Fetch social proof stats using service role for public stats
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+    );
+
+    const [profilesResult, vaultsResult, amountsResult] = await Promise.all([
+      supabaseAdmin.from('profiles').select('id', { count: 'exact', head: true }),
+      supabaseAdmin.from('vaults').select('id', { count: 'exact', head: true }),
+      supabaseAdmin.from('vault_amounts').select('amount').eq('is_checked', true),
+    ]);
+
+    const userCount = profilesResult.count ?? 0;
+    const vaultCount = vaultsResult.count ?? 0;
+    const totalSaved = amountsResult.data?.reduce((sum, row) => sum + row.amount, 0) ?? 0;
+
+    // Format total saved for display
+    const formattedTotalSaved = totalSaved >= 1000 
+      ? `$${(totalSaved / 1000).toFixed(0)}k+` 
+      : `$${totalSaved.toLocaleString()}`;
+
     const emailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -116,7 +141,7 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "SaveTogether <noreply@connect.savetogether.co>",
         to: [invitedEmail],
-        subject: `You've been invited to join a savings vault!`,
+        subject: `${inviterDisplayName} wants to save money with you 💰`,
         html: `
           <!DOCTYPE html>
           <html>
@@ -124,36 +149,97 @@ const handler = async (req: Request): Promise<Response> => {
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
           </head>
-          <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <div style="text-align: center; margin-bottom: 30px;">
-              <h1 style="color: #10b981; margin: 0;">💰 SaveTogether</h1>
+          <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fafafa;">
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 24px;">
+              <h1 style="color: #10b981; margin: 0; font-size: 28px;">💰 SaveTogether</h1>
+              <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">The savings method that actually works</p>
             </div>
             
-            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 30px; margin-bottom: 30px;">
-              <h2 style="margin-top: 0; color: #166534;">You're Invited!</h2>
-              <p style="font-size: 16px; margin-bottom: 20px;">
-                <strong>${inviterEmail}</strong> has invited you to join their savings vault: <strong>"${vaultName}"</strong>
+            <!-- Main Card -->
+            <div style="background: white; border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+              
+              <!-- Personal Invitation -->
+              <div style="text-align: center; margin-bottom: 24px;">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+                  <span style="font-size: 28px;">🤝</span>
+                </div>
+                <h2 style="margin: 0 0 8px; color: #111827; font-size: 22px;">You're Invited to Save Together!</h2>
+                <p style="font-size: 16px; color: #4b5563; margin: 0;">
+                  <strong style="color: #10b981;">${inviterDisplayName}</strong> thinks you'd be a great savings partner
+                </p>
+              </div>
+              
+              <!-- Vault Details -->
+              <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center;">
+                <p style="font-size: 13px; color: #6b7280; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.5px;">You're invited to join</p>
+                <p style="font-size: 20px; font-weight: 700; color: #166534; margin: 0;">"${vaultName}"</p>
+              </div>
+              
+              <!-- Benefits -->
+              <div style="margin-bottom: 28px;">
+                <p style="font-size: 15px; color: #374151; margin-bottom: 16px; text-align: center;">
+                  SaveTogether makes saving money feel like a game. Here's how it works:
+                </p>
+                <div style="display: block;">
+                  <div style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
+                    <span style="color: #10b981; font-weight: bold;">✓</span>
+                    <span style="color: #374151; margin-left: 8px;">Check off amounts as you save them to your real account</span>
+                  </div>
+                  <div style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
+                    <span style="color: #10b981; font-weight: bold;">✓</span>
+                    <span style="color: #374151; margin-left: 8px;">Watch your progress grow with satisfying visual feedback</span>
+                  </div>
+                  <div style="padding: 8px 0;">
+                    <span style="color: #10b981; font-weight: bold;">✓</span>
+                    <span style="color: #374151; margin-left: 8px;">Save together with ${inviterDisplayName} and stay accountable</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- CTA Button -->
+              <div style="text-align: center; margin-bottom: 24px;">
+                <a href="${inviteLink}" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; text-decoration: none; padding: 16px 40px; border-radius: 10px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.4);">
+                  Accept Invitation →
+                </a>
+              </div>
+              
+              <p style="font-size: 13px; color: #9ca3af; text-align: center; margin: 0;">
+                Takes less than 30 seconds to join. Free forever.
               </p>
-              <p style="font-size: 14px; color: #4b5563;">
-                Save together by checking off amounts as you save. Track your progress and achieve your goals as a team!
+            </div>
+            
+            <!-- Social Proof -->
+            ${userCount > 10 ? `
+            <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center;">
+              <p style="font-size: 13px; color: #6b7280; margin: 0 0 12px;">Join a growing community of savers</p>
+              <div style="display: inline-block;">
+                <span style="display: inline-block; padding: 0 16px; border-right: 1px solid #e5e7eb;">
+                  <span style="display: block; font-size: 20px; font-weight: 700; color: #10b981;">${userCount.toLocaleString()}</span>
+                  <span style="font-size: 11px; color: #9ca3af;">Savers</span>
+                </span>
+                <span style="display: inline-block; padding: 0 16px; border-right: 1px solid #e5e7eb;">
+                  <span style="display: block; font-size: 20px; font-weight: 700; color: #10b981;">${vaultCount.toLocaleString()}</span>
+                  <span style="font-size: 11px; color: #9ca3af;">Vaults</span>
+                </span>
+                <span style="display: inline-block; padding: 0 16px;">
+                  <span style="display: block; font-size: 20px; font-weight: 700; color: #10b981;">${formattedTotalSaved}</span>
+                  <span style="font-size: 11px; color: #9ca3af;">Saved</span>
+                </span>
+              </div>
+            </div>
+            ` : ''}
+            
+            <!-- Footer -->
+            <div style="text-align: center;">
+              <p style="font-size: 12px; color: #9ca3af; margin-bottom: 8px;">
+                ${inviterDisplayName} (${inviterEmail}) invited you via SaveTogether
+              </p>
+              <p style="font-size: 11px; color: #d1d5db;">
+                If you didn't expect this invitation, you can safely ignore this email.
               </p>
             </div>
-            
-            <div style="text-align: center; margin-bottom: 30px;">
-              <a href="${inviteLink}" style="display: inline-block; background: #10b981; color: white; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;">
-                Join the Vault
-              </a>
-            </div>
-            
-            <p style="font-size: 13px; color: #6b7280; text-align: center;">
-              If you don't have an account yet, you'll be prompted to create one.
-            </p>
-            
-            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
-            
-            <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-              This invitation was sent from SaveTogether. If you didn't expect this email, you can safely ignore it.
-            </p>
           </body>
           </html>
         `,
