@@ -216,7 +216,7 @@ const handler = async (req: Request): Promise<Response> => {
               </div>
               
               <p style="font-size: 13px; color: #9ca3af; text-align: center; margin: 0;">
-                Takes less than 30 seconds to join. Free forever.
+                Takes less than 30 seconds to join. No bank link needed.
               </p>
             </div>
             
