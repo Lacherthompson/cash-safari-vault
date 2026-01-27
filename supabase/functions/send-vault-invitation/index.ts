@@ -62,10 +62,10 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Verify user owns or is a member of the vault
+    // Verify user owns or is a member of the vault and get goal amount
     const { data: vault } = await supabaseClient
       .from("vaults")
-      .select("created_by")
+      .select("created_by, goal_amount")
       .eq("id", vaultId)
       .single();
 
@@ -75,6 +75,8 @@ const handler = async (req: Request): Promise<Response> => {
         { status: 404, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
+
+    const goalAmount = vault.goal_amount;
 
     // Check if user is creator or member
     if (vault.created_by !== user.id) {
@@ -174,7 +176,11 @@ const handler = async (req: Request): Promise<Response> => {
               <!-- Vault Details -->
               <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center;">
                 <p style="font-size: 13px; color: #6b7280; margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.5px;">You're invited to join</p>
-                <p style="font-size: 20px; font-weight: 700; color: #166534; margin: 0;">"${vaultName}"</p>
+                <p style="font-size: 20px; font-weight: 700; color: #166534; margin: 0 0 12px;">"${vaultName}"</p>
+                <div style="background: white; border-radius: 8px; padding: 12px 20px; display: inline-block;">
+                  <p style="font-size: 12px; color: #6b7280; margin: 0 0 2px;">Savings Goal</p>
+                  <p style="font-size: 24px; font-weight: 700; color: #10b981; margin: 0;">$${goalAmount.toLocaleString()}</p>
+                </div>
               </div>
               
               <!-- Benefits -->
