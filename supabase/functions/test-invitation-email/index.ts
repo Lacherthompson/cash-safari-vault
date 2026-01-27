@@ -89,9 +89,13 @@ const handler = async (req: Request): Promise<Response> => {
               
               <!-- Personal Invitation -->
               <div style="text-align: center; margin-bottom: 24px;">
-                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 28px;">🤝</span>
-                </div>
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto 16px;">
+                  <tr>
+                    <td style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; text-align: center; vertical-align: middle;">
+                      <span style="font-size: 28px; line-height: 64px;">🤝</span>
+                    </td>
+                  </tr>
+                </table>
                 <h2 style="margin: 0 0 8px; color: #111827; font-size: 22px;">You're Invited to Save Together!</h2>
                 <p style="font-size: 16px; color: #4b5563; margin: 0;">
                   <strong style="color: #10b981;">${inviterDisplayName}</strong> thinks you'd be a great savings partner
@@ -111,20 +115,20 @@ const handler = async (req: Request): Promise<Response> => {
               <!-- Benefits -->
               <div style="margin-bottom: 28px;">
                 <p style="font-size: 15px; color: #374151; margin-bottom: 16px; text-align: center;">
-                  SaveTogether makes saving money feel like a game. Here's how it works:
+                  Build better savings habits together. Here's how it works:
                 </p>
                 <div style="display: block;">
                   <div style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
                     <span style="color: #10b981; font-weight: bold;">✓</span>
-                    <span style="color: #374151; margin-left: 8px;">Check off amounts as you save them to your real account</span>
+                    <span style="color: #374151; margin-left: 8px;">Check off amounts as you save them to reach your goal</span>
                   </div>
                   <div style="padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
                     <span style="color: #10b981; font-weight: bold;">✓</span>
-                    <span style="color: #374151; margin-left: 8px;">Watch your progress grow with satisfying visual feedback</span>
+                    <span style="color: #374151; margin-left: 8px;">Track your progress and build consistent saving habits</span>
                   </div>
                   <div style="padding: 8px 0;">
                     <span style="color: #10b981; font-weight: bold;">✓</span>
-                    <span style="color: #374151; margin-left: 8px;">Save together with ${inviterDisplayName} and stay accountable</span>
+                    <span style="color: #374151; margin-left: 8px;">Stay accountable with ${inviterDisplayName} and reach your goal faster</span>
                   </div>
                 </div>
               </div>
