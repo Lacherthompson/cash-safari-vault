@@ -1,167 +1,105 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, PiggyBank, Users, Target, CheckCircle2, Bell, TrendingUp } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ArrowRight } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import howItWorksVideo from '@/assets/how-it-works.mp4';
 
 export default function HowToUse() {
   const navigate = useNavigate();
 
   const steps = [
-    {
-      icon: PiggyBank,
-      title: 'Create a Vault',
-      description: 'Start by creating a savings vault with a name and goal amount. Choose a color to make it yours.',
-    },
-    {
-      icon: Target,
-      title: 'Check Off Amounts',
-      description: 'Your vault generates random savings amounts. When you save that amount, check it off to track your progress.',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Build Your Streak',
-      description: 'Save consistently to build your streak. Daily or weekly—pick your pace and stay motivated.',
-    },
-    {
-      icon: Bell,
-      title: 'Stay on Track',
-      description: 'Watch your progress bar grow as you get closer to your goal. Every check-off is a step forward.',
-    },
-  ];
-
-  const collaboratorSteps = [
-    {
-      step: 1,
-      title: 'Open Your Vault',
-      description: 'Navigate to the vault you want to share and tap the menu button.',
-    },
-    {
-      step: 2,
-      title: 'Invite a Collaborator',
-      description: 'Enter their email address to send an invitation. They\'ll receive an email to join.',
-    },
-    {
-      step: 3,
-      title: 'Save Together',
-      description: 'Both of you can check off amounts independently. Your combined savings count toward the goal.',
-    },
+    { step: '1', text: 'Create a vault with your savings goal' },
+    { step: '2', text: 'Check off amounts as you save them' },
+    { step: '3', text: 'Watch your progress grow' },
   ];
 
   return (
     <>
       <SEO
-        title="How to Save Money with SaveTogether"
-        description="Learn how to use SaveTogether to track your savings, build streaks, and invite collaborators to save together. Simple tips that actually work."
+        title="How SaveTogether Works — Simple Savings Tracking"
+        description="Create a vault, check off amounts as you save, and watch your progress grow. It's that simple."
         path="/how-to-use"
         type="article"
       />
       <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
-          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <Logo size="lg" />
-          <div className="w-10" />
-        </div>
-      </header>
+        <header className="border-b border-border/60 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
+          <div className="mx-auto max-w-4xl px-4 py-3 flex items-center justify-between">
+            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => navigate('/')}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <Logo size="lg" />
+            <div className="w-10" />
+          </div>
+        </header>
 
-      <main className="mx-auto max-w-4xl px-4 py-8 space-y-12">
-        {/* Getting Started Section */}
-        <section>
-          <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-4">
-            How to Save Money with SaveTogether — Tips That Work
-          </h1>
-          <p className="text-lg text-muted-foreground mb-6">
-            Looking for a simple way to save money and stay motivated? SaveTogether helps you track your savings with a fun, visual check-off system. Here's how to get started and reach your savings goals faster.
-          </p>
-          <h2 className="text-2xl font-display font-semibold tracking-tight mb-4">Getting Started</h2>
-          
-          <div className="grid gap-4 sm:grid-cols-2">
-            {steps.map((step, index) => (
-              <Card key={index} className="border-border/60 bg-card/50">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <step.icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg font-display">{step.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm leading-relaxed">
-                    {step.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
+        <main className="mx-auto max-w-2xl px-4 py-12 flex-1">
+          {/* Hero */}
+          <div className="text-center mb-10">
+            <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-3">
+              How It Works
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              Saving money doesn't have to be complicated.
+            </p>
+          </div>
+
+          {/* Video Demo */}
+          <div className="mb-12 rounded-2xl overflow-hidden border border-border/60 shadow-lg">
+            <AspectRatio ratio={1}>
+              <video
+                src={howItWorksVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </AspectRatio>
+          </div>
+
+          {/* 3 Simple Steps */}
+          <div className="space-y-4 mb-12">
+            {steps.map((item) => (
+              <div 
+                key={item.step} 
+                className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border/60"
+              >
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-display font-bold">
+                  {item.step}
+                </div>
+                <p className="text-lg font-medium">{item.text}</p>
+              </div>
             ))}
           </div>
-        </section>
 
-        {/* Adding Collaborators Section */}
-        <section>
-          <div className="flex items-center gap-3 mb-2">
-            <Users className="h-6 w-6 text-primary" />
-            <h2 className="text-2xl font-display font-semibold tracking-tight">Save with a Goal — Together</h2>
+          {/* Pro Tip */}
+          <div className="bg-muted/50 rounded-xl p-5 mb-12">
+            <div className="flex items-start gap-3">
+              <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+              <p className="text-muted-foreground">
+                <span className="font-medium text-foreground">Pro tip:</span> Invite a friend or partner to save together — you'll both stay more motivated.
+              </p>
+            </div>
           </div>
-          <p className="text-muted-foreground mb-6">
-            Want to save with friends or family? Invite collaborators to work toward a shared savings goal. This is perfect for group trips, shared gifts, or household savings where everyone contributes.
-          </p>
 
-          <div className="space-y-4">
-            {collaboratorSteps.map((item) => (
-              <Card key={item.step} className="border-border/60 bg-card/50">
-                <CardContent className="flex items-start gap-4 p-5">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-display font-bold text-sm">
-                    {item.step}
-                  </div>
-                  <div>
-                    <h3 className="font-display font-semibold mb-1">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm">{item.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          {/* CTA */}
+          <div className="text-center">
+            <Button 
+              size="lg" 
+              className="font-display text-lg h-14 px-8 gap-2" 
+              onClick={() => navigate('/auth')}
+            >
+              Start Saving
+              <ArrowRight className="h-5 w-5" />
+            </Button>
           </div>
-        </section>
+        </main>
 
-        {/* Tips Section */}
-        <section>
-          <h2 className="text-2xl font-display font-semibold tracking-tight mb-2">Smart Savings Tips That Work</h2>
-          <Card className="border-border/60 bg-card/50">
-            <CardContent className="p-5 space-y-3">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-vault-emerald mt-0.5" />
-                <p className="text-sm">Start with a realistic goal you can achieve in 3-6 months.</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-vault-emerald mt-0.5" />
-                <p className="text-sm">Check off smaller amounts first to build momentum.</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-vault-emerald mt-0.5" />
-                <p className="text-sm">Use the streak feature to create a consistent savings habit.</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-vault-emerald mt-0.5" />
-                <p className="text-sm">Move your checked-off savings into a separate high-yield account.</p>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        <div className="text-center pt-4">
-          <Button onClick={() => navigate('/')} size="lg" className="font-display">
-            Start Saving
-          </Button>
-        </div>
-      </main>
-
-      <Footer className="mt-auto" />
-    </div>
+        <Footer className="mt-auto" />
+      </div>
     </>
   );
 }
