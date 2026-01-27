@@ -146,13 +146,13 @@ export default function LandingPage() {
           </Button>
         </div>
 
-        {/* Visual Demo - Prominent placement */}
+        {/* Social Proof - Build trust first */}
         <div className="mb-12">
-          <VaultDemo />
+          <SocialProofStats />
         </div>
 
-        {/* Social Proof */}
-        <SocialProofStats />
+        {/* Visual Demo */}
+        <VaultDemo />
       </section>
 
       {/* CTA Section */}
