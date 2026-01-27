@@ -4,8 +4,7 @@ import { ArrowLeft, CheckCircle2, ArrowRight } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
-import howItWorksVideo from '@/assets/how-it-works.mp4';
+import { VaultDemo } from '@/components/VaultDemo';
 
 export default function HowToUse() {
   const navigate = useNavigate();
@@ -46,18 +45,9 @@ export default function HowToUse() {
             </p>
           </div>
 
-          {/* Video Demo */}
-          <div className="mb-12 rounded-2xl overflow-hidden border border-border/60 shadow-lg">
-            <AspectRatio ratio={1}>
-              <video
-                src={howItWorksVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
-              />
-            </AspectRatio>
+          {/* Interactive Demo */}
+          <div className="mb-12">
+            <VaultDemo />
           </div>
 
           {/* 3 Simple Steps */}
