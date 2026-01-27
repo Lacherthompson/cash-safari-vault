@@ -11,6 +11,7 @@ import {
   BookOpen,
   Menu,
   Calculator,
+  Quote,
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
@@ -138,12 +139,12 @@ export default function LandingPage() {
         </div>
         
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight mb-6">
-          Build your savings,
-          <span className="text-primary"> one check at a time</span>
+          The Savings Method
+          <span className="text-primary"> That Actually Works</span>
         </h2>
         
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-          Set a goal, check off each save, and watch your progress grow. Small steps lead to big wins.
+          Set a goal, check off each save, and watch your progress grow. No complicated budgets — just simple wins.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -163,6 +164,28 @@ export default function LandingPage() {
 
         {/* Visual Demo */}
         <VaultDemo />
+
+        {/* Testimonial */}
+        <div className="mt-16 max-w-2xl mx-auto">
+          <div className="relative bg-muted/50 rounded-2xl p-6 sm:p-8">
+            <Quote className="absolute top-4 left-4 h-8 w-8 text-primary/20" />
+            <blockquote className="relative z-10">
+              <p className="text-lg sm:text-xl text-foreground leading-relaxed mb-4">
+                "I discovered three subscriptions I'd forgotten about — that's $47/month I now put straight into savings. 
+                Three months in, I'm finally seeing real progress toward my goals."
+              </p>
+              <footer className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-primary font-semibold">MR</span>
+                </div>
+                <div className="text-left">
+                  <cite className="not-italic font-medium text-foreground">Michelle R.</cite>
+                  <p className="text-sm text-muted-foreground">Atlanta, GA</p>
+                </div>
+              </footer>
+            </blockquote>
+          </div>
+        </div>
       </section>
 
       {/* CTA Section */}
