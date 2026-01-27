@@ -1,9 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { 
   Target, 
@@ -23,6 +21,18 @@ import { VaultDemo } from '@/components/VaultDemo';
 export default function LandingPage() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
+
+  // Show sticky CTA after scrolling past hero section
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setShowStickyCTA(scrollY > 400);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
 
   return (
@@ -170,6 +180,21 @@ export default function LandingPage() {
       </section>
 
       <Footer />
+
+      {/* Sticky Mobile CTA */}
+      <div 
+        className={`fixed bottom-0 left-0 right-0 z-50 sm:hidden bg-background/95 backdrop-blur-sm border-t border-border px-4 py-3 transition-transform duration-300 ${
+          showStickyCTA ? 'translate-y-0' : 'translate-y-full'
+        }`}
+      >
+        <Button 
+          className="w-full font-display h-12 text-base gap-2" 
+          onClick={() => navigate('/auth')}
+        >
+          Start Saving Free
+          <ArrowRight className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
     </>
   );
