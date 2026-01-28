@@ -1,138 +1,125 @@
 
-# Emotional Hook and Trust Improvements
+# Add Google Sign-In to Auth Page
 
-This plan implements the 3 key changes from the UX feedback to create emotional connection and reduce friction for new visitors.
+This plan adds Google Sign-In as a quick, low-friction option while keeping the existing email/password flow as an alternative.
 
 ---
 
 ## Summary
 
-The feedback identifies that while the product is solid, the homepage lacks emotional pull and the first action feels like a big commitment. We'll address this with:
-
-1. **Reframed CTAs** - Change from system language ("Create a vault") to tiny-win language ("Start with $5")
-2. **Pain-point messaging** - Add a sentence that makes users feel understood
-3. **Reassurance micro-copy** - Add trust signals at hesitation points
+We'll add a "Continue with Google" button at the top of the auth form, positioned as the easiest path forward. The email/password form stays below as a fallback option, separated by an "or" divider. This aligns with the "tiny wins" strategy - one-click sign-up is the ultimate low-friction experience.
 
 ---
 
-## Change 1: Reframe CTAs to Tiny Wins
+## Design Approach
 
-**Current state:**
-- Landing page: "Start Saving Free"
-- Empty state: "Create Your First Vault"
-- Vault dialog button: "New Vault"
+**Layout order (top to bottom):**
+1. Google Sign-In button (primary, one-click option)
+2. "or" divider
+3. Email/password form (existing, as fallback)
 
-**New approach:**
-- Landing page: "Try Your First Vault — Free"
-- Secondary CTA: "See How It Works" (keep as-is, it's good)
-- Empty state: "Start with a Small Goal"
-- Vault dialog button: "Try a Vault"
-
-**Files to modify:**
-- `src/pages/LandingPage.tsx` - Primary CTA button text
-- `src/components/EmptyState.tsx` - First vault creation CTA
-- `src/components/CreateVaultDialog.tsx` - Dialog trigger button
+**Why this order?**
+- Google button first = lowest friction path is most visible
+- Users who prefer email can scroll down slightly
+- Matches patterns users expect from modern apps
 
 ---
 
-## Change 2: Add Pain-Point Messaging
+## Visual Design
 
-Add a line that names the struggle directly on the landing page, making users feel seen.
-
-**New copy to add below the hero subheading:**
-
-> "Saving feels hard — not because you're bad with money, but because most tools don't make it feel human."
-
-**Placement:** After the current subheading ("Set a goal, check off each save..."), add this as a second paragraph with slightly different styling to stand out.
-
-**File to modify:**
-- `src/pages/LandingPage.tsx` - Hero section
-
----
-
-## Change 3: Add Reassurance Micro-Copy
-
-Add trust-building micro-copy at key hesitation points.
-
-**Auth page (signup mode):**
-- Below the "Create Account" button, add: "Free forever for personal use. No credit card needed."
-
-**Vault creation dialog:**
-- Below the form fields, add: "Start small — most people begin with $100 or less. You can change this anytime."
-
-**Empty state page:**
-- Below the CTA button, add: "No pressure — you can delete or edit vaults anytime."
-
-**Files to modify:**
-- `src/pages/Auth.tsx` - Signup reassurance
-- `src/components/CreateVaultDialog.tsx` - Goal-setting reassurance
-- `src/components/EmptyState.tsx` - First vault reassurance
+The Google button will:
+- Match the calm, human brand aesthetic
+- Use the official Google logo for trust
+- Have clear hover states
+- Show loading state during authentication
 
 ---
 
 ## Technical Details
 
-### LandingPage.tsx Changes
+### Step 1: Configure Google OAuth
 
-**Hero section updates:**
-```text
-Line ~136: Change "Start Saving Free" → "Try Your First Vault — Free"
+Lovable Cloud provides managed Google OAuth - no API keys needed. We'll use the built-in configuration tool to enable it, which will generate the necessary integration code.
 
-Line ~126-128: After the existing subheading paragraph, add new pain-point line:
-<p className="text-base text-muted-foreground/80 max-w-xl mx-auto italic">
-  Saving feels hard — not because you're bad with money, 
-  but because most tools don't make it feel human.
-</p>
+### Step 2: Update Auth.tsx
 
-Line ~167: Change "Get Started" → "Start Your First Vault"
+**Add imports:**
+```typescript
+import { lovable } from "@/integrations/lovable/index";
 ```
 
-### Auth.tsx Changes
+**Add Google sign-in handler:**
+```typescript
+const [googleLoading, setGoogleLoading] = useState(false);
 
-**Signup mode reassurance:**
-```text
-Line ~195: After the submit button, when not in login mode, add:
-{!isLogin && !isForgotPassword && (
-  <p className="text-xs text-muted-foreground text-center">
-    Free forever for personal use. No credit card needed.
-  </p>
+const handleGoogleSignIn = async () => {
+  setGoogleLoading(true);
+  try {
+    const { error } = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
+    if (error) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  } catch (err) {
+    toast({
+      title: 'Error',
+      description: 'Something went wrong. Please try again.',
+      variant: 'destructive',
+    });
+  } finally {
+    setGoogleLoading(false);
+  }
+};
+```
+
+**Add UI elements (inserted before the email form):**
+```tsx
+{/* Google Sign-In - only show on login/signup, not forgot password */}
+{!isForgotPassword && (
+  <>
+    <Button
+      type="button"
+      variant="outline"
+      className="w-full h-12 font-semibold gap-3"
+      onClick={handleGoogleSignIn}
+      disabled={googleLoading}
+    >
+      <svg className="h-5 w-5" viewBox="0 0 24 24">
+        {/* Google logo SVG path */}
+      </svg>
+      {googleLoading ? '...' : 'Continue with Google'}
+    </Button>
+    
+    <div className="relative">
+      <div className="absolute inset-0 flex items-center">
+        <span className="w-full border-t border-border/60" />
+      </div>
+      <div className="relative flex justify-center text-xs">
+        <span className="bg-background px-3 text-muted-foreground">
+          or
+        </span>
+      </div>
+    </div>
+  </>
 )}
-```
-
-### CreateVaultDialog.tsx Changes
-
-**Button text and reassurance:**
-```text
-Line ~89: Change "New Vault" → "Try a Vault"
-
-Line ~124: Before the submit button, add:
-<p className="text-xs text-muted-foreground">
-  Start small — most people begin with $100 or less. You can change this anytime.
-</p>
-```
-
-### EmptyState.tsx Changes
-
-**CTA and reassurance:**
-```text
-Line ~24-26: Change button text from "Create Your First Vault" → "Start with a Small Goal"
-
-Line ~27: Add after button:
-<p className="text-sm text-muted-foreground mt-3">
-  No pressure — you can delete or edit vaults anytime.
-</p>
 ```
 
 ---
 
-## Expected Impact
+## Implementation Steps
 
-| Metric | Expected Change |
-|--------|-----------------|
-| Bounce rate | Decrease (emotional hook in first 5 seconds) |
-| Sign-up rate | Increase (lower perceived commitment) |
-| Vault creation | Increase (reassurance reduces hesitation) |
-| Time on page | Increase (pain-point copy creates engagement) |
+| Step | Action |
+|------|--------|
+| 1 | Run configure-social-auth tool to enable Google OAuth |
+| 2 | Import the lovable integration module |
+| 3 | Add googleLoading state and handleGoogleSignIn function |
+| 4 | Add Google button and "or" divider above email form |
+| 5 | Add Google SVG icon for brand recognition |
 
 ---
 
@@ -140,7 +127,38 @@ Line ~27: Add after button:
 
 | File | Changes |
 |------|---------|
-| `src/pages/LandingPage.tsx` | CTA text, pain-point messaging |
-| `src/pages/Auth.tsx` | Signup reassurance micro-copy |
-| `src/components/CreateVaultDialog.tsx` | Button text, form reassurance |
-| `src/components/EmptyState.tsx` | CTA text, post-button reassurance |
+| `src/integrations/lovable/index.ts` | Auto-generated by configure tool |
+| `src/pages/Auth.tsx` | Google button, handler, divider |
+
+---
+
+## User Experience Flow
+
+```text
+User lands on /auth
+        │
+        ▼
+┌─────────────────────────────┐
+│   "Continue with Google"    │  ← One click, done
+│         [ Button ]          │
+└─────────────────────────────┘
+        │
+        ▼
+    ─── or ───
+        │
+        ▼
+┌─────────────────────────────┐
+│   Email: [____________]     │
+│   Password: [__________]    │  ← Traditional option
+│   [ Create Account ]        │
+└─────────────────────────────┘
+```
+
+---
+
+## Security Notes
+
+- Lovable Cloud's managed OAuth handles all token security
+- No API keys stored in frontend code
+- OAuth flow uses secure redirects
+- Existing session management continues to work
