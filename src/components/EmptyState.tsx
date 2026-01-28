@@ -19,11 +19,14 @@ export function EmptyState({ onCreateVault }: EmptyStateProps) {
 
       <button
         onClick={onCreateVault}
-        className="inline-flex items-center gap-2.5 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all shadow-elevated hover:shadow-premium hover:-translate-y-0.5 mb-16"
+        className="inline-flex items-center gap-2.5 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all shadow-elevated hover:shadow-premium hover:-translate-y-0.5 mb-4"
       >
         <Sparkles className="w-5 h-5" />
-        Create Your First Vault
+        Start with a Small Goal
       </button>
+      <p className="text-sm text-muted-foreground mb-16">
+        No pressure — you can delete or edit vaults anytime.
+      </p>
 
       <div className="grid gap-4 sm:grid-cols-3 max-w-2xl mx-auto text-left">
         <div className="p-5 rounded-xl bg-card border border-border/60 shadow-soft hover:shadow-elevated transition-shadow">
