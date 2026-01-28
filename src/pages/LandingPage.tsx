@@ -161,13 +161,17 @@ export default function LandingPage() {
           {headline}
         </h2>
         
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
           Set a goal, check off each save, and watch your progress grow. No complicated budgets — just simple wins.
+        </p>
+        
+        <p className="text-base text-muted-foreground/80 max-w-xl mx-auto mb-10 italic">
+          Saving feels hard — not because you're bad with money, but because most tools don't make it feel human.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <Button size="lg" className="font-display text-lg h-14 px-8 gap-2" onClick={handleCTAClick}>
-            Start Saving Free
+            Try Your First Vault — Free
             <ArrowRight className="h-5 w-5" />
           </Button>
           <Button variant="outline" size="lg" className="font-display text-lg h-14 px-8" onClick={() => navigate('/how-to-use')}>
@@ -215,7 +219,7 @@ export default function LandingPage() {
           Create your first vault in under a minute. It's free.
         </p>
         <Button size="lg" className="font-display text-lg h-14 px-10 gap-2" onClick={handleCTAClick}>
-          Get Started
+          Start Your First Vault
           <ArrowRight className="h-5 w-5" />
         </Button>
       </section>

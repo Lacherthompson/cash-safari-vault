@@ -97,7 +97,7 @@ export const CreateVaultDialog = forwardRef<CreateVaultDialogRef, CreateVaultDia
         <DialogTrigger asChild>
           <Button className="gap-2 shadow-soft">
             <Plus className="h-4 w-4" />
-            New Vault
+            Try a Vault
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
@@ -148,6 +148,10 @@ export const CreateVaultDialog = forwardRef<CreateVaultDialogRef, CreateVaultDia
             {error && (
               <p className="text-sm text-destructive">{error}</p>
             )}
+            
+            <p className="text-xs text-muted-foreground">
+              Start small — most people begin with $100 or less. You can change this anytime.
+            </p>
             
             <Button type="submit" className="w-full h-11 font-semibold" disabled={loading}>
               {loading ? 'Creating...' : 'Create Vault'}

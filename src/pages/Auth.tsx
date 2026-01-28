@@ -193,6 +193,11 @@ export default function Auth() {
                   ? 'Sign In' 
                   : 'Create Account'}
           </Button>
+          {!isLogin && !isForgotPassword && (
+            <p className="text-xs text-muted-foreground text-center">
+              Free forever for personal use. No credit card needed.
+            </p>
+          )}
         </form>
 
         <div className="text-center space-y-2">
