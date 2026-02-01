@@ -1,164 +1,192 @@
 
-# Add Google Sign-In to Auth Page
+# Optimize Mobile Landing for Facebook Traffic
 
-This plan adds Google Sign-In as a quick, low-friction option while keeping the existing email/password flow as an alternative.
-
----
-
-## Summary
-
-We'll add a "Continue with Google" button at the top of the auth form, positioned as the easiest path forward. The email/password form stays below as a fallback option, separated by an "or" divider. This aligns with the "tiny wins" strategy - one-click sign-up is the ultimate low-friction experience.
+This plan addresses the 98-99% bounce rate by restructuring the mobile landing page to capture attention within the first 0.5 seconds and communicate value before users scroll away.
 
 ---
 
-## Design Approach
+## The Core Problem
 
-**Layout order (top to bottom):**
-1. Google Sign-In button (primary, one-click option)
-2. "or" divider
-3. Email/password form (existing, as fallback)
+Facebook users are bouncing in under 0.5 seconds. They're not scrolling, not reading, not clicking. The current mobile landing page has these issues:
 
-**Why this order?**
-- Google button first = lowest friction path is most visible
-- Users who prefer email can scroll down slightly
-- Matches patterns users expect from modern apps
+1. Too much text above the fold
+2. No immediate visual/interactive hook
+3. CTA uses unfamiliar jargon ("Vault")
+4. Trust signals load too slowly
+5. Excessive padding wastes precious screen space
 
 ---
 
-## Visual Design
+## Strategy: Show, Don't Tell
 
-The Google button will:
-- Match the calm, human brand aesthetic
-- Use the official Google logo for trust
-- Have clear hover states
-- Show loading state during authentication
+Instead of asking users to read paragraphs before seeing the product, we flip the experience:
 
----
+```text
+BEFORE (current):
+┌────────────────────┐
+│    [Large Logo]    │
+│   [Badge Text]     │
+│   [Big Headline]   │
+│  [Paragraph 1...]  │
+│  [Paragraph 2...]  │
+│  [Two Buttons]     │
+│   (scroll to see   │
+│      demo...)      │
+└────────────────────┘
 
-## Technical Details
-
-### Step 1: Configure Google OAuth
-
-Lovable Cloud provides managed Google OAuth - no API keys needed. We'll use the built-in configuration tool to enable it, which will generate the necessary integration code.
-
-### Step 2: Update Auth.tsx
-
-**Add imports:**
-```typescript
-import { lovable } from "@/integrations/lovable/index";
+AFTER (proposed):
+┌────────────────────┐
+│  [Compact Header]  │
+│ [Trust: 2K+ savers]│
+│ [Short Headline]   │
+│                    │
+│  ┌──────────────┐  │
+│  │  VAULT DEMO  │  │ ← Interactive demo
+│  │  (animated)  │  │   visible immediately
+│  └──────────────┘  │
+│                    │
+│ [Start Free - CTA] │
+└────────────────────┘
 ```
 
-**Add Google sign-in handler:**
-```typescript
-const [googleLoading, setGoogleLoading] = useState(false);
+---
 
-const handleGoogleSignIn = async () => {
-  setGoogleLoading(true);
-  try {
-    const { error } = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (error) {
-      toast({
-        title: 'Error',
-        description: error.message,
-        variant: 'destructive',
-      });
-    }
-  } catch (err) {
-    toast({
-      title: 'Error',
-      description: 'Something went wrong. Please try again.',
-      variant: 'destructive',
-    });
-  } finally {
-    setGoogleLoading(false);
-  }
-};
-```
+## Changes Overview
 
-**Add UI elements (inserted before the email form):**
+| Priority | Change | Impact |
+|----------|--------|--------|
+| High | Move VaultDemo above the fold on mobile | Immediate visual hook |
+| High | Simplify headline for cold traffic | Instant comprehension |
+| High | Remove jargon from CTA | Lower friction |
+| Medium | Show static trust numbers first, then animate | Faster perceived load |
+| Medium | Reduce padding on mobile | More content visible |
+| Medium | Single primary CTA on mobile | Clearer action |
+| Low | Show sticky CTA immediately on mobile | Always-visible action |
+
+---
+
+## Detailed Changes
+
+### 1. Restructure Mobile Hero Section
+
+Reorder content so the interactive demo appears above the fold on mobile:
+
 ```tsx
-{/* Google Sign-In - only show on login/signup, not forgot password */}
-{!isForgotPassword && (
-  <>
-    <Button
-      type="button"
-      variant="outline"
-      className="w-full h-12 font-semibold gap-3"
-      onClick={handleGoogleSignIn}
-      disabled={googleLoading}
-    >
-      <svg className="h-5 w-5" viewBox="0 0 24 24">
-        {/* Google logo SVG path */}
-      </svg>
-      {googleLoading ? '...' : 'Continue with Google'}
-    </Button>
-    
-    <div className="relative">
-      <div className="absolute inset-0 flex items-center">
-        <span className="w-full border-t border-border/60" />
-      </div>
-      <div className="relative flex justify-center text-xs">
-        <span className="bg-background px-3 text-muted-foreground">
-          or
-        </span>
-      </div>
-    </div>
-  </>
-)}
+{/* Mobile-first layout */}
+<section className="mx-auto max-w-5xl px-4 py-8 sm:py-16 text-center">
+  {/* Trust badge - compact */}
+  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full 
+                  bg-primary/10 text-primary text-xs font-medium mb-4">
+    <Sparkles className="h-3 w-3" />
+    2,100+ savers • No bank link
+  </div>
+  
+  {/* Shorter, clearer headline */}
+  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold 
+                 tracking-tight mb-4 sm:mb-6">
+    {headline}
+  </h2>
+  
+  {/* Hide secondary text on mobile */}
+  <p className="hidden sm:block text-lg text-muted-foreground ...">
+    Set a goal, check off each save...
+  </p>
+  
+  {/* Demo FIRST on mobile, after text on desktop */}
+  <div className="mb-6 sm:hidden">
+    <VaultDemo />
+  </div>
+  
+  {/* Single CTA on mobile */}
+  <Button className="w-full sm:w-auto h-12 sm:h-14 ...">
+    Start Saving Free
+  </Button>
+</section>
+```
+
+### 2. Simplify Headlines for Cold Traffic
+
+Update the A/B test variants to remove jargon:
+
+| Current | Proposed |
+|---------|----------|
+| "The Savings Method That Actually Works" | "Finally, saving made simple" |
+| "Save Your First $1,000 — No Budgeting Required" | "Watch your savings grow, $5 at a time" |
+
+### 3. Replace Jargon CTA
+
+| Current | Proposed |
+|---------|----------|
+| "Try Your First Vault — Free" | "Start Saving Free" |
+| "See How It Works" | (hide on mobile) |
+
+### 4. Optimize Trust Signals Load
+
+Pre-populate with approximate static values, then update with live data:
+
+```tsx
+// Show immediately, update when data loads
+const fallbackStats = { userCount: 2100, vaultCount: 3400, totalSaved: 125000 };
+const displayStats = data ?? fallbackStats;
+```
+
+### 5. Reduce Mobile Padding
+
+```tsx
+// Hero section
+<section className="py-6 sm:py-16 ...">  {/* was py-16 sm:py-20 */}
+
+// Badge
+<div className="mb-3 sm:mb-6 ...">  {/* was mb-6 */}
+
+// Headline
+<h2 className="text-2xl sm:text-4xl ...">  {/* was text-4xl sm:text-5xl */}
+```
+
+### 6. Show Sticky CTA Immediately on Mobile
+
+```tsx
+// Remove scroll threshold on mobile
+const [showStickyCTA, setShowStickyCTA] = useState(true); // Always show on mobile
+
+useEffect(() => {
+  // Only add scroll behavior for desktop
+  if (window.innerWidth >= 640) {
+    const handleScroll = () => setShowStickyCTA(window.scrollY > 400);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }
+}, []);
 ```
 
 ---
 
-## Implementation Steps
-
-| Step | Action |
-|------|--------|
-| 1 | Run configure-social-auth tool to enable Google OAuth |
-| 2 | Import the lovable integration module |
-| 3 | Add googleLoading state and handleGoogleSignIn function |
-| 4 | Add Google button and "or" divider above email form |
-| 5 | Add Google SVG icon for brand recognition |
-
----
-
-## Files Modified
+## Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/integrations/lovable/index.ts` | Auto-generated by configure tool |
-| `src/pages/Auth.tsx` | Google button, handler, divider |
+| `src/pages/LandingPage.tsx` | Restructure hero layout, adjust padding, update CTAs |
+| `src/components/SocialProofStats.tsx` | Add fallback static values for instant display |
+| `src/hooks/useABTest.ts` | Update headline variants (optional) |
 
 ---
 
-## User Experience Flow
+## Measuring Success
 
-```text
-User lands on /auth
-        │
-        ▼
-┌─────────────────────────────┐
-│   "Continue with Google"    │  ← One click, done
-│         [ Button ]          │
-└─────────────────────────────┘
-        │
-        ▼
-    ─── or ───
-        │
-        ▼
-┌─────────────────────────────┐
-│   Email: [____________]     │
-│   Password: [__________]    │  ← Traditional option
-│   [ Create Account ]        │
-└─────────────────────────────┘
-```
+After publishing, track these metrics:
+
+1. **Bounce rate** - Target: reduce from 98% to <80%
+2. **Session duration** - Target: increase from 0.5s to >5s
+3. **Scroll depth** - Target: >30% reach bottom of hero
+4. **CTA click rate** - Target: >3% of visitors
 
 ---
 
-## Security Notes
+## Important Note
 
-- Lovable Cloud's managed OAuth handles all token security
-- No API keys stored in frontend code
-- OAuth flow uses secure redirects
-- Existing session management continues to work
+These changes are not currently published. The live site is still running the old version. Before measuring impact:
+
+1. Implement these mobile optimizations
+2. **Publish** the changes
+3. Wait 3-5 days for fresh traffic data
+4. Compare analytics
