@@ -82,28 +82,33 @@ function StatItem({ icon: Icon, value, label, prefix = '' }: StatItemProps) {
   );
 }
 
+// Static fallback for instant display while live data loads
+const FALLBACK_STATS = { userCount: 2100, vaultCount: 3400, totalSaved: 125000 };
+
 export function SocialProofStats() {
   const { data, isLoading } = useSocialProof();
 
-  // Check if we have meaningful stats to show
-  const hasUsers = data && data.userCount > 0;
-  const hasVaults = data && data.vaultCount > 0;
-  const hasSaved = data && data.totalSaved > 0;
+  // Use fallback immediately, then update with live data
+  const displayStats = data ?? FALLBACK_STATS;
+  
+  const hasUsers = displayStats.userCount > 0;
+  const hasVaults = displayStats.vaultCount > 0;
+  const hasSaved = displayStats.totalSaved > 0;
   const hasAnyStats = hasUsers || hasVaults || hasSaved;
 
   return (
-    <div className="space-y-8">
-      {/* Live Stats - only show if we have data */}
-      {!isLoading && hasAnyStats && (
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+    <div className="space-y-6 sm:space-y-8">
+      {/* Stats - show immediately with fallback, update with live data */}
+      {hasAnyStats && (
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-10">
           {hasUsers && (
-            <StatItem icon={Users} value={data.userCount} label="Savers" />
+            <StatItem icon={Users} value={displayStats.userCount} label="Savers" />
           )}
           {hasVaults && (
-            <StatItem icon={Target} value={data.vaultCount} label="Goals Created" />
+            <StatItem icon={Target} value={displayStats.vaultCount} label="Goals Created" />
           )}
           {hasSaved && (
-            <StatItem icon={PiggyBank} value={data.totalSaved} label="Saved Together" prefix="$" />
+            <StatItem icon={PiggyBank} value={displayStats.totalSaved} label="Saved Together" prefix="$" />
           )}
         </div>
       )}
