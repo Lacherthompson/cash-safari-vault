@@ -11,12 +11,12 @@ import {
   BookOpen,
   Menu,
   Calculator,
-  Quote,
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
 import { SocialProofStats } from '@/components/SocialProofStats';
+import { TestimonialCarousel } from '@/components/TestimonialCarousel';
 import { useABTest, trackABConversion } from '@/hooks/useABTest';
 import { VaultDemo } from '@/components/VaultDemo';
 
@@ -204,26 +204,9 @@ export default function LandingPage() {
           <VaultDemo />
         </div>
 
-        {/* Testimonial */}
-        <div className="mt-16 max-w-2xl mx-auto">
-          <div className="relative bg-muted/50 rounded-2xl p-6 sm:p-8">
-            <Quote className="absolute top-4 left-4 h-8 w-8 text-primary/20" />
-            <blockquote className="relative z-10">
-              <p className="text-lg sm:text-xl text-foreground leading-relaxed mb-4">
-                "I discovered three subscriptions I'd forgotten about — that's $47/month I now put straight into savings. 
-                Three months in, I'm finally seeing real progress toward my goals."
-              </p>
-              <footer className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-primary font-semibold">MR</span>
-                </div>
-                <div className="text-left">
-                  <cite className="not-italic font-medium text-foreground">Michelle R.</cite>
-                  <p className="text-sm text-muted-foreground">Atlanta, GA</p>
-                </div>
-              </footer>
-            </blockquote>
-          </div>
+        {/* Rotating Testimonials */}
+        <div className="mt-10 sm:mt-16">
+          <TestimonialCarousel />
         </div>
       </section>
 
