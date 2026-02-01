@@ -20,12 +20,12 @@ import { SocialProofStats } from '@/components/SocialProofStats';
 import { useABTest, trackABConversion } from '@/hooks/useABTest';
 import { VaultDemo } from '@/components/VaultDemo';
 
-// A/B Test Configuration
+// A/B Test Configuration - Simplified for cold traffic
 const HEADLINE_TEST = {
-  testName: 'homepage_headline_jan2026',
+  testName: 'homepage_headline_feb2026',
   variants: {
-    A: 'The Savings Method That Actually Works',
-    B: 'Save Your First $1,000 — No Budgeting Required',
+    A: 'Finally, saving made simple',
+    B: 'Watch your savings grow, $5 at a time',
   },
 };
 
@@ -43,11 +43,16 @@ export default function LandingPage() {
     navigate('/auth');
   };
 
-  // Show sticky CTA after scrolling past hero section
+  // Show sticky CTA immediately on mobile, after scroll on desktop
   useEffect(() => {
+    const isMobile = window.innerWidth < 640;
+    if (isMobile) {
+      setShowStickyCTA(true);
+      return;
+    }
+    
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setShowStickyCTA(scrollY > 400);
+      setShowStickyCTA(window.scrollY > 400);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -150,42 +155,54 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="mx-auto max-w-5xl px-4 py-16 sm:py-20 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-          <Sparkles className="h-4 w-4" />
-          No bank link needed
+      {/* Hero Section - Mobile-first layout */}
+      <section className="mx-auto max-w-5xl px-4 py-6 sm:py-16 text-center">
+        {/* Compact trust badge */}
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium mb-3 sm:mb-6">
+          <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
+          <span className="sm:hidden">2,100+ savers • No bank link</span>
+          <span className="hidden sm:inline">No bank link needed</span>
         </div>
         
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight mb-6">
+        {/* Shorter headline on mobile */}
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight mb-3 sm:mb-6">
           {headline}
         </h2>
         
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
+        {/* Hide secondary text on mobile */}
+        <p className="hidden sm:block text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
           Set a goal, check off each save, and watch your progress grow. No complicated budgets — just simple wins.
         </p>
         
-        <p className="text-base text-muted-foreground/80 max-w-xl mx-auto mb-10 italic">
+        <p className="hidden sm:block text-base text-muted-foreground/80 max-w-xl mx-auto mb-10 italic">
           Saving feels hard — not because you're bad with money, but because most tools don't make it feel human.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <Button size="lg" className="font-display text-lg h-14 px-8 gap-2" onClick={handleCTAClick}>
-            Try Your First Vault — Free
-            <ArrowRight className="h-5 w-5" />
+        {/* Demo FIRST on mobile - above the fold */}
+        <div className="mb-4 sm:hidden">
+          <VaultDemo />
+        </div>
+
+        {/* Single CTA on mobile, two buttons on desktop */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-12">
+          <Button size="lg" className="w-full sm:w-auto font-display text-base sm:text-lg h-12 sm:h-14 px-6 sm:px-8 gap-2" onClick={handleCTAClick}>
+            Start Saving Free
+            <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
-          <Button variant="outline" size="lg" className="font-display text-lg h-14 px-8" onClick={() => navigate('/how-to-use')}>
+          <Button variant="outline" size="lg" className="hidden sm:flex font-display text-lg h-14 px-8" onClick={() => navigate('/how-to-use')}>
             See How It Works
           </Button>
         </div>
 
-        {/* Social Proof - Build trust first */}
-        <div className="mb-12">
+        {/* Social Proof */}
+        <div className="mb-6 sm:mb-12">
           <SocialProofStats />
         </div>
 
-        {/* Visual Demo */}
-        <VaultDemo />
+        {/* Demo on desktop (already shown on mobile above) */}
+        <div className="hidden sm:block">
+          <VaultDemo />
+        </div>
 
         {/* Testimonial */}
         <div className="mt-16 max-w-2xl mx-auto">
