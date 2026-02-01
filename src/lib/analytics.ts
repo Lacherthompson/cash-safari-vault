@@ -47,3 +47,16 @@ export const trackGoalCompleted = (goalAmount: number, vaultName: string) => {
     vault_name: vaultName,
   });
 };
+
+// Scroll Depth Events
+export const trackScrollDepth = (
+  depth: number,
+  page: string,
+  deviceType: 'mobile' | 'desktop'
+) => {
+  trackEvent('scroll_depth', {
+    depth_percentage: depth,
+    page_path: page,
+    device_type: deviceType,
+  });
+};

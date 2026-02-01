@@ -18,6 +18,7 @@ import { Logo } from '@/components/Logo';
 import { SocialProofStats } from '@/components/SocialProofStats';
 import { TestimonialCarousel } from '@/components/TestimonialCarousel';
 import { useABTest, trackABConversion } from '@/hooks/useABTest';
+import { useScrollDepthTracking } from '@/hooks/useScrollDepthTracking';
 import { VaultDemo } from '@/components/VaultDemo';
 
 // A/B Test Configuration - Simplified for cold traffic
@@ -36,6 +37,9 @@ export default function LandingPage() {
   
   // A/B test for headline
   const { variant, value: headline } = useABTest(HEADLINE_TEST);
+  
+  // Scroll depth tracking
+  useScrollDepthTracking();
 
   // Track conversion when user clicks CTA
   const handleCTAClick = () => {
