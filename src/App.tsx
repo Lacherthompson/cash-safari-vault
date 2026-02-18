@@ -8,6 +8,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
 import { SettingsProvider } from "@/hooks/useSettings";
 import { usePageTracking } from "@/hooks/usePageTracking";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Vault from "./pages/Vault";
@@ -38,6 +39,7 @@ const App = () => (
             <SettingsProvider>
               <Toaster />
               <Sonner />
+              <InstallPrompt />
               <BrowserRouter>
                 <PageTracker />
                 <Routes>

@@ -3,14 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { 
-  Target, 
+import {
+  Target,
   Sparkles,
   ArrowRight,
   HelpCircle,
   BookOpen,
   Menu,
   Calculator,
+  CheckSquare,
+  TrendingUp,
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
@@ -21,12 +23,12 @@ import { useABTest, trackABConversion } from '@/hooks/useABTest';
 import { useScrollDepthTracking } from '@/hooks/useScrollDepthTracking';
 import { VaultDemo } from '@/components/VaultDemo';
 
-// A/B Test Configuration - Simplified for cold traffic
+// A/B Test Configuration - Both variants are strong
 const HEADLINE_TEST = {
-  testName: 'homepage_headline_feb2026',
+  testName: 'homepage_headline_mar2026',
   variants: {
-    A: 'Finally, saving made simple',
-    B: 'Watch your savings grow, $5 at a time',
+    A: 'Watch your savings grow, $5 at a time',
+    B: 'Save $5 at a time. Hit your goals faster.',
   },
 };
 
@@ -173,11 +175,16 @@ export default function LandingPage() {
           {headline}
         </h2>
         
-        {/* Hide secondary text on mobile */}
+        {/* Mobile: short punchy description */}
+        <p className="sm:hidden text-sm text-muted-foreground max-w-xs mx-auto mb-4 leading-relaxed">
+          Set a goal. Check off saves. Watch your money grow — no bank link needed.
+        </p>
+
+        {/* Desktop: full description */}
         <p className="hidden sm:block text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
           Set a goal, check off each save, and watch your progress grow. No complicated budgets — just simple wins.
         </p>
-        
+
         <p className="hidden sm:block text-base text-muted-foreground/80 max-w-xl mx-auto mb-10 italic">
           Saving feels hard — not because you're bad with money, but because most tools don't make it feel human.
         </p>
@@ -188,7 +195,7 @@ export default function LandingPage() {
         </div>
 
         {/* Single CTA on mobile, two buttons on desktop */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-2 sm:mb-4">
           <Button size="lg" className="w-full sm:w-auto font-display text-base sm:text-lg h-12 sm:h-14 px-6 sm:px-8 gap-2" onClick={handleCTAClick}>
             Start Saving Free
             <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -196,6 +203,40 @@ export default function LandingPage() {
           <Button variant="outline" size="lg" className="hidden sm:flex font-display text-lg h-14 px-8" onClick={() => navigate('/how-to-use')}>
             See How It Works
           </Button>
+        </div>
+
+        {/* Friction reducer */}
+        <p className="text-xs text-muted-foreground/60 mb-8 sm:mb-12">
+          Free forever · No credit card · Start in 60 seconds
+        </p>
+
+        {/* How it works — 3 steps, inline so visitors don't need to leave */}
+        <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-sm sm:max-w-2xl mx-auto mb-8 sm:mb-12 text-left">
+          {[
+            {
+              icon: <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
+              title: 'Set a goal',
+              desc: 'Name your vault and pick your target amount.',
+            },
+            {
+              icon: <CheckSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
+              title: 'Check off saves',
+              desc: 'Tap amounts as you set money aside — $5, $20, whatever fits.',
+            },
+            {
+              icon: <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" />,
+              title: 'Watch it grow',
+              desc: 'Track streaks, hit milestones, reach your goal.',
+            },
+          ].map(({ icon, title, desc }) => (
+            <div key={title}>
+              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-2">
+                {icon}
+              </div>
+              <p className="font-semibold text-xs sm:text-sm mb-1">{title}</p>
+              <p className="text-xs text-muted-foreground leading-snug">{desc}</p>
+            </div>
+          ))}
         </div>
 
         {/* Social Proof */}
