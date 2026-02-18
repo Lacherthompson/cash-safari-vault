@@ -29,7 +29,7 @@ const days = [
   { day: 14, title: "Don't stop now", description: "You built a system — not just a number" },
 ];
 
-export default function Draft() {
+export default function VaultStarter() {
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const [goalAmount, setGoalAmount] = useState<string>('');
@@ -38,7 +38,6 @@ export default function Draft() {
   const [encouragementIndex, setEncouragementIndex] = useState(0);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [guestEmail, setGuestEmail] = useState('');
-  const [showEmailInput, setShowEmailInput] = useState(false);
 
   const encouragements = [
     "Not as scary as you thought, right?",
@@ -63,14 +62,8 @@ export default function Draft() {
   }, [searchParams]);
 
   const handleCheckout = async () => {
-    // If user is not logged in and hasn't entered email, show email input
-    if (!user && !guestEmail && !showEmailInput) {
-      setShowEmailInput(true);
-      return;
-    }
-
     // Validate guest email
-    if (!user && showEmailInput) {
+    if (!user) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(guestEmail)) {
         toast.error("Please enter a valid email address");
@@ -292,26 +285,28 @@ export default function Draft() {
           <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto mb-4">
             A short, guided reset that helps you start saving — and actually stick to it.
           </p>
-          
-          <p className="text-lg text-muted-foreground/80 max-w-xl mx-auto mb-10">
+
+          <p className="text-lg text-muted-foreground/80 max-w-xl mx-auto mb-6">
             No budgeting homework. No finance jargon. Just walk with me for 14 days and we'll get your savings moving.
           </p>
 
+          <p className="text-sm text-muted-foreground/80 mb-8">
+            Trusted by 2,100+ savers on SaveTogether
+          </p>
+
           <div className="flex flex-col items-center gap-4">
-            {showEmailInput && !user && (
-              <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={guestEmail}
-                  onChange={(e) => setGuestEmail(e.target.value)}
-                  className="flex-1"
-                />
-              </div>
+            {!user && (
+              <Input
+                type="email"
+                placeholder="Your email — we'll send your first day here"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                className="w-full max-w-xs text-center"
+              />
             )}
-            <Button 
-              size="lg" 
-              className="text-lg px-8 py-6" 
+            <Button
+              size="lg"
+              className="text-lg px-8 py-6"
               onClick={handleCheckout}
               disabled={isCheckingOut}
             >
@@ -320,10 +315,6 @@ export default function Draft() {
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   Processing...
                 </>
-              ) : showEmailInput && !user ? (
-                <>
-                  Continue to Checkout <ArrowRight className="ml-2 h-5 w-5" />
-                </>
               ) : (
                 <>
                   Start for $12 <ArrowRight className="ml-2 h-5 w-5" />
@@ -331,6 +322,14 @@ export default function Draft() {
               )}
             </Button>
             <p className="text-sm text-muted-foreground">One-time payment • Instant access</p>
+            <p className="text-xs text-muted-foreground/70 -mt-2">
+              Less than a coffee. 7-day money-back guarantee — no questions asked.
+            </p>
+          </div>
+
+          <div className="mt-10 max-w-sm mx-auto bg-muted/40 rounded-xl px-5 py-4 text-sm text-muted-foreground italic border border-border/40">
+            "I didn't think $12 would change anything. By day 3 I'd already canceled a subscription I forgot I had."
+            <span className="block mt-2 not-italic text-xs font-medium text-foreground/60">— Jasmine T., SaveTogether user</span>
           </div>
         </div>
       </section>
@@ -347,24 +346,24 @@ export default function Draft() {
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                 <Mail className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">7 Focused Emails</h3>
-              <p className="text-sm text-muted-foreground">Short, actionable steps delivered to your inbox</p>
+              <h3 className="font-semibold mb-2">14 Days of Guidance</h3>
+              <p className="text-sm text-muted-foreground">7 action emails + 7 rest days so you don't burn out</p>
             </Card>
-            
+
             <Card className="p-6 text-center">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                 <Sparkles className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">No Overwhelm</h3>
-              <p className="text-sm text-muted-foreground">One simple action at a time — that's it</p>
+              <h3 className="font-semibold mb-2">5 Minutes a Day</h3>
+              <p className="text-sm text-muted-foreground">One small action per email — that's it, seriously</p>
             </Card>
-            
+
             <Card className="p-6 text-center">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                 <Check className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">Real Results</h3>
-              <p className="text-sm text-muted-foreground">By day 14, you'll have a savings rhythm that sticks</p>
+              <h3 className="font-semibold mb-2">Find $50 You Didn't Know You Had</h3>
+              <p className="text-sm text-muted-foreground">Day 3 walks you through spotting a forgotten charge</p>
             </Card>
           </div>
         </div>
@@ -381,7 +380,7 @@ export default function Draft() {
           </p>
           
           <div className="space-y-4">
-            {days.slice(0, 6).map((item) => (
+            {days.slice(0, 10).map((item) => (
               <div 
                 key={item.day}
                 className={`flex items-start gap-4 p-4 rounded-lg border transition-colors ${
@@ -416,7 +415,7 @@ export default function Draft() {
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
                 <span className="text-lg">...</span>
               </div>
-              <p className="text-muted-foreground font-medium">Plus 9 more days of guidance, rest days & reflection</p>
+              <p className="text-muted-foreground font-medium">Plus 5 more days of guidance, rest days & reflection</p>
             </div>
           </div>
         </div>
@@ -458,20 +457,20 @@ export default function Draft() {
             14 days from now, you'll have a savings habit that actually works for you.
           </p>
           
-          {showEmailInput && !user && (
-            <div className="flex flex-col items-center gap-2 mb-4 w-full max-w-md mx-auto">
+          {!user && (
+            <div className="flex flex-col items-center gap-2 mb-4 w-full max-w-xs mx-auto">
               <Input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Your email address"
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}
-                className="w-full"
+                className="w-full text-center"
               />
             </div>
           )}
-          <Button 
-            size="lg" 
-            className="text-lg px-8 py-6" 
+          <Button
+            size="lg"
+            className="text-lg px-8 py-6"
             onClick={handleCheckout}
             disabled={isCheckingOut}
           >
@@ -480,16 +479,15 @@ export default function Draft() {
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 Processing...
               </>
-            ) : showEmailInput && !user ? (
-              <>
-                Continue to Checkout <ArrowRight className="ml-2 h-5 w-5" />
-              </>
             ) : (
               <>
                 Get Vault Starter — $12 <ArrowRight className="ml-2 h-5 w-5" />
               </>
             )}
           </Button>
+          <p className="text-xs text-muted-foreground/60 mt-3">
+            One-time payment · 7-day money-back guarantee
+          </p>
         </div>
       </section>
 
