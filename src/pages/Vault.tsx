@@ -184,11 +184,10 @@ export default function Vault() {
         // Fetch members with their stored email; fall back to vault_invitations for legacy members
         const { data: membersData } = await supabase
           .from('vault_members')
-          .select('id, user_id, email')
+          .select('id, user_id')
           .eq('vault_id', id);
 
         if (membersData && membersData.length > 0) {
-          // Fetch all accepted invitations once to cover legacy members (joined before email column existed)
           const { data: invitations } = await supabase
             .from('vault_invitations')
             .select('invited_email, invited_by')
@@ -196,16 +195,9 @@ export default function Vault() {
             .eq('status', 'accepted');
 
           const membersList: VaultMember[] = membersData.map(member => {
-            // Owner always uses their own live email
             if (member.user_id === user.id) {
               return { id: member.id, user_id: member.user_id, email: user.email || 'You' };
             }
-            // Use the email stored at join time if available (new members)
-            if (member.email) {
-              return { id: member.id, user_id: member.user_id, email: member.email };
-            }
-            // Legacy fallback: find the invitation where invited_by matches a known member
-            // and invited_email is distinct from owner's email
             const match = invitations?.find(
               inv => inv.invited_email && inv.invited_email !== user.email
             );
