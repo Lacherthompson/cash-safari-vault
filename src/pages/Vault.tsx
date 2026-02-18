@@ -23,6 +23,7 @@ interface VaultAmount {
   id: string;
   amount: number;
   is_checked: boolean;
+  user_id: string;
 }
 
 interface VaultData {
@@ -103,7 +104,8 @@ export default function Vault() {
         const { error: memberErr } = await supabase.from('vault_members').insert({
           vault_id: id,
           user_id: user.id,
-        });
+          email: user.email,
+        } as { vault_id: string; user_id: string; email: string | undefined });
 
         if (memberErr) {
           console.warn('vault_members insert error (may be safe to ignore):', memberErr);
@@ -169,53 +171,47 @@ export default function Vault() {
 
         // Combine with existing amounts from other members
         const combinedAmounts = [...(allAmountsData || []), ...(inserted || [])];
-        setAmounts(combinedAmounts.map(a => ({ id: a.id, amount: a.amount, is_checked: a.is_checked })));
+        setAmounts(combinedAmounts.map(a => ({ id: a.id, amount: a.amount, is_checked: a.is_checked, user_id: a.user_id })));
         setOriginalOrder(combinedAmounts.map(a => a.id));
       } else {
         // Use all amounts from all members for combined progress
-        setAmounts(allAmountsData?.map(a => ({ id: a.id, amount: a.amount, is_checked: a.is_checked })) || []);
+        setAmounts(allAmountsData?.map(a => ({ id: a.id, amount: a.amount, is_checked: a.is_checked, user_id: a.user_id })) || []);
         setOriginalOrder(allAmountsData?.map(a => a.id) || []);
       }
 
       // Fetch vault members if owner
       if (vaultData.created_by === user.id) {
+        // Fetch members with their stored email; fall back to vault_invitations for legacy members
         const { data: membersData } = await supabase
           .from('vault_members')
-          .select('id, user_id')
+          .select('id, user_id, email')
           .eq('vault_id', id);
 
         if (membersData && membersData.length > 0) {
-          // Get emails for each member using vault_invitations or current user
-          const membersList: VaultMember[] = [];
-          
-          for (const member of membersData) {
+          // Fetch all accepted invitations once to cover legacy members (joined before email column existed)
+          const { data: invitations } = await supabase
+            .from('vault_invitations')
+            .select('invited_email, invited_by')
+            .eq('vault_id', id)
+            .eq('status', 'accepted');
+
+          const membersList: VaultMember[] = membersData.map(member => {
+            // Owner always uses their own live email
             if (member.user_id === user.id) {
-              membersList.push({
-                id: member.id,
-                user_id: member.user_id,
-                email: user.email || 'You',
-              });
-            } else {
-              // Try to find email from invitations
-              const { data: invitation } = await supabase
-                .from('vault_invitations')
-                .select('invited_email')
-                .eq('vault_id', id)
-                .eq('status', 'accepted')
-                .limit(100);
-              
-              // Find matching invitation by checking if any member might match
-              // Since we don't have direct user->email mapping, use invitations
-              const matchedInvite = invitation?.find(inv => inv.invited_email);
-              
-              membersList.push({
-                id: member.id,
-                user_id: member.user_id,
-                email: matchedInvite?.invited_email || 'Member',
-              });
+              return { id: member.id, user_id: member.user_id, email: user.email || 'You' };
             }
-          }
-          
+            // Use the email stored at join time if available (new members)
+            if (member.email) {
+              return { id: member.id, user_id: member.user_id, email: member.email };
+            }
+            // Legacy fallback: find the invitation where invited_by matches a known member
+            // and invited_email is distinct from owner's email
+            const match = invitations?.find(
+              inv => inv.invited_email && inv.invited_email !== user.email
+            );
+            return { id: member.id, user_id: member.user_id, email: match?.invited_email || 'Member' };
+          });
+
           setMembers(membersList);
         }
       }
@@ -238,20 +234,20 @@ export default function Vault() {
         },
         (payload) => {
           if (payload.eventType === 'UPDATE') {
-            const updated = payload.new as { id: string; amount: number; is_checked: boolean };
-            setAmounts(prev => 
-              prev.map(a => 
-                a.id === updated.id 
+            const updated = payload.new as { id: string; amount: number; is_checked: boolean; user_id: string };
+            setAmounts(prev =>
+              prev.map(a =>
+                a.id === updated.id
                   ? { ...a, is_checked: updated.is_checked }
                   : a
               )
             );
           } else if (payload.eventType === 'INSERT') {
-            const inserted = payload.new as { id: string; amount: number; is_checked: boolean };
+            const inserted = payload.new as { id: string; amount: number; is_checked: boolean; user_id: string };
             setAmounts(prev => {
               // Avoid duplicates
               if (prev.some(a => a.id === inserted.id)) return prev;
-              return [...prev, { id: inserted.id, amount: inserted.amount, is_checked: inserted.is_checked }];
+              return [...prev, { id: inserted.id, amount: inserted.amount, is_checked: inserted.is_checked, user_id: inserted.user_id }];
             });
           } else if (payload.eventType === 'DELETE') {
             const deleted = payload.old as { id: string };
@@ -261,8 +257,27 @@ export default function Vault() {
       )
       .subscribe();
 
+    // Subscribe to realtime changes for the vault itself (streak, etc.)
+    const vaultChannel = supabase
+      .channel(`vault-meta-${id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'vaults',
+          filter: `id=eq.${id}`,
+        },
+        (payload) => {
+          const updated = payload.new as Partial<VaultData>;
+          setVault(prev => prev ? { ...prev, ...updated } : null);
+        }
+      )
+      .subscribe();
+
     return () => {
       supabase.removeChannel(channel);
+      supabase.removeChannel(vaultChannel);
     };
   }, [id, user, navigate, toast]);
 
@@ -800,7 +815,7 @@ export default function Vault() {
           totalCount={amounts.length}
           accentColor={vault.accent_color}
         />
-        <VaultGrid amounts={sortedAmounts} onToggle={handleToggle} loadingId={loadingId} />
+        <VaultGrid amounts={sortedAmounts} onToggle={handleToggle} loadingId={loadingId} currentUserId={user?.id} />
       </main>
     </div>
   );
