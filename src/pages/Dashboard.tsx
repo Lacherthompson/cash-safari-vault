@@ -174,7 +174,7 @@ export default function Dashboard() {
                   {vaults.length} vault{vaults.length !== 1 ? 's' : ''} • ${vaults.reduce((sum, v) => sum + v.saved_amount, 0).toLocaleString()} saved
                 </p>
               </div>
-              <CreateVaultDialog onCreateVault={handleCreateVault} />
+              <CreateVaultDialog onCreateVault={handleCreateVault} vaultCount={vaults.length} />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               {vaults.map((vault) => (

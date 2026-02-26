@@ -6,9 +6,12 @@ import { Label } from '@/components/ui/label';
 import { ColorPicker } from '@/components/ColorPicker';
 import { Plus } from 'lucide-react';
 import { VaultColorId } from '@/lib/vaultColors';
+import { useSubscription } from '@/hooks/useSubscription';
+import { UpgradePrompt } from '@/components/UpgradePrompt';
 
 interface CreateVaultDialogProps {
   onCreateVault: (name: string, goalAmount: number, accentColor: VaultColorId) => Promise<void>;
+  vaultCount?: number;
 }
 
 export interface CreateVaultDialogRef {
@@ -20,8 +23,10 @@ const MIN_AMOUNT = 10;
 const MAX_AMOUNT = 1000000000;
 
 export const CreateVaultDialog = forwardRef<CreateVaultDialogRef, CreateVaultDialogProps>(
-  function CreateVaultDialog({ onCreateVault }, ref) {
+  function CreateVaultDialog({ onCreateVault, vaultCount = 0 }, ref) {
     const [open, setOpen] = useState(false);
+    const { vaultLimit, plan } = useSubscription();
+    const atLimit = plan === 'free' && vaultCount >= vaultLimit;
     const [name, setName] = useState('');
     const [goalAmount, setGoalAmount] = useState('');
     const [accentColor, setAccentColor] = useState<VaultColorId>('emerald');
@@ -104,6 +109,12 @@ export const CreateVaultDialog = forwardRef<CreateVaultDialogRef, CreateVaultDia
           <DialogHeader>
             <DialogTitle className="font-display text-xl">Create a Vault</DialogTitle>
           </DialogHeader>
+          {atLimit ? (
+            <UpgradePrompt
+              message={`You've reached the ${vaultLimit}-vault limit on the free plan.`}
+              feature="Unlimited vaults"
+            />
+          ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="vault-name">Vault Name</Label>
@@ -157,6 +168,7 @@ export const CreateVaultDialog = forwardRef<CreateVaultDialogRef, CreateVaultDia
               {loading ? 'Creating...' : 'Create Vault'}
             </Button>
           </form>
+          )}
         </DialogContent>
       </Dialog>
     );

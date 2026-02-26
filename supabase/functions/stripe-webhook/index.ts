@@ -207,14 +207,122 @@ serve(async (req) => {
       });
     }
 
-    // Handle checkout.session.completed event
+    // ── Subscription events ──────────────────────────────────────────────────
+    if (
+      event.type === "customer.subscription.created" ||
+      event.type === "customer.subscription.updated"
+    ) {
+      const subscription = event.data.object as Stripe.Subscription;
+      logStep(`Processing ${event.type}`, { subscriptionId: subscription.id });
+
+      const supabaseClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+        { auth: { persistSession: false } }
+      );
+
+      const userId = subscription.metadata?.user_id;
+      if (!userId) {
+        logStep("No user_id in subscription metadata, skipping");
+        return new Response(JSON.stringify({ received: true, skipped: true }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const plan = subscription.metadata?.plan ?? "pro";
+      const interval = (subscription.items.data[0]?.price.recurring?.interval ?? "month") as string;
+      const status = subscription.status;
+      const currentPeriodEnd = new Date((subscription as unknown as { current_period_end: number }).current_period_end * 1000).toISOString();
+      const customerId = typeof subscription.customer === "string"
+        ? subscription.customer
+        : (subscription.customer as Stripe.Customer).id;
+
+      const { error: upsertError } = await supabaseClient
+        .from("subscriptions")
+        .upsert({
+          user_id: userId,
+          stripe_customer_id: customerId,
+          stripe_subscription_id: subscription.id,
+          plan,
+          billing_interval: interval,
+          status,
+          current_period_end: currentPeriodEnd,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "user_id" });
+
+      if (upsertError) {
+        logStep("ERROR: Failed to upsert subscription", { error: upsertError.message });
+        throw new Error(`Failed to update subscription: ${upsertError.message}`);
+      }
+
+      logStep("Subscription upserted", { userId, plan, status });
+      return new Response(JSON.stringify({ received: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (event.type === "customer.subscription.deleted") {
+      const subscription = event.data.object as Stripe.Subscription;
+      logStep("Processing customer.subscription.deleted", { subscriptionId: subscription.id });
+
+      const supabaseClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+        { auth: { persistSession: false } }
+      );
+
+      const { error } = await supabaseClient
+        .from("subscriptions")
+        .update({ plan: "free", status: "canceled", stripe_subscription_id: null, updated_at: new Date().toISOString() })
+        .eq("stripe_subscription_id", subscription.id);
+
+      if (error) logStep("Warning: failed to downgrade subscription", { error: error.message });
+
+      logStep("Subscription downgraded to free");
+      return new Response(JSON.stringify({ received: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (event.type === "invoice.payment_failed") {
+      const invoice = event.data.object as Stripe.Invoice;
+      logStep("Processing invoice.payment_failed", { invoiceId: invoice.id });
+
+      const supabaseClient = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+        { auth: { persistSession: false } }
+      );
+
+      const subscriptionId = typeof invoice.subscription === "string"
+        ? invoice.subscription
+        : (invoice.subscription as Stripe.Subscription)?.id;
+
+      if (subscriptionId) {
+        await supabaseClient
+          .from("subscriptions")
+          .update({ status: "past_due", updated_at: new Date().toISOString() })
+          .eq("stripe_subscription_id", subscriptionId);
+        logStep("Marked subscription as past_due");
+      }
+
+      return new Response(JSON.stringify({ received: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // ── One-time purchase events ──────────────────────────────────────────────
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
       logStep("Processing checkout.session.completed", { sessionId: session.id });
 
       // Check if this is a vault_starter purchase via metadata
       const isVaultStarter = session.metadata?.product === "vault_starter";
-      
+
       if (!isVaultStarter) {
         logStep("Not a vault_starter purchase, skipping");
         return new Response(JSON.stringify({ received: true, skipped: true }), {

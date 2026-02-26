@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
 import { SettingsProvider } from "@/hooks/useSettings";
+import { SubscriptionProvider } from "@/hooks/useSubscription";
 import { usePageTracking } from "@/hooks/usePageTracking";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import Index from "./pages/Index";
@@ -37,6 +38,7 @@ const App = () => (
         <TooltipProvider>
           <AuthProvider>
             <SettingsProvider>
+            <SubscriptionProvider>
               <Toaster />
               <Sonner />
               <InstallPrompt />
@@ -58,6 +60,7 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter>
+            </SubscriptionProvider>
             </SettingsProvider>
           </AuthProvider>
         </TooltipProvider>

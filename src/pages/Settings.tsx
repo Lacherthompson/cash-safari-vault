@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '@/hooks/useSettings';
 import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
+import { PricingModal } from '@/components/PricingModal';
 import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Volume2, VolumeX, Palette, Trash2 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Volume2, VolumeX, Palette, Trash2, CreditCard } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/Footer';
@@ -26,9 +29,29 @@ import {
 export default function Settings() {
   const { soundEnabled, setSoundEnabled, loading } = useSettings();
   const { user } = useAuth();
+  const { plan, isProOrAbove, currentPeriodEnd, stripeCustomerId } = useSubscription();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [deleting, setDeleting] = useState(false);
+  const [pricingOpen, setPricingOpen] = useState(false);
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  const handleManageBilling = async () => {
+    setPortalLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await supabase.functions.invoke('create-billing-portal', {
+        headers: { Authorization: `Bearer ${session?.access_token}` },
+      });
+      if (response.error) throw new Error(response.error.message);
+      if (response.data?.url) window.location.href = response.data.url;
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : 'Something went wrong';
+      toast({ title: 'Error', description: msg, variant: 'destructive' });
+    } finally {
+      setPortalLoading(false);
+    }
+  };
 
   const handleDeleteAccount = async () => {
     if (!user) return;
@@ -71,7 +94,42 @@ export default function Settings() {
     <div className="min-h-screen bg-background flex flex-col">
       <AuthenticatedNav />
 
+      <PricingModal open={pricingOpen} onOpenChange={setPricingOpen} />
+
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-4">
+
+        {/* Plan & Billing */}
+        <Card className="p-4 shadow-soft">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <CreditCard className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium">Plan &amp; Billing</p>
+                  <Badge variant={isProOrAbove ? 'default' : 'secondary'} className="capitalize text-xs">
+                    {plan}
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {isProOrAbove && currentPeriodEnd
+                    ? `Renews ${currentPeriodEnd.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+                    : 'Free plan — 2 vaults included'}
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              {isProOrAbove && stripeCustomerId ? (
+                <Button variant="outline" size="sm" onClick={handleManageBilling} disabled={portalLoading}>
+                  {portalLoading ? 'Loading...' : 'Manage billing'}
+                </Button>
+              ) : (
+                <Button size="sm" onClick={() => setPricingOpen(true)}>
+                  Upgrade
+                </Button>
+              )}
+            </div>
+          </div>
+        </Card>
         <Card className="p-4 shadow-soft">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
