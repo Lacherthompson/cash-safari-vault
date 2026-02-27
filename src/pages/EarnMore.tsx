@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { DollarSign, ShoppingBag, ClipboardList, Briefcase, TrendingUp, Heart } from 'lucide-react';
+import { DollarSign, ShoppingBag, ClipboardList, Briefcase, TrendingUp, Heart, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -232,6 +232,13 @@ const EarnMore = () => {
       <AuthenticatedNav />
 
       <main className="container mx-auto px-4 py-8 max-w-5xl">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </button>
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">

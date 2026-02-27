@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Check, Mail, Calendar, ArrowRight, Sparkles } from 'lucide-react';
+import { Check, Mail, Calendar, ArrowRight, Sparkles, ArrowLeft } from 'lucide-react';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 import { Footer } from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,6 +9,7 @@ import { Logo } from '@/components/Logo';
 
 export default function VaultStarterSuccess() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -25,6 +26,16 @@ export default function VaultStarterSuccess() {
           </div>
         </header>
       )}
+
+      <div className="mx-auto max-w-lg w-full px-4 pt-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </button>
+      </div>
 
       <main className="flex-1 flex items-center justify-center py-16 px-4">
         <div className="max-w-lg w-full text-center">

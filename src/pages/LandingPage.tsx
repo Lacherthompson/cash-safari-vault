@@ -207,7 +207,7 @@ export default function LandingPage() {
 
         {/* Friction reducer */}
         <p className="text-xs text-muted-foreground/60 mb-8 sm:mb-12">
-          Free forever · No credit card · Start in 60 seconds
+          Free to start · No credit card · Start in 60 seconds
         </p>
 
         {/* How it works — 3 steps, inline so visitors don't need to leave */}

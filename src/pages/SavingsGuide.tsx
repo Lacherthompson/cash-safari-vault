@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
-import { TrendingUp, Clock, Layers, Shield, Landmark, CircleDollarSign } from 'lucide-react';
+import { TrendingUp, Clock, Layers, Shield, Landmark, CircleDollarSign, ArrowLeft } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Footer } from '@/components/Footer';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
@@ -139,6 +139,13 @@ export default function SavingsGuide() {
       {user && <AuthenticatedNav />}
 
       <main className="mx-auto max-w-4xl px-4 py-8 space-y-8">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </button>
         {/* Intro Section */}
         <section>
           <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mb-4">

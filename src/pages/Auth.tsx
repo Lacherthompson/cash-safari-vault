@@ -265,7 +265,7 @@ export default function Auth() {
           </Button>
           {!isLogin && !isForgotPassword && (
             <p className="text-xs text-muted-foreground text-center">
-              Free forever for personal use. No credit card needed.
+              Free to start. No credit card needed.
             </p>
           )}
         </form>

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Check, Mail, ArrowRight, Sparkles, Calculator, Loader2 } from 'lucide-react';
+import { Check, Mail, ArrowRight, Sparkles, Calculator, Loader2, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { AuthenticatedNav } from '@/components/AuthenticatedNav';
 import { Footer } from '@/components/Footer';
@@ -31,6 +31,7 @@ const days = [
 
 export default function VaultStarter() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [goalAmount, setGoalAmount] = useState<string>('');
   const [monthlyAmount, setMonthlyAmount] = useState<string>('');
@@ -143,6 +144,16 @@ export default function VaultStarter() {
           </div>
         </header>
       )}
+
+      <div className="mx-auto max-w-4xl px-4 pt-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </button>
+      </div>
 
       {/* Hero Logo Section */}
       <section className="py-12 sm:py-16 bg-gradient-to-b from-primary/5 to-transparent">
