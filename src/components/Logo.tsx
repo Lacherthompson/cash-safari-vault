@@ -24,8 +24,8 @@ export const Logo = ({ size = 'md', clickable = true, className = '' }: LogoProp
   };
 
   return (
-    <div 
-      className={`dark:bg-white/95 dark:rounded-lg dark:px-3 dark:py-1.5 inline-block ${clickable ? 'cursor-pointer' : ''} ${className}`}
+    <div
+      className={`inline-block ${clickable ? 'cursor-pointer' : ''} ${className}`}
       onClick={handleClick}
     >
       <img 
