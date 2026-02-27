@@ -1,45 +1,47 @@
 import { useCallback } from 'react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+
+let sharedCtx: AudioContext | null = null;
+
+function getCtx(): AudioContext {
+  if (!sharedCtx || sharedCtx.state === 'closed') {
+    sharedCtx = new AudioContext();
+  }
+  return sharedCtx;
+}
 
 export function useClickSound() {
 
   const playClick = useCallback(() => {
-    // Create a new AudioContext each time to ensure sounds can overlap
-    const ctx = new AudioContext();
-    const now = ctx.currentTime;
+    // Haptics — fire and forget
+    Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
 
-    // Create noise buffer for a crisp click
-    const bufferSize = ctx.sampleRate * 0.015; // 15ms
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
+    // Audio — oscillator tone, more reliable than noise on iOS WKWebView
+    try {
+      const ctx = getCtx();
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
 
-    // Fill with noise that decays quickly
-    for (let i = 0; i < bufferSize; i++) {
-      const decay = 1 - (i / bufferSize);
-      data[i] = (Math.random() * 2 - 1) * decay * decay;
+      const now = ctx.currentTime;
+
+      const osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1200, now);
+      osc.frequency.exponentialRampToValueAtTime(600, now + 0.05);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.25, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.06);
+    } catch {
+      // Audio not available — ignore
     }
-
-    const noiseSource = ctx.createBufferSource();
-    noiseSource.buffer = buffer;
-
-    // High-pass filter for crisp attack
-    const highPass = ctx.createBiquadFilter();
-    highPass.type = 'highpass';
-    highPass.frequency.value = 1000;
-
-    // Gain for volume
-    const gainNode = ctx.createGain();
-    gainNode.gain.setValueAtTime(0.6, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.015);
-
-    noiseSource.connect(highPass);
-    highPass.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    noiseSource.start(now);
-    noiseSource.stop(now + 0.015);
-
-    // Clean up after sound finishes
-    noiseSource.onended = () => ctx.close();
   }, []);
 
   return { playClick };

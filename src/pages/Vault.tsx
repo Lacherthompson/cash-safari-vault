@@ -457,7 +457,7 @@ export default function Vault() {
 
       toast({
         title: existing ? 'Invite Resent!' : 'Invitation Sent!',
-        description: `Check ${normalizedEmail}'s inbox (and spam folder).`,
+        description: `An invite was sent to ${normalizedEmail}.`,
       });
 
       setInviteOpen(false);
@@ -557,7 +557,13 @@ export default function Vault() {
       .from('vault_invitations')
       .delete()
       .eq('vault_id', vault.id);
-    
+
+    // Delete milestone emails
+    await supabase
+      .from('vault_milestone_emails')
+      .delete()
+      .eq('vault_id', vault.id);
+
     // Delete vault
     const { error } = await supabase
       .from('vaults')

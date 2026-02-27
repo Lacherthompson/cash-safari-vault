@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Volume2, VolumeX, Palette, Trash2, CreditCard } from 'lucide-react';
+import { Volume2, VolumeX, Palette, Trash2, CreditCard, ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Footer } from '@/components/Footer';
@@ -97,6 +97,13 @@ export default function Settings() {
       <PricingModal open={pricingOpen} onOpenChange={setPricingOpen} />
 
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </button>
 
         {/* Plan & Billing */}
         <Card className="p-4 shadow-soft">

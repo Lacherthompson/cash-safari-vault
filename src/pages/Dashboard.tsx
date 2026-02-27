@@ -167,14 +167,16 @@ export default function Dashboard() {
           </>
         ) : (
           <>
-            <div className="flex items-center justify-between mb-8">
-              <div>
+            <div className="flex items-center justify-between gap-4 mb-8">
+              <div className="min-w-0">
                 <h2 className="text-2xl font-display font-semibold tracking-tight">Your Vaults</h2>
-                <p className="text-muted-foreground mt-1">
+                <p className="text-muted-foreground mt-1 truncate">
                   {vaults.length} vault{vaults.length !== 1 ? 's' : ''} • ${vaults.reduce((sum, v) => sum + v.saved_amount, 0).toLocaleString()} saved
                 </p>
               </div>
-              <CreateVaultDialog onCreateVault={handleCreateVault} vaultCount={vaults.length} />
+              <div className="shrink-0 ml-auto pl-4">
+                <CreateVaultDialog onCreateVault={handleCreateVault} vaultCount={vaults.length} />
+              </div>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               {vaults.map((vault) => (
