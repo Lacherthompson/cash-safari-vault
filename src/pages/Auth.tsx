@@ -16,6 +16,7 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [justSignedUp, setJustSignedUp] = useState(false);
   const { signIn, signUp, resetPassword, user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -36,9 +37,13 @@ export default function Auth() {
     }
 
     if (user) {
-      navigate(redirectPath);
+      if (justSignedUp && localStorage.getItem('savetogether_onboarded') !== 'true') {
+        navigate('/onboard');
+      } else {
+        navigate(redirectPath);
+      }
     }
-  }, [user, navigate, redirectPath]);
+  }, [user, navigate, redirectPath, justSignedUp]);
 
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true);
@@ -158,6 +163,7 @@ export default function Auth() {
             title: 'Welcome!',
             description: 'Account created successfully.',
           });
+          setJustSignedUp(true);
         }
       }
     } catch (err) {

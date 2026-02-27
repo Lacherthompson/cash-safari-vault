@@ -10,7 +10,8 @@ import { Celebration } from '@/components/Celebration';
 import { StreakBadge } from '@/components/StreakBadge';
 import { VaultMenu, SortOption } from '@/components/VaultMenu';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, UserPlus, Users, X } from 'lucide-react';
+import { ArrowLeft, UserPlus, Users, X, Sparkles } from 'lucide-react';
+import { PricingModal } from '@/components/PricingModal';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
@@ -67,7 +68,35 @@ export default function Vault() {
   const [membersOpen, setMembersOpen] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState<VaultMember | null>(null);
   const [removingMember, setRemovingMember] = useState(false);
+  const [pricingOpen, setPricingOpen] = useState(false);
   const hasCelebrated = useRef(false);
+  const [showWelcomeTip, setShowWelcomeTip] = useState(false);
+  const [showSharingTip, setShowSharingTip] = useState(false);
+
+  // Show one-time welcome tips when landing from onboarding
+  useEffect(() => {
+    if (searchParams.get('welcome') !== 'true') return;
+    if (localStorage.getItem('savetogether_welcome_tip_shown') === 'true') return;
+    setShowWelcomeTip(true);
+    // Auto-advance to sharing tip after 5s if not dismissed
+    const timer = setTimeout(() => {
+      setShowWelcomeTip(false);
+      setShowSharingTip(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [searchParams]);
+
+  const dismissWelcomeTip = () => {
+    setShowWelcomeTip(false);
+    localStorage.setItem('savetogether_welcome_tip_shown', 'true');
+    // Show sharing tip after dismissing welcome tip
+    setTimeout(() => setShowSharingTip(true), 300);
+  };
+
+  const dismissSharingTip = () => {
+    setShowSharingTip(false);
+    localStorage.setItem('savetogether_welcome_tip_shown', 'true');
+  };
 
   useEffect(() => {
     if (!id || !user) return;
@@ -686,7 +715,45 @@ export default function Vault() {
   return (
     <div className="min-h-screen bg-background">
       <Celebration show={showCelebration} />
+      <PricingModal open={pricingOpen} onOpenChange={setPricingOpen} />
       <AuthenticatedNav />
+
+      {/* Welcome tip — shown once after onboarding */}
+      {showWelcomeTip && (
+        <div className="mx-auto max-w-4xl px-4 pt-3">
+          <div className="flex items-start gap-3 bg-primary/10 border border-primary/20 rounded-xl px-4 py-3">
+            <span className="text-lg mt-0.5">👆</span>
+            <p className="flex-1 text-sm font-medium">
+              Tap any amount to mark it saved. Come back each time you set money aside.
+            </p>
+            <button onClick={dismissWelcomeTip} className="text-muted-foreground hover:text-foreground transition-colors mt-0.5">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Sharing upsell — shown after welcome tip */}
+      {showSharingTip && (
+        <div className="mx-auto max-w-4xl px-4 pt-3">
+          <div className="flex items-start gap-3 bg-card border border-border rounded-xl px-4 py-3">
+            <Sparkles className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+            <p className="flex-1 text-sm">
+              <span className="font-medium">SaveTogether is better with someone.</span>{' '}
+              <button
+                onClick={() => { dismissSharingTip(); setPricingOpen(true); }}
+                className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
+              >
+                Upgrade to invite a partner
+              </button>{' '}
+              toward this goal.
+            </p>
+            <button onClick={dismissSharingTip} className="text-muted-foreground hover:text-foreground transition-colors mt-0.5">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
       
       {/* Vault-specific toolbar */}
       <div className="border-b border-border/40 bg-background/60">

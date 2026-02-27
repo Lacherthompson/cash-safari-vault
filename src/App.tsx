@@ -23,6 +23,7 @@ import VaultStarterSuccess from "./pages/VaultStarterSuccess";
 import ResetPassword from "./pages/ResetPassword";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import Onboard from "./pages/Onboard";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/vault-starter" element={<VaultStarter />} />
                   <Route path="/vault-starter/success" element={<VaultStarterSuccess />} />
+                  <Route path="/onboard" element={<Onboard />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<TermsOfService />} />
                   <Route path="*" element={<NotFound />} />
