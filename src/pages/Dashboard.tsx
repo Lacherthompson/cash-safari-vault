@@ -98,6 +98,37 @@ export default function Dashboard() {
     fetchVaults();
   }, [user]);
 
+  // If user arrived here with a pending vault from the onboarding wizard, create it now.
+  // This handles existing users who tapped "Sign in" at wizard step 5.
+  useEffect(() => {
+    if (!user) return;
+    const raw = localStorage.getItem('savetogether_pending_vault');
+    if (!raw) return;
+    let pending: { name: string; goalAmount: number } | null = null;
+    try { pending = JSON.parse(raw); } catch { /* ignore */ }
+    if (!pending) { localStorage.removeItem('savetogether_pending_vault'); return; }
+
+    const { name, goalAmount } = pending;
+    localStorage.removeItem('savetogether_pending_vault');
+
+    (async () => {
+      const { data: vault, error } = await supabase
+        .from('vaults')
+        .insert({ name, goal_amount: goalAmount, created_by: user.id, accent_color: 'emerald' })
+        .select()
+        .single();
+      if (error || !vault) return;
+
+      await supabase.from('vault_members').insert({ vault_id: vault.id, user_id: user.id });
+      const amounts = generateAmounts(goalAmount);
+      await supabase.from('vault_amounts').insert(
+        amounts.map(a => ({ vault_id: vault.id, user_id: user.id, amount: a }))
+      );
+      trackVaultCreated(goalAmount, name);
+      navigate(`/vault/${vault.id}?welcome=true`);
+    })();
+  }, [user]);
+
   const handleCreateVault = async (name: string, goalAmount: number, accentColor: VaultColorId) => {
     if (!user) return;
 
